@@ -19,8 +19,15 @@ const ClientComponent = () => {
                     }}>
                         {message.type === 'image' ? (
                             <img src={message.content} alt={`Message ${index + 1}`} style={{maxWidth: '100%'}}/>
-                        ) : (
-                            message.content
+                        ) : (message.content === 'ThankYou | 감사합니다' ? (
+                                    <span style={{
+                                        display: 'block',
+                                        textAlign: 'center',
+                                        fontWeight: 'bold',
+                                        fontSize: '1.5em'
+                                    }}>{message.content}</span>
+                                ) :
+                                message.content
                         )}
                     </li>
                 ))}
