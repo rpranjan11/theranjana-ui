@@ -10,7 +10,7 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/admin" element={<AdminPage />} />
-                    <Route path="/client" element={<ClientPage />} />
+                    <Route path="/audience" element={<ClientPage />} />
                 </Routes>
             </Router>
         </AppProvider>
