@@ -1,3 +1,4 @@
+// src/ClientComponent.js
 import React, { useContext } from 'react';
 import { AppContext } from './AppContext';
 
@@ -9,7 +10,13 @@ const ClientComponent = () => {
             <h1>Client Page</h1>
             <ul>
                 {messages.map((message, index) => (
-                    <li key={index}>{message.content}</li>
+                    <li key={index}>
+                        {message.content.startsWith('/static/images/') ? (
+                            <img src={message.content} alt={`Message ${index}`} />
+                        ) : (
+                            message.content
+                        )}
+                    </li>
                 ))}
             </ul>
         </div>

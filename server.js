@@ -1,26 +1,22 @@
-// server.js
 const WebSocket = require('ws');
-
 const wss = new WebSocket.Server({ port: 8080 });
-let messages = [];
 
 wss.on('connection', (ws) => {
-    // Send existing messages to the newly connected client
-    ws.send(JSON.stringify({ type: 'initial', data: messages }));
+    console.log('Client connected');
 
+    // Listen for messages sent by the admin
     ws.on('message', (message) => {
-        const parsedMessage = JSON.parse(message);
-        if (parsedMessage.type === 'newMessage') {
-            messages.push(parsedMessage.data);
-            // Broadcast the new message to all clients
-            wss.clients.forEach((client) => {
-                if (client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify({ type: 'newMessage', data: parsedMessage.data }));
-                }
-            });
-        }
+        console.log('Received message: ', message);
+
+        // Broadcast the message to all connected clients
+        wss.clients.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(message);  // Send the received message to all clients
+            }
+        });
     });
 
+    // Handle client disconnection
     ws.on('close', () => {
         console.log('Client disconnected');
     });

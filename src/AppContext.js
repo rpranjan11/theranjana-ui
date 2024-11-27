@@ -8,7 +8,6 @@ export const AppProvider = ({ children, isAdmin }) => {
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
     const socketRef = useRef(null);
 
-    // src/AppContext.js
     useEffect(() => {
         const socket = new WebSocket('ws://localhost:8080');
         socketRef.current = socket;
@@ -28,6 +27,8 @@ export const AppProvider = ({ children, isAdmin }) => {
                         ...prevMessages,
                         { type: 'text', content: message.data }
                     ]);
+                } else if (message.type === 'deleteMessage') {
+                    setMessages((prevMessages) => prevMessages.slice(0, -1));
                 }
             };
             reader.readAsText(event.data);
@@ -50,7 +51,6 @@ export const AppProvider = ({ children, isAdmin }) => {
         };
     }, []);
 
-    // src/AppContext.js
     const pushNextMessage = () => {
         if (!isAdmin) return;
 
@@ -78,8 +78,20 @@ export const AppProvider = ({ children, isAdmin }) => {
         }
     };
 
+    const deleteLastMessage = () => {
+        if (!isAdmin || messages.length === 0) return;
+
+        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ type: 'deleteMessage' }));
+            setMessages((prevMessages) => prevMessages.slice(0, -1));
+            setCurrentMessageIndex(currentMessageIndex - 1);
+        } else {
+            console.error('WebSocket is not open');
+        }
+    };
+
     return (
-        <AppContext.Provider value={{ messages, pushNextMessage }}>
+        <AppContext.Provider value={{ messages, pushNextMessage, deleteLastMessage }}>
             {children}
         </AppContext.Provider>
     );
