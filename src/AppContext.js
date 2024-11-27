@@ -10,7 +10,8 @@ export const AppProvider = ({ children, isAdmin }) => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080');
+        // const socket = new WebSocket('ws://localhost:8080' && 'ws://192.168.0.254:8080' && 'ws://127.0.0.1:8080');
+        const socket = new WebSocket('ws://192.168.0.254:8080'); // Use the correct IP address
         socketRef.current = socket;
 
         socket.onopen = () => {
