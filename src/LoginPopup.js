@@ -57,8 +57,10 @@ const LoginPopup = ({ onLogin }) => {
                         />
                     </label>
                 </div>
-                <div style={{display: 'flex', justifyContent: 'flex-end', paddingTop: 10}}>
-                    <button onClick={handleLogin}>Login</button>
+                <div style={{display: 'flex', justifyContent: 'flex-end', paddingTop: 10}} onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleLogin();
+                }} tabIndex="0">
+                    <button onClick={handleLogin} style={{fontSize: '1.2em', backgroundColor: 'green', color: 'white'}}>Login</button>
                 </div>
             </div>
         </div>
