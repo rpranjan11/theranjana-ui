@@ -1,5 +1,7 @@
 // src/AppContext.js
 import React, { createContext, useState, useEffect, useRef } from 'react';
+import img1 from './images/img_1.png';
+import img4 from './images/img_4.jpg';
 
 export const AppContext = createContext();
 
@@ -56,11 +58,9 @@ export const AppProvider = ({ children, isAdmin }) => {
 
         const predefinedMessages = [
             { type: 'text', content: 'Welcome to the group chat!' },
-            { type: 'text', content: 'Here is the agenda for today.' },
-            { type: 'image', content: 'https://www.google.com/imgres?q=images%20jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Ffree-photo%2Fanimal-eye-staring-close-up-watch-nature-generative-ai_188544-15471.jpg&imgrefurl=https%3A%2F%2Fkr.freepik.com%2Ffree-photos-vectors%2Fjpg&docid=zdr8gH-F6R-mwM&tbnid=rHWomAg7aKxleM&vet=12ahUKEwiU7p7txfuJAxWCb_UHHZkjPIsQM3oECBYQAA..i&w=626&h=358&hcb=2&ved=2ahUKEwiU7p7txfuJAxWCb_UHHZkjPIsQM3oECBYQAA' },
-            { type: 'text', content: 'Discussion Point 1' },
-            { type: 'image', content: 'https://via.placeholder.com/150/FF0000' },
-            { type: 'text', content: 'Closing remarks' },
+            { type: 'text', content: '오늘의 일정은 다음과 같습니다.' },
+            { type: 'text', content: '&nbsp;&nbsp; ThankYou!! $ 감사합니다' },
+            { type: 'image', content: img1 },
         ];
 
         if (currentMessageIndex < predefinedMessages.length) {

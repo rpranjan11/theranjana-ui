@@ -7,12 +7,18 @@ const ClientComponent = () => {
 
     return (
         <div>
-            <h1>Audience Plot</h1>
-            <ul>
+            <h1 style={{color: 'blue', fontSize: '3em', textAlign: 'center'}}>Audience Plot</h1>
+            <ul style={{listStyleType: 'none', padding: 20}}>
                 {messages.map((message, index) => (
-                    <li key={index}>
+                    <li key={index} style={{
+                        border: '1px solid #ccc',
+                        borderRadius: '10px',
+                        padding: '10px',
+                        margin: '10px 0',
+                        backgroundColor: message.type === 'image' ? '#f9f9f9' : '#e0f7fa'
+                    }}>
                         {message.type === 'image' ? (
-                            <img src={message.content} alt={`Message ${index + 1}`} />
+                            <img src={message.content} alt={`Message ${index + 1}`} style={{maxWidth: '100%'}}/>
                         ) : (
                             message.content
                         )}
