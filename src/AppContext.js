@@ -25,7 +25,7 @@ export const AppProvider = ({ children, isAdmin }) => {
                 } else if (message.type === 'newMessage') {
                     setMessages((prevMessages) => [
                         ...prevMessages,
-                        { type: 'text', content: message.data }
+                        message.data
                     ]);
                 } else if (message.type === 'deleteMessage') {
                     setMessages((prevMessages) => prevMessages.slice(0, -1));
@@ -55,12 +55,12 @@ export const AppProvider = ({ children, isAdmin }) => {
         if (!isAdmin) return;
 
         const predefinedMessages = [
-            'Welcome to the group chat!',
-            'Here is the agenda for today.',
-            'https://via.placeholder.com/150',
-            'Discussion Point 1',
-            'https://via.placeholder.com/150/FF0000',
-            'Closing remarks'
+            { type: 'text', content: 'Welcome to the group chat!' },
+            { type: 'text', content: 'Here is the agenda for today.' },
+            { type: 'image', content: 'https://www.google.com/imgres?q=images%20jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Ffree-photo%2Fanimal-eye-staring-close-up-watch-nature-generative-ai_188544-15471.jpg&imgrefurl=https%3A%2F%2Fkr.freepik.com%2Ffree-photos-vectors%2Fjpg&docid=zdr8gH-F6R-mwM&tbnid=rHWomAg7aKxleM&vet=12ahUKEwiU7p7txfuJAxWCb_UHHZkjPIsQM3oECBYQAA..i&w=626&h=358&hcb=2&ved=2ahUKEwiU7p7txfuJAxWCb_UHHZkjPIsQM3oECBYQAA' },
+            { type: 'text', content: 'Discussion Point 1' },
+            { type: 'image', content: 'https://via.placeholder.com/150/FF0000' },
+            { type: 'text', content: 'Closing remarks' },
         ];
 
         if (currentMessageIndex < predefinedMessages.length) {
@@ -69,7 +69,7 @@ export const AppProvider = ({ children, isAdmin }) => {
                 socketRef.current.send(JSON.stringify({ type: 'newMessage', data: nextMessage }));
                 setMessages((prevMessages) => [
                     ...prevMessages,
-                    { type: 'text', content: nextMessage }
+                    nextMessage
                 ]);
                 setCurrentMessageIndex(currentMessageIndex + 1);
             } else {

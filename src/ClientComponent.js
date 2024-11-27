@@ -7,12 +7,12 @@ const ClientComponent = () => {
 
     return (
         <div>
-            <h1>Client Page</h1>
+            <h1>Audience Plot</h1>
             <ul>
                 {messages.map((message, index) => (
                     <li key={index}>
-                        {message.content.startsWith('/static/images/') ? (
-                            <img src={message.content} alt={`Message ${index}`} />
+                        {message.type === 'image' ? (
+                            <img src={message.content} alt={`Message ${index + 1}`} />
                         ) : (
                             message.content
                         )}

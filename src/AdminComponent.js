@@ -7,14 +7,14 @@ const AdminComponent = () => {
 
     return (
         <div>
-            <h1>Admin Page</h1>
+            <h1>Presentation Owner</h1>
             <button onClick={pushNextMessage}>Push New Message</button>
             <button onClick={deleteLastMessage}>Delete Last Message</button>
             <ul>
                 {messages.map((message, index) => (
                     <li key={index}>
-                        {message.content.startsWith('/static/images/') ? (
-                            <img src={message.content} alt={`Message ${index}`} />
+                        {message.type === 'image' ? (
+                            <img src={message.content} alt={`Message ${index + 1}`} />
                         ) : (
                             message.content
                         )}
