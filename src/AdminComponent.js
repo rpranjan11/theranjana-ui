@@ -25,14 +25,15 @@ const AdminComponent = () => {
                                         fontWeight: 'bold',
                                         fontSize: '1.5em'
                                     }}>{message.content}</span>
-                                ) :
-                                message.content
+                                ) : (
+                                <span dangerouslySetInnerHTML={{__html: message.content.replace(/<=>/g, '<br/><span style="display: block; text-align: -webkit-left; color: red; font-weight: bold;">&lt;=&gt;</span>')}}/>
+                            )
                         )}
                     </li>
                 ))}
             </ul>
             <div style={{display: 'flex', justifyContent: 'center', padding: 10}}>
-                <button onClick={pushNextMessage}
+            <button onClick={pushNextMessage}
                         style={{
                             color: 'white',
                             backgroundColor: 'green',
