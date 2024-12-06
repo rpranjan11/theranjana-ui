@@ -10,7 +10,7 @@ export const AppProvider = ({ children, isAdmin }) => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = new WebSocket(process.env.REACT_APP_API_WS_URL);
+        const socket = new WebSocket('https://chat-broadcast-app-websocket-server.onrender.com');
         socketRef.current = socket;
 
         socket.onopen = () => {
