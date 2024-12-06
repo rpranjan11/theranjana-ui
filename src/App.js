@@ -6,14 +6,12 @@ import ClientPage from './ClientPage';
 
 function App() {
     return (
-        <AppProvider>
-            <Router>
-                <Routes>
-                    <Route path="/admin" element={AdminPage} />
-                    <Route path="/audience" element={ClientPage} />
-                </Routes>
-            </Router>
-        </AppProvider>
+        <Router>
+          <Switch>
+            <Route path="/admin" component={AdminPage} />
+            <Route path="/audience" component={ClientPage} />
+          </Switch>
+        </Router>
     );
 }
 
