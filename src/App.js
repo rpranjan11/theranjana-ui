@@ -9,8 +9,8 @@ function App() {
         <AppProvider>
             <Router>
                 <Routes>
-                    <Route path="/admin" element={<AdminPage />} />
-                    <Route path="/audience" element={<ClientPage />} />
+                    <Route path="/admin" element={AdminPage} />
+                    <Route path="/audience" element={ClientPage} />
                 </Routes>
             </Router>
         </AppProvider>
