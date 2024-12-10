@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## To start the websocket server
+
+In the project directory, you can run:
+
+### `node server.js`
+This will open the websocket server on port 8080
+
 ## Available Scripts
 
 In the project directory, you can run:
