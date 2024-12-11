@@ -13,6 +13,10 @@ This will open the websocket server on port 8080
 
 In the project directory, you can run:
 
+### `npx webpack --config webpack.config.js`
+
+This will compile the code and create a bundle.js file in the dist folder. This setup will allow you to build and serve multiple React applications within a single project using Webpack.
+
 ### `npm start`
 
 Runs the app in the development mode.\

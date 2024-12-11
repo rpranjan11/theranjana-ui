@@ -1,17 +1,39 @@
+// src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from 'react-dom';
+import ConferApp from './confer/App';
+import DemoApp from './demo/App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const App = () => {
+    const path = window.location.pathname;
+    if (path.startsWith('/confer')) {
+        return <ConferApp />;
+    } else if (path.startsWith('/demo')) {
+        return <DemoApp />;
+    } else {
+        return (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height: '100vh',
+                justifyContent: 'center'
+            }}>
+                <button style={{width: '300px', margin: '15px', padding: '10px'}}
+                        onClick={() => window.location.href = '/confer/socialcustoms'}>Confer : Social Customs
+                </button>
+                <button style={{width: '300px', margin: '15px', padding: '10px'}}
+                        onClick={() => window.location.href = '/confer/audience'}>Confer : Audience
+                </button>
+                <button style={{width: '300px', margin: '15px', padding: '10px'}}
+                        onClick={() => window.location.href = '/demo/admin'}>Confer : Demo
+                </button>
+                <button style={{width: '300px', margin: '15px', padding: '10px'}}
+                        onClick={() => window.location.href = '/demo/audience'}>Confer : Audience
+                </button>
+            </div>
+        );
+    }
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(<App/>, document.getElementById('root'));

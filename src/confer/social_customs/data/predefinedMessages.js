@@ -1,9 +1,9 @@
-import crown_img from '../../images/social_customs/crown_img.png';
-import social_customs_img from '../../images/social_customs/social_customs_img.png';
-import marriage_img from '../../images/social_customs/marriage_img.png';
-import bow_img from '../../images/social_customs/bow_img.png';
-import traditions_img from '../../images/social_customs/traditions_img.png';
-import customs_perspective_img from '../../images/social_customs/customs_perspective_img.png';
+import crown_img from '../images/crown_img.png';
+import social_customs_img from '../images/social_customs_img.png';
+import marriage_img from '../images/marriage_img.png';
+import bow_img from '../images/bow_img.png';
+import traditions_img from '../images/traditions_img.png';
+import customs_perspective_img from '../images/customs_perspective_img.png';
 
 const predefinedMessages = [
     { type: 'text', content: 'Welcome to the King Election Process!     <=>     킹 선거 과정에 오신 것을 환영합니다!' },

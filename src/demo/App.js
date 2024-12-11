@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AppProvider } from './AppContext'; // Correct path to Context
+import { AppProvider } from './AppContext';
 import AdminPage from './AdminPage';
 import AudiencePage from './ClientPage';
 
@@ -9,8 +9,8 @@ function App() {
         <AppProvider>
             <Router>
                 <Routes>
-                    <Route path="/admin" element={<AdminPage />} />
-                    <Route path="/audience" element={<AudiencePage />} />
+                    <Route path="/demo/admin" element={<AdminPage />} />
+                    <Route path="/demo/audience" element={<AudiencePage />} />
                 </Routes>
             </Router>
         </AppProvider>

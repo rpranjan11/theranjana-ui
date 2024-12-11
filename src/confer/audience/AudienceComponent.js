@@ -1,6 +1,6 @@
-// src/ClientComponent.js
+// src/AudienceComponent.js
 import React, { useContext } from 'react';
-import { AppContext } from './AppContext';
+import { AppContext } from '../social_customs/AppContext';
 
 const ClientComponent = () => {
     const { messages } = useContext(AppContext);

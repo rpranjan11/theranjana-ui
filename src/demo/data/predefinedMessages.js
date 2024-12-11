@@ -1,4 +1,4 @@
-import demo_img_3 from '../../images/demo/img_3.png';
+import demo_img_3 from '../images/img_3.png';
 
 const predefinedMessages = [
     { type: 'text', content: 'Welcome to the group chat!' },

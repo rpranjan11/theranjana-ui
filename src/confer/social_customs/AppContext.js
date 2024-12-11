@@ -1,6 +1,6 @@
 // src/AppContext.js
 import React, { createContext, useState, useEffect, useRef } from 'react';
-import predefinedMessages from './data/social_customs/predefinedMessages';
+import predefinedMessages from './data/predefinedMessages';
 
 export const AppContext = createContext();
 
