@@ -5,7 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: {
         app1: './src/confer/index.js',
-        app2: './src/demo/index.js'
+        app2: './src/demo/index.js',
+        app3: './src/llmchatbot/index.js'
     },
     output: {
         filename: '[name].bundle.js',
@@ -50,6 +51,11 @@ module.exports = {
             template: './src/demo/index.html',
             chunks: ['demo'],
             filename: 'demo.html'
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/llmchatbot/index.html',
+            chunks: ['llmchatbot'],
+            filename: 'llmchatbot.html'
         })
     ],
     devServer: {
