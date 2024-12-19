@@ -26,10 +26,10 @@ const App = () => {
                         onClick={() => window.location.href = '/confer/audience'}>Confer : Audience
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
-                        onClick={() => window.location.href = '/demo/admin'}>Confer : Demo
+                        onClick={() => window.location.href = '/demo/admin'}>Demo : Admin
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
-                        onClick={() => window.location.href = '/demo/audience'}>Confer : Audience
+                        onClick={() => window.location.href = '/demo/audience'}>Demo : Audience
                 </button>
             </div>
         );
