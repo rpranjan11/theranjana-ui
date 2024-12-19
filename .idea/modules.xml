@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/kingmaker-presentation.iml" filepath="$PROJECT_DIR$/.idea/kingmaker-presentation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/multi-app-ui.iml" filepath="$PROJECT_DIR$/.idea/multi-app-ui.iml" />
     </modules>
   </component>
 </project>
