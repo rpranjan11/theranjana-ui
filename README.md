@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Before you start deployment add the below properties to the .env file in the root directory
+#### REACT_APP_CONFER_SOCIALCUSTOMS_ADMIN_USERNAME=
+#### REACT_APP_CONFER_SOCIALCUSTOMS_ADMIN_PASS=
+#### REACT_APP_DEMO_API_WS_URL=ws://<ip>:<port>
+#### REACT_APP_CONFER_SOCIALCUSTOMS_API_WS_URL=ws://<ip>:<port>
+#### REACT_APP_LLMCHATBOT_API_URL=http://<ip>:<port>
+
 ## To start the websocket server
 
 In the project directory, you can run:

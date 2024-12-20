@@ -7,8 +7,8 @@ const LoginPopup = ({ onLogin }) => {
     const [error, setError] = useState('');
 
     const handleLogin = () => {
-        const admin = process.env.REACT_APP_ADMIN_USERNAME;
-        const pass = process.env.REACT_APP_ADMIN_PASS;
+        const admin = process.env.REACT_APP_CONFER_SOCIALCUSTOMS_ADMIN_USERNAME;
+        const pass = process.env.REACT_APP_CONFER_SOCIALCUSTOMS_ADMIN_PASS;
         console.log(admin, pass);
         if (username === admin && password === pass) {
             onLogin(true);

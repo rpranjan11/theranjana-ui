@@ -7,6 +7,7 @@ import pdfToText from 'react-pdftotext'
 import axios from "axios";
 
 export const ChatPage = () => {
+    const llmchatbotServiceDomain = process.env.REACT_APP_LLMCHATBOT_API_URL;
     const [file, setFile] = useState("")
     const [fileName, setFileName] = useState("")
 
@@ -54,7 +55,7 @@ export const ChatPage = () => {
         const formData = new FormData();
         formData.append('pdf', file); 
         
-        axios.post('http://0.0.0.0:8000/loadpdf', formData)
+        axios.post(`${llmchatbotServiceDomain}/loadpdf`, formData)
             .then(response => {
                 console.log(response.data);
                 setText1(response.data.chatgptresponse)
@@ -69,7 +70,7 @@ export const ChatPage = () => {
     const handleQuestions1 = (text) => {
         setQueArr1((prev) => [...prev, text])
         // model = "openAPI"
-        const url = `http://0.0.0.0:8000/getchatresponse/${text}`;
+        const url = `${llmchatbotServiceDomain}/getchatresponse/${text}`;
 
         axios.get(url)
             .then(response => {
@@ -90,7 +91,7 @@ export const ChatPage = () => {
     const handleQuestions2 = (text) => {
         setQueArr2((prev) => [...prev, text])
         // model = "ollama"
-        const url = `http://0.0.0.0:8000/getllmresponse/${text}`;
+        const url = `${llmchatbotServiceDomain}/getllmresponse/${text}`;
 
         axios.get(url)
             .then(response => {

@@ -10,7 +10,7 @@ export const AppProvider = ({ children, isAdmin }) => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = new WebSocket(process.env.REACT_APP_API_WS_URL);
+        const socket = new WebSocket(process.env.REACT_APP_CONFER_SOCIALCUSTOMS_API_WS_URL);
         socketRef.current = socket;
 
         socket.onopen = () => {
