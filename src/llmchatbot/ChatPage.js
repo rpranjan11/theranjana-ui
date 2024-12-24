@@ -12,8 +12,8 @@ export const ChatPage = () => {
     const [fileName, setFileName] = useState("")
     const [selectedChatGptModel, setSelectedChatGptModel] = useState("gpt-3.5-turbo");
     const [selectedOllamaModel, setSelectedOllamaModel] = useState("llama3.2");
-    const [chatGptQueryType, setChatGptQueryType] = useState("");
-    const [ollamaQueryType, setOllamaQueryType] = useState("");
+    const [chatGptQueryType, setChatGptQueryType] = useState("pdf_based");
+    const [ollamaQueryType, setOllamaQueryType] = useState("pdf_based");
 
     const textRef = useRef(null);
     const formRef = useRef(null);
