@@ -46,6 +46,11 @@ export const ChatPage = () => {
         setFileName(fileName)
         setFile(selectedFile);
 
+        setChatGptQueryArray([]);
+        setChatGptAnswerArray([]);
+        setOllamaQueryArray([]);
+        setOllamaAnswerArray([]);
+
         if (selectedFile) {
             pdfToText(selectedFile)
                 .then(text => {
