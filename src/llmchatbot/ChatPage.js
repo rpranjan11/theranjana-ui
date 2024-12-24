@@ -55,7 +55,7 @@ export const ChatPage = () => {
         const formData = new FormData();
         formData.append('pdf', file); 
         
-        axios.post(`${llmchatbotServiceDomain}/loadpdf`, formData)
+        axios.post(`${llmchatbotServiceDomain}/uploadpdf`, formData)
             .then(response => {
                 console.log(response.data);
                 setText1(response.data.chatgptresponse)
