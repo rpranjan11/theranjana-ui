@@ -10,7 +10,7 @@ const Navbar = (props) => {
       <div className="responsive-width px-4">
         <Row className="responsive-md resposive-lg m-0 p-0">
           <Col className="cursor-pointer d-flex align-items-center p-0">
-            <span id="heading">Real-time PDF Summary</span>
+            <span id="heading">ChatBot & PDF Summary</span>
 
           </Col>
           {/* <Col xs sm={6} md={6} lg={6} className="text-overflow align-self-center p-0 nav-content">

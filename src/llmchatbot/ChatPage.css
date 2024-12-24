@@ -55,8 +55,10 @@
 
 .home_container .home_content .card-content{
     min-height: 300px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.1);
     height: 90%;
+    border: 1px solid #ccc;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 .home_container .home_content .card-content .text #questions{
@@ -76,6 +78,7 @@
 
 .home_container .home_content .card-content .input_text{
     width: 100%;
+    margin-right: 10px;
 }
 
 @media screen and (max-width:767px) {

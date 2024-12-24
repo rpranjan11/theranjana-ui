@@ -1,14 +1,10 @@
 
-
-
 .footer {
   /* border-bottom: 1px solid #d2d2d2; */
   border-top: 1px solid #d2d2d2;
   background-color: #0f2c4d;
   margin-top: auto;
 }
-
-
 
 .footer .info-content .contacts {
   /* padding-top: 3rem !important; */
@@ -100,12 +96,10 @@
 .social-app-icons .icon:hover span {
   color: #fff;
 }
-
 /* .social-app-icons .icon:hover span, */
 .social-app-icons .icon:hover .tooltip {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
 }
-
 .social-app-icons .icon:hover .tooltip,
 .social-app-icons .icon:hover .tooltip::before {
   background: #c13584;
@@ -124,19 +118,12 @@
   font-size: 1.5rem;
   font-weight: 900;
 }
-
 .footer .services #heading button {
   background-color: #b0c5e4;
   border: none;
   box-shadow: none;
   border-radius: 5px;
 }
-
-
-
-
-
-
 .footer #email-contact .email {
   color: white;
   text-decoration: none;
@@ -145,7 +132,6 @@
 .footer #email-contact .email i {
   margin-right: 8px;
 }
-
 .footer .copy-right {
   color: white;
 }
@@ -159,22 +145,6 @@
     font-size: 8px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
