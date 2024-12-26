@@ -1,14 +1,24 @@
 // src/AppContext.js
 import React, { createContext, useState, useEffect, useRef } from 'react';
 // import predefinedMessages from './social_customs/data/predefinedMessages';
-import predefinedMessages from './geographic_diversity_of_india/data/predefinedMessages';
+// import predefinedMessages from './geographic_diversity_of_india/data/predefinedMessages';
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children, isAdmin }) => {
     const [messages, setMessages] = useState([]);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const [predefinedMessages, setPredefinedMessages] = useState([]);
     const socketRef = useRef(null);
+
+    const setPredefinedMessagesFile = async (fileName) => {
+        try {
+            const module = await import(`./${fileName}/data/predefinedMessages`);
+            setPredefinedMessages(module.default);
+        } catch (error) {
+            console.error('Error loading predefined messages file:', error);
+        }
+    };
 
     useEffect(() => {
         const socket = new WebSocket(process.env.REACT_APP_CONFER_API_WS_URL);
@@ -84,7 +94,7 @@ export const AppProvider = ({ children, isAdmin }) => {
     };
 
     return (
-        <AppContext.Provider value={{ messages, pushNextMessage, deleteLastMessage }}>
+        <AppContext.Provider value={{ messages, pushNextMessage, deleteLastMessage, setPredefinedMessagesFile }}>
             {children}
         </AppContext.Provider>
     );
