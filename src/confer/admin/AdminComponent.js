@@ -7,12 +7,14 @@ const AdminComponent = () => {
     const { setPredefinedMessagesFile } = useContext(AppContext);
     const [selectedFile, setSelectedFile] = useState('');
     const { setMessages } = useContext(AppContext);
+    const { setCurrentMessageIndex } = useContext(AppContext);
 
     const handleSelectionChange = (event) => {
         const selectedFile = event.target.value;
         setSelectedFile(selectedFile);
         setPredefinedMessagesFile(selectedFile);
         setMessages([]); // Clear the messages
+        setCurrentMessageIndex(0); // Reset the current message index
     };
 
     return (

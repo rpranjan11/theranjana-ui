@@ -94,7 +94,7 @@ export const AppProvider = ({ children, isAdmin }) => {
     };
 
     return (
-        <AppContext.Provider value={{ messages, pushNextMessage, deleteLastMessage, setPredefinedMessagesFile }}>
+        <AppContext.Provider value={{ messages, setMessages,  currentMessageIndex, setCurrentMessageIndex, pushNextMessage, deleteLastMessage, setPredefinedMessagesFile }}>
             {children}
         </AppContext.Provider>
     );
