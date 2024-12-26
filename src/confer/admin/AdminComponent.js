@@ -9,6 +9,7 @@ const AdminComponent = () => {
 
     const handleSelectionChange = (event) => {
         const selectedFile = event.target.value;
+        window.location.reload();
         setSelectedFile(selectedFile);
         setPredefinedMessagesFile(selectedFile);
     };
@@ -16,7 +17,7 @@ const AdminComponent = () => {
     return (
         <div>
             <h1 style={{color: 'blue', fontSize: '3em', textAlign: 'center'}}>Presentation Owner</h1>
-            <div>
+            <div style={{color: 'darkolivegreen', textAlign: 'center'}}>
                 <label htmlFor="messageFileSelector">Select Predefined Messages File:</label>
                 <select id="messageFileSelector" value={selectedFile} onChange={handleSelectionChange}>
                     <option value="">Select the Confer topic</option>
