@@ -1,6 +1,6 @@
 // src/AudiencePage.js
 import React from 'react';
-import { AppProvider } from '../social_customs/AppContext';
+import { AppProvider } from '../AppContext';
 import ClientComponent from './AudienceComponent';
 
 const ClientPage = () => (

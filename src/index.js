@@ -23,7 +23,7 @@ const App = () => {
                 justifyContent: 'center'
             }}>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
-                        onClick={() => window.location.href = '/confer/socialcustoms'}>Confer : Social Customs
+                        onClick={() => window.location.href = '/confer/admin'}>Confer : Admin
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
                         onClick={() => window.location.href = '/confer/audience'}>Confer : Audience
