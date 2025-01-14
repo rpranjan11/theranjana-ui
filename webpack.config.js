@@ -4,9 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        app1: './src/confer/index.js',
-        app2: './src/demo/index.js',
-        app3: './src/llmchatbot/index.js'
+        main: './src/index.js',
+        confer: './src/confer/index.js',
+        demo: './src/demo/index.js',
+        llmchatbot: './src/llmchatbot/index.js'
     },
     output: {
         filename: '[name].bundle.js',
@@ -42,6 +43,10 @@ module.exports = {
         ]
     },
     plugins: [
+        new HtmlWebpackPlugin({
+            chunks: ['main'],
+            filename: 'index.html'
+        }),
         new HtmlWebpackPlugin({
             template: './src/confer/index.html',
             chunks: ['confer'],
