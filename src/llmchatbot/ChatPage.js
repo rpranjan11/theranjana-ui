@@ -1,4 +1,4 @@
-import React, { useState ,useRef,useEffect} from "react";
+import React, { useState , useRef, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import "./ChatPage.css"
 import Navbar from "./Navbar/Navbar";
@@ -65,18 +65,34 @@ export const ChatPage = () => {
         formData.append('pdf', file);
         formData.append('chatgpt_model', selectedChatGptModel);
         formData.append('ollama_model', selectedOllamaModel);
-        
+
+        const [isUploading, setIsUploading] = useState(false);  // Set loading state before request
+
         axios.post(`${llmchatbotServiceDomain}/uploadpdf`, formData)
             .then(response => {
                 console.log(response.data);
-                setText1(response.data.chatgptResponse)
-                setText2(response.data.ollamaResponse)
+                setText1("Uploaded PDF Summary ::\n" + response.data.chatgptResponse);
+                setText2("Uploaded PDF Summary ::\n" + response.data.ollamaResponse);
+                setIsUploading(false); // Clear loading state on success
             })
             .catch(error => {
                 console.error('Error:', error);
+                setIsUploading(false); // Clear loading state on error
             });
-    };
 
+        return (
+            <>
+            {isUploading && (
+                <div className="spinner-container">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <span className="ms-2">Uploading PDF</span>
+                </div>
+            )}
+            </>
+        );
+    };
 
     const handleChatGptQueries = (text, queryType) => {
         setChatGptQueryArray((prev) => [...prev, text])
