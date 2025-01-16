@@ -153,8 +153,8 @@ export const ChatPage = () => {
         axios.post(`${llmchatbotServiceDomain}/uploadpdf`, formData)
             .then(response => {
                 console.log(response.data);
-                setText1("**Uploaded PDF Summary ::**\n" + response.data.chatgptResponse);
-                setText2("**Uploaded PDF Summary ::**\n" + response.data.ollamaResponse);
+                setText1("Uploaded PDF summary:\n" + response.data.chatgptResponse);
+                setText2(response.data.ollamaResponse);
                 setIsPdfUploaded(true); // Set PDF as uploaded on successful response
                 setIsUploading(false); // Clear loading state on success
             })
