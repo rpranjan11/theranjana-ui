@@ -12,8 +12,8 @@ export const ChatPage = () => {
     const [fileName, setFileName] = useState("")
     const [selectedChatGptModel, setSelectedChatGptModel] = useState("gpt-3.5-turbo");
     const [selectedOllamaModel, setSelectedOllamaModel] = useState("llama3.2");
-    const [chatGptQueryType, setChatGptQueryType] = useState("pdf_based");
-    const [ollamaQueryType, setOllamaQueryType] = useState("pdf_based");
+    const [chatGptQueryType, setChatGptQueryType] = useState("general");
+    const [ollamaQueryType, setOllamaQueryType] = useState("general");
 
     const textRef = useRef(null);
     const formRef = useRef(null);
@@ -33,6 +33,7 @@ export const ChatPage = () => {
     const [text2, setText2] = useState("")
 
     const [isUploading, setIsUploading] = useState(false);
+    const [isPdfUploaded, setIsPdfUploaded] = useState(false);
     const [isLoading, setIsLoading] = useState({
         chatGpt: false,
         ollama: false
@@ -107,6 +108,17 @@ export const ChatPage = () => {
         // Validate file type
         if (selectedFile.type !== 'application/pdf') {
             alert('Please upload a PDF file');
+            formRef.current.reset();
+            return;
+        }
+
+        // Validate file size (1MB = 1024 * 1024 bytes)
+        const maxSize = 1024 * 1024; // 1MB in bytes
+        if (selectedFile.size > maxSize) {
+            alert('File size exceeds 1MB limit. Please upload a smaller file.');
+            formRef.current.reset();
+            setFile("");
+            setFileName("");
             return;
         }
 
@@ -143,11 +155,13 @@ export const ChatPage = () => {
                 console.log(response.data);
                 setText1("Uploaded PDF Summary ::\n" + response.data.chatgptResponse);
                 setText2("Uploaded PDF Summary ::\n" + response.data.ollamaResponse);
+                setIsPdfUploaded(true); // Set PDF as uploaded on successful response
                 setIsUploading(false); // Clear loading state on success
             })
             .catch(error => {
                 console.error('Error:', error);
                 setIsUploading(false); // Clear loading state on error
+                setIsPdfUploaded(false); // Ensure PDF is marked as not uploaded on error
             });
     };
 
@@ -250,12 +264,19 @@ export const ChatPage = () => {
     };
 
     const onClickCross = () => {
-        setFile("")
-        setFileName("")
-        setText1("")
-        setText2("")
+        setFile("");
+        setFileName("");
+        setText1("");
+        setText2("");
+        setIsPdfUploaded(false); // Reset PDF uploaded state
+        // Reset query types to "general" if they were "pdf_based"
+        if (chatGptQueryType === "pdf_based") {
+            setChatGptQueryType("general");
+        }
+        if (ollamaQueryType === "pdf_based") {
+            setOllamaQueryType("general");
+        }
         formRef.current.reset();
-
     }
 
 
@@ -265,32 +286,52 @@ export const ChatPage = () => {
             <Navbar handleUploadPdf={handleUploadPdf} />
             <div className="home_content">
                 {isUploading && (
-                    <div className="spinner-container">
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                    <>
+                        <div className="overlay"></div>
+                        <div className="spinner-container">
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            <span className="ms-2">Uploading PDF</span>
                         </div>
-                        <span className="ms-2">Uploading PDF</span>
-                    </div>
+                    </>
                 )}
                 <div className="body_content">
-                    <div style={{ display: 'flex', padding: '20px', justifyContent: 'center' }}>
-                        <div>
-                            <form ref={formRef} onSubmit={handleFormSubmit}>
-                                <input type="file" accept="application/pdf" id="file_input"
+                    <div style={{display: 'flex', padding: '10px', justifyContent: 'center'}}>
+                        <small style={{color: '#666', marginBottom: '5px'}}>
+                            Please upload a PDF file for specialized query (max file size: 1MB)
+                        </small>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '20px', alignItems: 'center'}}>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            <form ref={formRef} onSubmit={handleFormSubmit} style={{marginRight: '10px'}}>
+                                <input
+                                    type="file"
+                                    accept="application/pdf"
+                                    id="file_input"
                                     onChange={handleFileChange}
                                 />
                             </form>
-                            {fileName && <span style={{ maxWidth: '500px' }}>{fileName}</span>}
+                            <button
+                                onClick={handleUploadPdf}
+                                id="contact-btn"
+                                aria-label="Upload PDF file"
+                                disabled={!file}
+                            >
+                                Upload PDF
+                            </button>
                         </div>
-
-                        <div style={{display:'flex',flexDirection:'column'}}>
-                            <button onClick={handleUploadPdf} id="contact-btn" aria-label="Upload PDF file">Upload PDF</button>
-                            {file && <button id="close-btn" onClick={onClickCross}><i className="bi bi-x-lg"></i></button>}
-                        </div>
+                        {fileName &&
+                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                <span style={{maxWidth: '500px'}}>Selected PDF: <strong>{fileName}</strong></span>
+                                {file && <button id="close-btn" style={{marginLeft: '15px'}} onClick={onClickCross}><i className="bi bi-x-lg"></i></button>}
+                            </div>
+                        }
                     </div>
-                    <div style={{flexGrow:'1',display:'flex'}}>
-                        <Row style={{width:'100%'}}>
-                            <Col md={6} lg={6} className="px-3 pb-4" style={{border:'1px solid #ccc'}}>
+
+                    <div style={{flexGrow: '1', display: 'flex'}}>
+                        <Row style={{width: '100%'}}>
+                            <Col md={6} lg={6} className="px-3 pb-4" style={{border: '1px solid #ccc'}}>
                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                     <label htmlFor="chatgpt-model" style={{marginRight: '10px'}}>Select ChatGpt
                                         Model:</label>
@@ -301,7 +342,7 @@ export const ChatPage = () => {
                                 </div>
                                 <div className="card-content">
                                     <div className="text" id="text-area" ref={textRef}>
-                                    {text1 && <span>{text1}</span>}
+                                        {text1 && <span>{text1}</span>}
                                         {
                                             chatGptQueryArray.map((item, idx) => {
                                                 return (
@@ -323,7 +364,7 @@ export const ChatPage = () => {
                                             value={chatGptQuery}
                                             onChange={(e) => setChatGptQuery(e.target.value)}
                                             disabled={isLoading.chatGpt}
-                                            placeholder={isLoading.chatGpt ? "Generating response..." : "Type your message..."}
+                                            placeholder={isLoading.chatGpt ? "Generating response..." : "Type your query here..."}
                                             aria-label="Chat input field"
                                         />
                                         <div style={{display: 'flex', alignItems: 'center'}}>
@@ -333,8 +374,10 @@ export const ChatPage = () => {
                                                 onChange={(e) => setChatGptQueryType(e.target.value)}
                                                 disabled={isLoading.chatGpt}
                                             >
-                                                <option value="pdf_based">From Pdf</option>
-                                                <option value="general">General</option>
+                                                <option value="general">General Query</option>
+                                                <option value="pdf_based" disabled={!isPdfUploaded}>
+                                                    From Pdf {!isPdfUploaded && '(Upload PDF first)'}
+                                                </option>
                                             </select>
                                             <i
                                                 style={{
@@ -343,7 +386,7 @@ export const ChatPage = () => {
                                                     opacity: isLoading.chatGpt ? 0.5 : 1
                                                 }}
                                                 onClick={() => !isLoading.chatGpt && handleChatGptClick()}
-                                                className="bi bi-box-arrow-in-up px-3"
+                                                className="bi bi-arrow-up-circle-fill px-3" style={{color: '#1a73e8', fontSize: '30px'}}
                                             />
                                             {/* Add the ChatGPT loading spinner here */}
                                             {isLoading.chatGpt && (
@@ -392,7 +435,7 @@ export const ChatPage = () => {
                                             value={ollamaQuery}
                                             onChange={(e) => setOllamaQuery(e.target.value)}
                                             disabled={isLoading.ollama}
-                                            placeholder={isLoading.ollama ? "Generating response..." : "Type your message..."}
+                                            placeholder={isLoading.ollama ? "Generating response..." : "Type your query here..."}
                                         />
                                         <div style={{display: 'flex', alignItems: 'center'}}>
                                             <select
@@ -401,8 +444,10 @@ export const ChatPage = () => {
                                                 onChange={(e) => setOllamaQueryType(e.target.value)}
                                                 disabled={isLoading.ollama}
                                             >
-                                                <option value="pdf_based">From Pdf</option>
-                                                <option value="general">General</option>
+                                                <option value="general">General Query</option>
+                                                <option value="pdf_based" disabled={!isPdfUploaded}>
+                                                    From Pdf {!isPdfUploaded && '(Upload PDF first)'}
+                                                </option>
                                             </select>
                                             <i
                                                 style={{
@@ -411,7 +456,7 @@ export const ChatPage = () => {
                                                     opacity: isLoading.ollama ? 0.5 : 1
                                                 }}
                                                 onClick={() => !isLoading.ollama && handleOllamaClick()}
-                                                className="bi bi-box-arrow-in-up px-3"
+                                                className="bi bi-arrow-up-circle-fill px-3" style={{color: '#1a73e8', fontSize: '30px'}}
                                             />
                                             {/* Add the Ollama loading spinner here */}
                                             {isLoading.ollama && (

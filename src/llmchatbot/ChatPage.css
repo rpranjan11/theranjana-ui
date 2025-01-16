@@ -1,3 +1,16 @@
+:root {
+    --primary-color: #3871E0;
+    --hover-color: #16214a;
+    --danger-color: #f35b39;
+    --border-color: #ccc;
+    --border-radius: 0.3125rem;
+    --box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    --overlay-bg: rgba(255, 255, 255, 0.7);
+    --spinner-border: #f3f3f3;
+    --spinner-active: #3498db;
+}
+
+/* Base Container */
 .home_container {
     display: flex;
     flex-direction: column;
@@ -5,21 +18,130 @@
     background: linear-gradient(90deg, #f2f8ff 25%, #f5fbff 50%, #feffff 75%);
 }
 
+/* Header Styles */
+.home_container .header {
+    display: flex;
+    padding: 1.25rem;
+}
+
+.home_container .header #upload_pdf_btn {
+    border: none;
+    box-shadow: none;
+}
+
+/* Content Layout */
+.home_container .home_content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.home_container .home_content #file_input {
+    width: 100px;
+    margin-bottom: 0.625rem;
+}
+
+/* Button Styles */
+.home_container #contact-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.625rem;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.home_container #contact-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.home_container #close-btn {
+    background-color: var(--danger-color);
+    border: none;
+    color: white;
+    border-radius: var(--border-radius);
+    width: 1.875rem;
+}
+
+/* Card Content Styles */
+.home_container .home_content .card-content {
+    min-height: 18.75rem;
+    height: 90%;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+}
+
+.home_container .home_content .card-content .text {
+    min-height: 15.625rem;
+    padding: 1.25rem;
+    text-align: justify;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.home_container .home_content .card-content .text #questions {
+    text-align: left;
+    margin: 0.3125rem;
+}
+
+.home_container .home_content .card-content .text #answers,
+.home_container .home_content .card-content .text #latest {
+    text-align: right;
+    margin: 0.3125rem;
+}
+
+.home_container .home_content .card-content .input_text {
+    width: 100%;
+    margin-right: 0.625rem;
+}
+
+/* Overlay and Loading Styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--overlay-bg);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .spinner-container {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 1001;
 }
 
+.loading-spinner {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--spinner-border);
+    border-top: 2px solid var(--spinner-active);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 0.625rem;
+    position: relative;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Accessibility */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -32,146 +154,33 @@
     border: 0;
 }
 
-.loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-left: 10px;
-    position: relative; /* Added for accessibility purposes */
+/* Select Styles */
+select option:disabled {
+    color: #999;
+    font-style: italic;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.home_container .header {
-    display: flex;
-    padding: 20px;
-}
-
-.home_container .header #upload_pdf_btn {
-    border: none !important;
-    box-shadow: none;
-}
-
-.home_container .home_content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.home_container .home_content .body_content {
-    /* flex-grow: 1; 
-    display: flex;
-    flex-direction: column; */
-}
-
-.home_container .home_content #file_input {
-    width: 100px;
-    margin-bottom: 10px;
-
-}
-
-.home_container #contact-btn {
-    background-color: #3871E0;
-    border: none;
-    color: white;
-    padding: 0.5rem 1rem; /* Using rem instead of px */
-    margin-bottom: 0.625rem;
-    border-radius: 0.3125rem;
-}
-
-.home_container #contact-btn:hover {
-    background-color: #16214a;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    padding: 3px 13px;
-}
-
-.home_container #close-btn {
-    background-color: #f35b39;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    /* padding: 5px 13px; */
-    width: 30px;
-}
-
-.home_container .home_content .card-content {
-    min-height: 300px;
-    height: 90%;
-    border: 1px solid #ccc;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
-
-.home_container .home_content .card-content .text #questions {
-    text-align: left;
-    margin: 5px;
-}
-
-.home_container .home_content .card-content .text #answers {
-    text-align: right;
-    margin: 5px;
-}
-
-.home_container .home_content .card-content .text #latest {
-    text-align: right;
-    margin: 5px;
-}
-
-
-.home_container .home_content .card-content .input_text {
-    width: 100%;
-    margin-right: 10px;
-}
-
+/* Responsive Styles */
 @media screen and (max-width: 767px) {
     .home_container .home_content .card-content .text {
-        min-height: 250px;
-        height: 400px;
-        overflow: scroll;
-        padding: 20px;
-        text-align: justify;
+        height: 25rem;
     }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
     .home_container .home_content .card-content .text {
-        min-height: 250px;
-        height: 400px;
-        overflow: scroll;
-        padding: 20px;
-        text-align: justify;
+        height: 25rem;
     }
 }
 
 @media screen and (min-width: 1280px) {
     .home_container .home_content .card-content .text {
-        min-height: 250px;
-        height: 400px;
-        overflow: scroll;
-        padding: 20px;
-        text-align: justify;
+        height: 25rem;
     }
 }
 
 @media screen and (min-width: 1440px) {
     .home_container .home_content .card-content .text {
-        min-height: 250px;
-        height: 600px;
-        overflow: scroll;
-        padding: 20px;
-        text-align: justify;
+        height: 37.5rem;
     }
 }
