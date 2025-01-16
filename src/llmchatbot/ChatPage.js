@@ -102,9 +102,9 @@ export const ChatPage = () => {
         axios.get(url)
             .then(response => {
                 clearInterval(loadingInterval);
-                console.log(response.data);
+                console.log('Response: ', response.data);
                 setChatGptAnswerArray((prev) => [...prev.slice(0, -1), response.data.chatgptResponse]);
-                scrollToBottom();
+                scrollToBottom(); // Scroll to bottom after adding question
             })
             .catch(error => {
                 clearInterval(loadingInterval);
@@ -141,8 +141,8 @@ export const ChatPage = () => {
         axios.get(url)
             .then(response => {
                 clearInterval(loadingInterval);
-                console.log('Response:', response.data);
-                setOllamaAnswerArray((prev) => [...prev, response.data.ollamaResponse])
+                console.log('Response: ', response.data);
+                setOllamaAnswerArray((prev) => [...prev.slice(0, -1), response.data.ollamaResponse])
                 scrollToBottom(); // Scroll to bottom after adding question
             })
             .catch(error => {
