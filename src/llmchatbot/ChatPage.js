@@ -18,6 +18,7 @@ export const ChatPage = () => {
     const textRef = useRef(null);
     const formRef = useRef(null);
 
+    // State to store raw text from PDF for future use
     const [fileText, setFileText] = useState("")
 
     const [chatGptQuery, setChatGptQuery] = useState("")
@@ -31,6 +32,8 @@ export const ChatPage = () => {
     const [ollamaAnswerArray, setOllamaAnswerArray] = useState([])
     const [text2, setText2] = useState("")
 
+    const [isUploading, setIsUploading] = useState(false);
+
     const scrollToBottom = () => {
         if (textRef.current) {
             textRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -38,26 +41,36 @@ export const ChatPage = () => {
     }
     useEffect(() => {
         scrollToBottom(); // Scroll to bottom on initial render
-    }, []); 
+    }, [chatGptAnswerArray, ollamaAnswerArray, textRef]);  // Add dependencies to trigger scroll on new messages
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
+        if (!selectedFile) return;
+
+        // Validate file type
+        if (selectedFile.type !== 'application/pdf') {
+            alert('Please upload a PDF file');
+            return;
+        }
+
         const fileName = selectedFile.name;
-        setFileName(fileName)
+        setFileName(fileName);
         setFile(selectedFile);
 
+        // Clear previous chat history
         setChatGptQueryArray([]);
         setChatGptAnswerArray([]);
         setOllamaQueryArray([]);
         setOllamaAnswerArray([]);
 
-        if (selectedFile) {
-            pdfToText(selectedFile)
-                .then(text => {
-                    setFileText(text)
-                })
-                .catch(error => console.error("Failed to extract text from pdf"))
-        }
+        pdfToText(selectedFile)
+            .then(text => {
+                setFileText(text);
+            })
+            .catch(error => {
+                console.error("Failed to extract text from pdf:", error);
+                alert('Failed to process PDF. Please try again with a different file.');
+            });
     };
 
     const handleUploadPdf = () => {
@@ -66,7 +79,7 @@ export const ChatPage = () => {
         formData.append('chatgpt_model', selectedChatGptModel);
         formData.append('ollama_model', selectedOllamaModel);
 
-        const [isUploading, setIsUploading] = useState(false);  // Set loading state before request
+        setIsUploading(true);  // Set loading state before request
 
         axios.post(`${llmchatbotServiceDomain}/uploadpdf`, formData)
             .then(response => {
@@ -79,29 +92,17 @@ export const ChatPage = () => {
                 console.error('Error:', error);
                 setIsUploading(false); // Clear loading state on error
             });
-
-        return (
-            <>
-            {isUploading && (
-                <div className="spinner-container">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                    <span className="ms-2">Uploading PDF</span>
-                </div>
-            )}
-            </>
-        );
     };
 
     const handleChatGptQueries = (text, queryType) => {
-        setChatGptQueryArray((prev) => [...prev, text])
-        // model = "openAPI"
+        if (!text.trim()) return;  // Prevent empty queries
+
+        setChatGptQueryArray((prev) => [...prev, text]);
+
         let url = "";
-        if(queryType === "pdf_based"){
+        if(queryType === "pdf_based") {
             url = `${llmchatbotServiceDomain}/chatgptcustomresponse/${selectedChatGptModel}/${text}`;
-        }
-        else {
+        } else {
             url = `${llmchatbotServiceDomain}/chatgptgenericresponse/${selectedChatGptModel}/${text}`;
         }
 
@@ -115,23 +116,34 @@ export const ChatPage = () => {
                 <span key="loading" style={{color: 'green'}}>Generating Response {dots}</span>]);
         }, 500);
 
-        axios.get(url)
+        const controller = new AbortController();
+
+        axios.get(url, { signal: controller.signal })
             .then(response => {
                 clearInterval(loadingInterval);
                 console.log('Response: ', response.data);
                 setChatGptAnswerArray((prev) => [...prev.slice(0, -1), response.data.chatgptResponse]);
-                scrollToBottom(); // Scroll to bottom after adding question
+                scrollToBottom();
             })
             .catch(error => {
                 clearInterval(loadingInterval);
-                setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
-                    <span key="loading" style={{color: 'red'}}>Error generating response</span>]);
-                console.error('Error:', error);
+                if (axios.isCancel(error)) {
+                    console.log('Request canceled');
+                } else {
+                    setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
+                        <span key="error" style={{color: 'red'}}>Error: Failed to generate response</span>]);
+                    console.error('Error:', error);
+                }
             });
 
-        setChatGptQuery("")
+        setChatGptQuery("");
 
-    }
+        // Cleanup function
+        return () => {
+            controller.abort();
+            clearInterval(loadingInterval);
+        };
+    };
 
     const handleOllamaQueries = (text, queryType) => {
         setOllamaQueryArray((prev) => [...prev, text])
@@ -186,6 +198,14 @@ export const ChatPage = () => {
         <div className="home_container">
             <Navbar handleUploadPdf={handleUploadPdf} />
             <div className="home_content">
+                {isUploading && (
+                    <div className="spinner-container">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <span className="ms-2">Uploading PDF</span>
+                    </div>
+                )}
                 <div className="body_content">
                     <div style={{ display: 'flex', padding: '20px', justifyContent: 'center' }}>
                         <div>
@@ -210,7 +230,7 @@ export const ChatPage = () => {
                                         Model:</label>
                                     <select id="chatgpt-model" style={{flex: 1}} value={selectedChatGptModel}
                                             onChange={(e) => setSelectedChatGptModel(e.target.value)}>
-                                        <option value="gpt-3.5-turbo" selected>gpt-3.5-turbo</option>
+                                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
                                     </select>
                                 </div>
                                 <div className="card-content">
@@ -236,7 +256,7 @@ export const ChatPage = () => {
                                         <div style={{display: 'flex', alignItems: 'center'}}>
                                             <select id="chatgpt-query-type" value={chatGptQueryType}
                                                     onChange={(e) => setChatGptQueryType(e.target.value)}>
-                                                <option value="pdf_based" selected>From Pdf</option>
+                                                <option value="pdf_based">From Pdf</option>
                                                 <option value="general">General</option>
                                             </select>
                                             <i style={{fontSize: '25px', cursor: 'pointer'}}
@@ -252,7 +272,7 @@ export const ChatPage = () => {
                                         Model:</label>
                                     <select id="ollama-model" style={{flex: 1}} value={selectedOllamaModel}
                                             onChange={(e) => setSelectedOllamaModel(e.target.value)}>
-                                        <option value="llama3.2" selected>Llama 3.2</option>
+                                        <option value="llama3.2">Llama 3.2</option>
                                         <option value="orca-mini">Orca Mini</option>
                                     </select>
                                 </div>
@@ -278,7 +298,7 @@ export const ChatPage = () => {
                                         <div style={{display: 'flex', alignItems: 'center'}}>
                                             <select id="ollama-query-type" value={ollamaQueryType}
                                                     onChange={(e) => setOllamaQueryType(e.target.value)}>
-                                                <option value="pdf_based" selected>From Pdf</option>
+                                                <option value="pdf_based">From Pdf</option>
                                                 <option value="general">General</option>
                                             </select>
                                             <i style={{fontSize: '25px', cursor: 'pointer'}}
