@@ -89,13 +89,27 @@ export const ChatPage = () => {
             url = `${llmchatbotServiceDomain}/chatgptgenericresponse/${selectedChatGptModel}/${text}`;
         }
 
+        setChatGptAnswerArray((prev) => [...prev, "Generating Response ...."]);
+        scrollToBottom();
+
+        let dots = "";
+        const loadingInterval = setInterval(() => {
+            dots = dots.length >= 5 ? "" : dots + ".";
+            setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
+                <span key="loading" style={{color: 'green'}}>Generating Response {dots}</span>]);
+        }, 500);
+
         axios.get(url)
             .then(response => {
-                console.log(response.data)
-                setChatGptAnswerArray((prev) => [...prev, response.data.chatgptResponse])
+                clearInterval(loadingInterval);
+                console.log('Response: ', response.data);
+                setChatGptAnswerArray((prev) => [...prev.slice(0, -1), response.data.chatgptResponse]);
                 scrollToBottom(); // Scroll to bottom after adding question
             })
             .catch(error => {
+                clearInterval(loadingInterval);
+                setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
+                    <span key="loading" style={{color: 'red'}}>Error generating response</span>]);
                 console.error('Error:', error);
             });
 
@@ -114,13 +128,27 @@ export const ChatPage = () => {
             url = `${llmchatbotServiceDomain}/ollamagenericresponse/${selectedOllamaModel}/${text}`;
         }
 
+        setOllamaAnswerArray((prev) => [...prev, "Generating Response ...."]);
+        scrollToBottom();
+
+        let dots = "";
+        const loadingInterval = setInterval(() => {
+            dots = dots.length >= 5 ? "" : dots + ".";
+            setOllamaAnswerArray((prev) => [...prev.slice(0, -1),
+                <span key="loading" style={{color: 'green'}}>Generating Response {dots}</span>]);
+        }, 500);
+
         axios.get(url)
             .then(response => {
-                console.log('Response:', response.data);
-                setOllamaAnswerArray((prev) => [...prev, response.data.ollamaResponse])
+                clearInterval(loadingInterval);
+                console.log('Response: ', response.data);
+                setOllamaAnswerArray((prev) => [...prev.slice(0, -1), response.data.ollamaResponse])
                 scrollToBottom(); // Scroll to bottom after adding question
             })
             .catch(error => {
+                clearInterval(loadingInterval);
+                setOllamaAnswerArray((prev) => [...prev.slice(0, -1),
+                    <span key="loading" style={{color: 'red'}}>Error generating response</span>]);
                 console.error('Error:', error);
             });
 
