@@ -112,10 +112,10 @@ export const ChatPage = () => {
             return;
         }
 
-        // Validate file size (1MB = 1024 * 1024 bytes)
-        const maxSize = 1024 * 1024; // 1MB in bytes
+        // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+        const maxSize = 2 * 1024 * 1024; // 2MB in bytes
         if (selectedFile.size > maxSize) {
-            alert('File size exceeds 1MB limit. Please upload a smaller file.');
+            alert('File size exceeds 2MB limit. Please upload a smaller file.');
             formRef.current.reset();
             setFile("");
             setFileName("");
@@ -299,7 +299,7 @@ export const ChatPage = () => {
                 <div className="body_content">
                     <div style={{display: 'flex', padding: '10px', justifyContent: 'center'}}>
                         <small style={{color: '#666', marginBottom: '5px'}}>
-                            Please upload a PDF file for specialized query (max file size: 1MB)
+                            Please upload a PDF file for specialized query (max file size: 2MB)
                         </small>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '20px', alignItems: 'center'}}>
