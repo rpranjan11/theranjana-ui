@@ -94,8 +94,9 @@ export const ChatPage = () => {
 
         let dots = "";
         const loadingInterval = setInterval(() => {
-            dots = dots.length >= 3 ? "" : dots + ".";
-            setChatGptAnswerArray((prev) => [...prev.slice(0, -1), `Generating Response ${dots}`]);
+            dots = dots.length >= 5 ? "" : dots + ".";
+            setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
+                <span key="loading" style={{color: 'green'}}>Generating Response {dots}</span>]);
         }, 500);
 
         axios.get(url)
@@ -107,7 +108,8 @@ export const ChatPage = () => {
             })
             .catch(error => {
                 clearInterval(loadingInterval);
-                setChatGptAnswerArray((prev) => [...prev.slice(0, -1), "Error generating response"]);
+                setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
+                    <span key="loading" style={{color: 'red'}}>Error generating response</span>]);
                 console.error('Error:', error);
             });
 
@@ -126,13 +128,27 @@ export const ChatPage = () => {
             url = `${llmchatbotServiceDomain}/ollamagenericresponse/${selectedOllamaModel}/${text}`;
         }
 
+        setOllamaAnswerArray((prev) => [...prev, "Generating Response ...."]);
+        scrollToBottom();
+
+        let dots = "";
+        const loadingInterval = setInterval(() => {
+            dots = dots.length >= 5 ? "" : dots + ".";
+            setOllamaAnswerArray((prev) => [...prev.slice(0, -1),
+                <span key="loading" style={{color: 'green'}}>Generating Response {dots}</span>]);
+        }, 500);
+
         axios.get(url)
             .then(response => {
+                clearInterval(loadingInterval);
                 console.log('Response:', response.data);
                 setOllamaAnswerArray((prev) => [...prev, response.data.ollamaResponse])
                 scrollToBottom(); // Scroll to bottom after adding question
             })
             .catch(error => {
+                clearInterval(loadingInterval);
+                setOllamaAnswerArray((prev) => [...prev.slice(0, -1),
+                    <span key="loading" style={{color: 'red'}}>Error generating response</span>]);
                 console.error('Error:', error);
             });
 
