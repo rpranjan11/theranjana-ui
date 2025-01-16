@@ -89,13 +89,25 @@ export const ChatPage = () => {
             url = `${llmchatbotServiceDomain}/chatgptgenericresponse/${selectedChatGptModel}/${text}`;
         }
 
+        setChatGptAnswerArray((prev) => [...prev, "Generating Response ...."]);
+        scrollToBottom();
+
+        let dots = "";
+        const loadingInterval = setInterval(() => {
+            dots = dots.length >= 3 ? "" : dots + ".";
+            setChatGptAnswerArray((prev) => [...prev.slice(0, -1), `Generating Response ${dots}`]);
+        }, 500);
+
         axios.get(url)
             .then(response => {
-                console.log(response.data)
-                setChatGptAnswerArray((prev) => [...prev, response.data.chatgptResponse])
-                scrollToBottom(); // Scroll to bottom after adding question
+                clearInterval(loadingInterval);
+                console.log(response.data);
+                setChatGptAnswerArray((prev) => [...prev.slice(0, -1), response.data.chatgptResponse]);
+                scrollToBottom();
             })
             .catch(error => {
+                clearInterval(loadingInterval);
+                setChatGptAnswerArray((prev) => [...prev.slice(0, -1), "Error generating response"]);
                 console.error('Error:', error);
             });
 
