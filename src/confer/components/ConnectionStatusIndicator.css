@@ -1,0 +1,88 @@
+.connection-status-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.status-icon {
+    font-size: 16px;
+}
+
+.status-message {
+    font-weight: 500;
+}
+
+/* Status-specific styles */
+.status-connected {
+    background-color: #e6f4ea;
+    color: #1e4620;
+    border: 1px solid #a8dab5;
+}
+
+.status-connecting,
+.status-reconnecting {
+    background-color: #fff3e0;
+    color: #995500;
+    border: 1px solid #ffe0b2;
+}
+
+.status-disconnected {
+    background-color: #fce8e6;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.status-failed {
+    background-color: #fce8e6;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+/* Animation for connecting/reconnecting states */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.status-connecting .status-icon,
+.status-reconnecting .status-icon {
+    animation: rotate 1s linear infinite;
+}
+
+.error-details {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.retry-button {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+    background-color: #b71c1c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .connection-status-indicator {
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}

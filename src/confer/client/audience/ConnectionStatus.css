@@ -1,0 +1,55 @@
+/* src/confer/client/audience/ConnectionStatus.css */
+.connection-status {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.connection-status.visible {
+    transform: translateX(-50%) translateY(0);
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.status-indicator.connecting {
+    background-color: #ffd700;
+    animation: pulse 1s infinite;
+}
+
+.status-indicator.connected {
+    background-color: #4caf50;
+}
+
+.status-indicator.disconnected {
+    background-color: #f44336;
+}
+
+.status-message {
+    font-size: 14px;
+    color: #333;
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 14px;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}

@@ -1,0 +1,57 @@
+/* src/confer/client/admin/AdminAuth.css */
+.admin-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.admin-auth form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.admin-auth h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.admin-auth .input-group {
+    margin-bottom: 1rem;
+}
+
+.admin-auth input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.admin-auth button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.admin-auth button:hover {
+    background-color: #0056b3;
+}
+
+.admin-auth .error-message {
+    color: #dc3545;
+    margin-bottom: 1rem;
+    text-align: center;
+}

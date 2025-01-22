@@ -1,0 +1,23 @@
+/* src/confer/admin/AdminDashboard.css */
+.admin-dashboard {
+    padding: 20px;
+}
+
+.message-controls {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.control-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

@@ -1,0 +1,33 @@
+/* src/confer/client/admin/AdminPage.css */
+
+.admin-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-page .timeout-warning {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.admin-page .timeout-warning button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-page .timeout-warning button:hover {
+    background-color: #0056b3;
+}

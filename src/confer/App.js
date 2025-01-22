@@ -1,20 +1,44 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AppProvider } from './AppContext';
-import AdminPage from './admin/AdminPage';
-import AudiencePage from './audience/AudiencePage';
+// src/confer/App.js
+import React, { Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
+import { WebSocketProvider } from './client/shared/WebSocketContext';
+import AdminPage from './client/admin/AdminPage';
+import AudiencePage from './client/audience/AudiencePage';
+import NotFoundPage from './components/NotFoundPage';
+import './App.css';
 
-function App() {
+function ConferApp() {
+    // Extract the base path from the current URL
+    const basePath = '/confer';
+
     return (
-        <AppProvider>
-            <Router>
-                <Routes>
-                    <Route path="confer/admin" element={<AdminPage />} />
-                    <Route path="confer/audience" element={<AudiencePage />} />
-                </Routes>
-            </Router>
-        </AppProvider>
+        <ErrorBoundary>
+            <WebSocketProvider>
+                <Suspense fallback={<LoadingSpinner />}>
+                    <Routes>
+                        <Route
+                            path={`${basePath}/client/admin/*`}
+                            element={<AdminPage />}
+                        />
+                        <Route
+                            path={`${basePath}/client/audience/*`}
+                            element={<AudiencePage />}
+                        />
+                        <Route
+                            path={`${basePath}`}
+                            element={<Navigate to={`${basePath}/client/audience`} replace />}
+                        />
+                        <Route
+                            path="*"
+                            element={<NotFoundPage />}
+                        />
+                    </Routes>
+                </Suspense>
+            </WebSocketProvider>
+        </ErrorBoundary>
     );
 }
 
-export default App;
+export default ConferApp;

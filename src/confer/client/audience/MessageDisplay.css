@@ -1,0 +1,61 @@
+/* src/confer/client/audience/MessageDisplay.css */
+.message-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.no-admin-notice {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.no-admin-notice h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.previous-session-notice {
+    margin-top: 20px;
+    color: #888;
+    font-style: italic;
+}
+
+.message-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.message-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.message-item.image {
+    text-align: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.text-container {
+    position: relative;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: #888;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+}
