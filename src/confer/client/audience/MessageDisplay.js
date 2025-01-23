@@ -9,25 +9,19 @@ const MessageDisplay = () => {
     const [lastAdminId, setLastAdminId] = useState(null);
     const checkAdminIntervalRef = useRef(null);
     const messageListRef = useRef(null);
-    const processedMessagesRef = useRef(new Set()); // Track processed messages
+    const processedMessagesRef = useRef(new Set());
 
-    // Memoize the message handler to prevent recreating it on every render
     const handleWebSocketMessage = useCallback((event) => {
         try {
             const data = JSON.parse(event.data);
-
-            // Generate a unique message identifier
             const messageId = `${data.type}-${Date.now()}`;
 
-            // Check if we've already processed this message
             if (processedMessagesRef.current.has(messageId)) {
                 return;
             }
 
-            // Add message to processed set
             processedMessagesRef.current.add(messageId);
 
-            // Clean up old message IDs (keep only last 100)
             if (processedMessagesRef.current.size > 100) {
                 const entries = Array.from(processedMessagesRef.current);
                 entries.slice(0, entries.length - 100).forEach(id => {
@@ -44,6 +38,7 @@ const MessageDisplay = () => {
                         setMessages(data.messages || []);
                     } else {
                         setAdminActive(false);
+                        setMessages([]); // Clear messages when no admin is active
                     }
                     break;
 
@@ -61,12 +56,14 @@ const MessageDisplay = () => {
                 case 'admin_disconnected':
                     console.log('Processing admin disconnection');
                     setAdminActive(false);
+                    setMessages([]); // Clear messages when admin disconnects
                     startAdminCheck();
                     break;
 
                 case 'no_active_admin':
                     console.log('Processing no active admin');
                     setAdminActive(false);
+                    setMessages([]); // Clear messages when there's no active admin
                     startAdminCheck();
                     break;
             }
@@ -161,11 +158,6 @@ const MessageDisplay = () => {
                     <h2>Waiting for Conference</h2>
                     <p>There is no active conference at the moment.</p>
                     <p>The page will automatically update when a conference begins.</p>
-                    {messages.length > 0 && (
-                        <p className="previous-session-notice">
-                            Showing messages from the previous session
-                        </p>
-                    )}
                 </div>
             )}
 
