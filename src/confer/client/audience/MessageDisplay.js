@@ -1,6 +1,7 @@
 // src/confer/client/audience/MessageDisplay.js
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useWebSocket } from '../shared/WebSocketContext';
+import './MessageDisplay.css';
 
 const MessageDisplay = () => {
     const { connectionStatus, sendMessage, wsRef } = useWebSocket();

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { WebSocketProvider } from '../shared/WebSocketContext';
 import MessageDisplay from './MessageDisplay';
 import ConnectionStatus from './ConnectionStatus';
+import './AudiencePage.css';
 
 const AudiencePage = () => {
     const [initialized, setInitialized] = useState(false);

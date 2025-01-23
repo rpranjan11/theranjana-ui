@@ -100,31 +100,31 @@
     }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
+/* Light mode support */
+@media (prefers-color-scheme: light) {
     .admin-auth {
-        background-color: #1a1a1a;
+        background-color: #f5f5f5;
     }
 
     .admin-auth .auth-container {
-        background-color: #2d2d2d;
+        background-color: #ffffff;
     }
 
     .admin-auth h2 {
-        color: #ffffff;
+        color: #333;
     }
 
     .admin-auth input {
-        background-color: #3d3d3d;
-        border-color: #4d4d4d;
-        color: #ffffff;
+        background-color: #ffffff;
+        border-color: #ddd;
+        color: #333;
     }
 
     .admin-auth input::placeholder {
-        color: #888;
+        color: #aaa;
     }
 
     .admin-auth .error-message {
-        background-color: rgba(220, 53, 69, 0.2);
+        background-color: rgba(220, 53, 69, 0.1);
     }
 }

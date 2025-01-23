@@ -5,6 +5,7 @@ import AdminDashboard from './AdminDashboard';
 import AdminAuth from './AdminAuth';  // Add this import
 import AdminSessionPrompt from './AdminSessionPrompt';
 import AdminInactivityMonitor from './AdminInactivityMonitor';
+import './AdminPage.css';
 
 const AdminPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
