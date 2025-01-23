@@ -12,7 +12,27 @@ const AdminAuth = ({ onAuth }) => {
             setError('Please enter credentials');
             return;
         }
-        onAuth(credentials);
+
+        // Get the admin credential from environment variable
+        const adminCredential = process.env.REACT_APP_CONFER_ADMIN_CREDENTIAL;
+
+        if (!adminCredential) {
+            setError('Admin credentials are not configured');
+            return;
+        }
+
+        // Verify the credentials
+        if (credentials === adminCredential) {
+            onAuth(credentials);
+        } else {
+            setError('Invalid credentials');
+            setCredentials(''); // Clear the input on wrong attempt
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setCredentials(e.target.value);
+        setError(''); // Clear error when user starts typing
     };
 
     return (
@@ -25,9 +45,10 @@ const AdminAuth = ({ onAuth }) => {
                         <input
                             type="password"
                             value={credentials}
-                            onChange={(e) => setCredentials(e.target.value)}
+                            onChange={handleInputChange}
                             placeholder="Enter admin credentials"
                             required
+                            autoComplete="new-password"
                         />
                     </div>
                     <button type="submit">Login</button>

@@ -1,13 +1,13 @@
 // src/confer/config/wsConfig.js
 const getWebSocketUrl = () => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = process.env.REACT_APP_WS_HOST || window.location.hostname || '192.168.1.21';
-    const port = process.env.REACT_APP_WS_PORT || '8080';
+    const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname || '192.168.1.21';
+    const port = process.env.REACT_APP_CONFER_API_PORT || '8080';
     return `${protocol}//${host}:${port}`;
 };
 
 const config = {
-    wsUrl: process.env.REACT_APP_CONFER_API_WS_URL || getWebSocketUrl(),
+    wsUrl: process.env.REACT_APP_CONFER_API_HOST_URL || getWebSocketUrl(),
     reconnect: {
         initialDelay: 1000,
         maxDelay: 30000,
