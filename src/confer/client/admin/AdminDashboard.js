@@ -32,7 +32,10 @@ const AdminDashboard = ({ credentials }) => {
 
     const pushMessage = () => {
         if (currentMessageIndex < predefinedMessages.length) {
-            const message = predefinedMessages[currentMessageIndex];
+            const message = {
+                ...predefinedMessages[currentMessageIndex],
+                timestamp: new Date().toISOString()
+            };
             sendMessage({
                 type: 'push_message',
                 data: message
@@ -48,6 +51,21 @@ const AdminDashboard = ({ credentials }) => {
             setMessages(prev => prev.slice(0, -1));
             setCurrentMessageIndex(prev => prev - 1);
         }
+    };
+
+    const formatTimestamp = (timestamp) => {
+        if (!timestamp) return '';
+        const date = new Date(timestamp);
+        if (isNaN(date.getTime())) return '';
+
+        return date.toLocaleString('en-US', {
+            month: 'short',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
     };
 
     if (connectionStatus.status === 'timeout_warning') {
@@ -97,18 +115,27 @@ const AdminDashboard = ({ credentials }) => {
             </div>
 
             <div className="message-list">
-                {messages.map((message, index) => (
-                    <div key={index} className="message-item">
-                        {message.type === 'image' ? (
-                            <img src={message.content} alt="Presentation content" />
-                        ) : (
-                            <p>{message.content}</p>
-                        )}
-                        <span className="timestamp">
-                            {new Date(message.timestamp).toLocaleTimeString()}
-                        </span>
-                    </div>
-                ))}
+                {messages.map((message, index) => {
+                    return (
+                        <div key={index} className="message-item">
+                            {message.type === 'image' ? (
+                                <div className="image-container">
+                                    <img src={message.content} alt="Presentation content"/>
+                                    <span className="timestamp">
+                                    {message.timestamp && formatTimestamp(message.timestamp)}
+                                </span>
+                                </div>
+                            ) : (
+                                <div className="text-container">
+                                    <p>{message.content}</p>
+                                    <span className="timestamp">
+                                    {message.timestamp && formatTimestamp(message.timestamp)}
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

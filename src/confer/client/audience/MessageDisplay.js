@@ -140,11 +140,17 @@ const MessageDisplay = () => {
     }, [messages]);
 
     const formatTimestamp = (timestamp) => {
+        if (!timestamp) return '';
         const date = new Date(timestamp);
-        return date.toLocaleTimeString([], {
+        if (isNaN(date.getTime())) return '';
+
+        return date.toLocaleString('en-US', {
+            month: 'short',
+            day: '2-digit',
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit'
+            second: '2-digit',
+            hour12: true
         });
     };
 

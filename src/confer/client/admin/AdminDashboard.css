@@ -21,3 +21,18 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.timestamp {
+    display: block;
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 4px;
+}
+
+.message-item {
+    margin-bottom: 15px;
+}
+
+.image-container, .text-container {
+    position: relative;
+}
