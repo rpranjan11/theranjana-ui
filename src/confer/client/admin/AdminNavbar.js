@@ -1,4 +1,3 @@
-// src/confer/client/admin/AdminNavbar.js
 import React from 'react';
 import './AdminNavbar.css';
 

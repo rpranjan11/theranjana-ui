@@ -1,14 +1,42 @@
 // src/confer/client/admin/AdminDashboard.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Add useRef import
 import { useWebSocket } from '../shared/WebSocketContext';
 import './AdminDashboard.css';
 
-const AdminDashboard = ({ credentials }) => {
+const AdminDashboard = ({ credentials, selectedTopic }) => {
     const { connectionStatus, adminSession, sendMessage } = useWebSocket();
     const [messages, setMessages] = useState([]);
-    const [selectedTopic, setSelectedTopic] = useState('');
     const [predefinedMessages, setPredefinedMessages] = useState([]);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+
+    // Add ref for message list container
+    const messageListRef = useRef(null);
+
+    // Add scroll to bottom function
+    const scrollToBottom = () => {
+        if (messageListRef.current) {
+            messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+        }
+    };
+
+    // Update useEffect to react to selectedTopic prop changes
+    useEffect(() => {
+        const loadMessages = async () => {
+            if (selectedTopic) {
+                try {
+                    const messages = await import(`../../confer_topic/${selectedTopic}/data/predefinedMessages`);
+                    setPredefinedMessages(messages.default);
+                    setCurrentMessageIndex(0);
+                } catch (error) {
+                    console.error('Error loading messages:', error);
+                    setPredefinedMessages([]);
+                    setCurrentMessageIndex(0);
+                }
+            }
+        };
+
+        loadMessages();
+    }, [selectedTopic]);
 
     useEffect(() => {
         if (connectionStatus.status === 'connected' && !adminSession) {
@@ -19,16 +47,10 @@ const AdminDashboard = ({ credentials }) => {
         }
     }, [connectionStatus.status, adminSession, credentials, sendMessage]);
 
-    const handleTopicSelect = async (topic) => {
-        setSelectedTopic(topic);
-        try {
-            const messages = await import(`../../confer_topic/${topic}/data/predefinedMessages`);
-            setPredefinedMessages(messages.default);
-            setCurrentMessageIndex(0);
-        } catch (error) {
-            console.error('Error loading messages:', error);
-        }
-    };
+    // Add useEffect to scroll to bottom when messages update
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]); // This will trigger whenever messages change
 
     const pushMessage = () => {
         if (currentMessageIndex < predefinedMessages.length) {
@@ -68,56 +90,55 @@ const AdminDashboard = ({ credentials }) => {
         });
     };
 
-    if (connectionStatus.status === 'timeout_warning') {
-        return (
-            <div className="timeout-warning">
-                <h2>Session Timeout Warning</h2>
-                <p>Your session will expire soon.</p>
-                <button onClick={() => sendMessage({ type: 'extend_session' })}>
-                    Extend Session
-                </button>
-            </div>
-        );
-    }
 
     return (
         <div className="admin-dashboard">
-            <div className="message-controls">
-                <button
-                    onClick={pushMessage}
-                    disabled={!adminSession || !selectedTopic || currentMessageIndex >= predefinedMessages.length}
-                >
-                    Push Next Message
-                </button>
-                <button
-                    onClick={deleteLastMessage}
-                    disabled={!adminSession || messages.length === 0}
-                >
-                    Delete Last Message
-                </button>
-            </div>
-
-            <div className="message-list">
-                {messages.map((message, index) => (
-                    <div key={index} className="message-item">
-                        {message.type === 'image' ? (
-                            <div className="image-container">
-                                <img src={message.content} alt="Presentation content"/>
-                                <span className="timestamp">
-                                    {message.timestamp && formatTimestamp(message.timestamp)}
-                                </span>
-                            </div>
-                        ) : (
-                            <div className="text-container">
-                                <p>{message.content}</p>
-                                <span className="timestamp">
-                                    {message.timestamp && formatTimestamp(message.timestamp)}
-                                </span>
-                            </div>
-                        )}
+            {connectionStatus.status === 'timeout_warning' ? (
+                <div className="timeout-warning">
+                    <h2>Session Timeout Warning</h2>
+                    <p>Your session will expire soon.</p>
+                    <button onClick={() => sendMessage({ type: 'extend_session' })}>
+                        Extend Session
+                    </button>
+                </div>
+            ) : (
+                <>
+                    <div className="message-controls">
+                        <button
+                            onClick={pushMessage}
+                            disabled={!adminSession || !selectedTopic || currentMessageIndex >= predefinedMessages.length}
+                        >
+                            Push Next Message
+                        </button>
+                        <button
+                            className="delete-button"
+                            onClick={deleteLastMessage}
+                            disabled={!adminSession || messages.length === 0}
+                        >
+                            Delete Last Message
+                        </button>
                     </div>
-                ))}
-            </div>
+
+                    <div className="message-list admin-content-container" ref={messageListRef}>
+                        {messages.map((message, index) => (
+                            <div key={index} className="message-item">
+                                {message.type === 'image' ? (
+                                    <div className="image-container">
+                                        <img src={message.content} alt="Presentation content"/>
+                                    </div>
+                                ) : (
+                                    <div className="text-container">
+                                        <p>{message.content}</p>
+                                    </div>
+                                )}
+                                <span className="timestamp">
+                                    {message.timestamp && formatTimestamp(message.timestamp)}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };

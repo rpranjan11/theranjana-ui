@@ -1,65 +1,129 @@
-/* src/confer/admin/AdminDashboard.css */
 .admin-dashboard {
-    padding: 20px;
-    flex: 1;  /* Allow dashboard to take remaining vertical space */
-    overflow-y: auto;  /* Enable scrolling if content overflows */
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .message-controls {
-    margin: 20px 0;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 20px 150px; /* Consistent 150px padding */
+    z-index: 1000;
     display: flex;
     gap: 10px;
-    position: sticky;  /* Make controls stick to top while scrolling */
-    top: 0;
-    background-color: white;
-    padding: 10px 0;
-    z-index: 1;
+    justify-content: center; /* Center the buttons */
 }
 
-.control-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+/* Base button styles */
+.message-controls button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease; /* Smooth transition for color changes */
 }
 
-.control-button:disabled {
-    opacity: 0.5;
+/* Specific style for the delete button */
+.message-controls button.delete-button {
+    border-color: #dc3545; /* Red border */
+}
+
+/* Active state for delete button */
+.message-controls button.delete-button:not(:disabled) {
+    background-color: #dc3545; /* Red background when active */
+    border-color: #dc3545;
+}
+
+/* Hover state for delete button when active */
+.message-controls button.delete-button:not(:disabled):hover {
+    background-color: #c82333; /* Darker red on hover */
+    border-color: #bd2130;
+}
+
+/* Disabled state for all buttons */
+.message-controls button:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
     cursor: not-allowed;
+    opacity: 0.65;
 }
 
 .message-list {
-    margin-top: 20px;
-}
-
-.timestamp {
-    display: block;
-    font-size: 0.8em;
-    color: #666;
-    margin-top: 4px;
+    margin-top: 140px;
+    padding: 20px 150px; /* Consistent 150px padding */
+    overflow-y: auto;
+    flex: 1;
+    scroll-behavior: smooth;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .message-item {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 4px rgba(135, 206, 235, 0.1);
+    border: 1px solid rgba(135, 206, 235, 0.2);
+    transition: background-color 0.3s ease;
+    position: relative;
+    padding-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.image-container,
+.message-item:hover {
+    background-color: #e6f3ff;
+}
+
 .text-container {
     position: relative;
+}
+
+.text-container p {
+    margin: 0;
+    color: #2c5282;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.image-container, .text-container {
+    position: relative;
+}
+
+.image-container {
+    position: relative;
+    margin-bottom: 5px;
+    width: 100%;
 }
 
 .image-container img {
     max-width: 100%;
     height: auto;
     border-radius: 4px;
+    display: block;
 }
 
-.text-container p {
+.timestamp {
+    font-size: 0.8em;
+    color: #4a5568;
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
     margin: 0;
-    line-height: 1.5;
+    padding: 2px 5px;
+    background-color: rgba(240, 248, 255, 0.8);
+    border-radius: 4px;
+}
+
+/* Optional: Add a subtle border to separate multiple messages */
+.message-item + .message-item {
+    border-top: 1px solid rgba(135, 206, 235, 0.1);
 }

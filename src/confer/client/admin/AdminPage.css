@@ -1,13 +1,13 @@
-/* src/confer/client/admin/AdminPage.css */
 .admin-page {
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-.admin-page > * {
-    padding-left: 150px;
-    padding-right: 150px;
+.admin-content-container {
+    padding: 0 150px; /* Consistent 150px padding */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .admin-page .timeout-warning {
