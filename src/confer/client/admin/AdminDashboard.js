@@ -8,7 +8,7 @@ const AdminDashboard = ({ credentials }) => {
     const [messages, setMessages] = useState([]);
     const [selectedTopic, setSelectedTopic] = useState('');
     const [predefinedMessages, setPredefinedMessages] = useState([]);
-    const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // Added this state
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
     useEffect(() => {
         if (connectionStatus.status === 'connected' && !adminSession) {
@@ -24,7 +24,7 @@ const AdminDashboard = ({ credentials }) => {
         try {
             const messages = await import(`../../confer_topic/${topic}/data/predefinedMessages`);
             setPredefinedMessages(messages.default);
-            setCurrentMessageIndex(0); // Reset message index when topic changes
+            setCurrentMessageIndex(0);
         } catch (error) {
             console.error('Error loading messages:', error);
         }
@@ -82,23 +82,6 @@ const AdminDashboard = ({ credentials }) => {
 
     return (
         <div className="admin-dashboard">
-            <div className="connection-status">
-                Status: {connectionStatus.status}
-                {connectionStatus.error && <p className="error">{connectionStatus.error}</p>}
-            </div>
-
-            <div className="topic-selector">
-                <select
-                    value={selectedTopic}
-                    onChange={(e) => handleTopicSelect(e.target.value)}
-                    disabled={!adminSession}
-                >
-                    <option value="">Select Topic</option>
-                    <option value="social_customs">Social Customs</option>
-                    <option value="geographic_diversity_of_india">Geographic Diversity</option>
-                </select>
-            </div>
-
             <div className="message-controls">
                 <button
                     onClick={pushMessage}
@@ -115,27 +98,25 @@ const AdminDashboard = ({ credentials }) => {
             </div>
 
             <div className="message-list">
-                {messages.map((message, index) => {
-                    return (
-                        <div key={index} className="message-item">
-                            {message.type === 'image' ? (
-                                <div className="image-container">
-                                    <img src={message.content} alt="Presentation content"/>
-                                    <span className="timestamp">
+                {messages.map((message, index) => (
+                    <div key={index} className="message-item">
+                        {message.type === 'image' ? (
+                            <div className="image-container">
+                                <img src={message.content} alt="Presentation content"/>
+                                <span className="timestamp">
                                     {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
-                                </div>
-                            ) : (
-                                <div className="text-container">
-                                    <p>{message.content}</p>
-                                    <span className="timestamp">
+                            </div>
+                        ) : (
+                            <div className="text-container">
+                                <p>{message.content}</p>
+                                <span className="timestamp">
                                     {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
+                            </div>
+                        )}
+                    </div>
+                ))}
             </div>
         </div>
     );

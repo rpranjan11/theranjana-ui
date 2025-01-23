@@ -1,9 +1,11 @@
 /* src/confer/client/admin/AdminPage.css */
-
 .admin-page {
     height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+.admin-page > * {
     padding-left: 150px;
     padding-right: 150px;
 }

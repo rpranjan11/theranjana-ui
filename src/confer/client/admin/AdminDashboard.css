@@ -1,12 +1,19 @@
 /* src/confer/admin/AdminDashboard.css */
 .admin-dashboard {
     padding: 20px;
+    flex: 1;  /* Allow dashboard to take remaining vertical space */
+    overflow-y: auto;  /* Enable scrolling if content overflows */
 }
 
 .message-controls {
     margin: 20px 0;
     display: flex;
     gap: 10px;
+    position: sticky;  /* Make controls stick to top while scrolling */
+    top: 0;
+    background-color: white;
+    padding: 10px 0;
+    z-index: 1;
 }
 
 .control-button {
@@ -22,6 +29,10 @@
     cursor: not-allowed;
 }
 
+.message-list {
+    margin-top: 20px;
+}
+
 .timestamp {
     display: block;
     font-size: 0.8em;
@@ -31,8 +42,24 @@
 
 .message-item {
     margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.image-container, .text-container {
+.image-container,
+.text-container {
     position: relative;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.text-container p {
+    margin: 0;
+    line-height: 1.5;
 }

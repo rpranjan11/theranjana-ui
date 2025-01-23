@@ -1,0 +1,38 @@
+/* src/confer/client/admin/AdminNavbar.css */
+.admin-navbar {
+    background-color: #f8f9fa;
+    padding: 1rem 150px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.connection-status .error {
+    color: #dc3545;
+    margin: 0;
+}
+
+.topic-selector select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    background-color: white;
+    cursor: pointer;
+}
+
+.topic-selector select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
