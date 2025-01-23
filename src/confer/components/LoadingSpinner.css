@@ -1,15 +1,22 @@
 /* src/confer/components/LoadingSpinner.css */
-.loading-spinner {
+.loading-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
+}
+
+.spinner-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .spinner {
@@ -21,7 +28,126 @@
     animation: spin 1s linear infinite;
 }
 
+.loading-text {
+    color: #666;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border-width: 4px;
+    }
+
+    .loading-text {
+        font-size: 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .loading-container {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .spinner {
+        border-color: #2a2a2a;
+        border-top-color: #3498db;
+    }
+
+    .loading-text {
+        color: #fff;
+    }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+    .spinner {
+        border-color: CanvasText;
+        border-top-color: Highlight;
+    }
+
+    .loading-text {
+        color: CanvasText;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .spinner {
+        animation: spin 2s linear infinite;
+    }
+
+    .loading-text {
+        animation: none;
+    }
+}
+
+/* Different screen sizes */
+@media (min-width: 1200px) {
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border-width: 6px;
+    }
+
+    .loading-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .loading-container {
+        display: none;
+    }
+}
+
+/* RTL support */
+[dir="rtl"] .spinner {
+    animation: spin-rtl 1s linear infinite;
+}
+
+@keyframes spin-rtl {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+/* Focus visible */
+.loading-container:focus-visible {
+    outline: 2px solid #3498db;
+    outline-offset: -2px;
+}
+
+/* Additional accessibility */
+.loading-text {
+    user-select: none;
+    -webkit-user-select: none;
 }

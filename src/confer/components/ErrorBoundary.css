@@ -4,33 +4,152 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    text-align: center;
+    min-height: 100vh;
     padding: 20px;
+    text-align: center;
     background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.error-boundary .error-content {
+    max-width: 600px;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .error-boundary h1 {
     color: #dc3545;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
 }
 
-.error-boundary p {
+.error-boundary .error-message {
     color: #6c757d;
-    margin-bottom: 30px;
-    max-width: 600px;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    font-size: 1.1rem;
 }
 
-.error-boundary button {
-    padding: 10px 20px;
+.error-boundary .refresh-button {
+    padding: 12px 24px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.error-boundary button:hover {
+.error-boundary .refresh-button:hover {
     background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.error-boundary .refresh-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.error-boundary .refresh-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Animation for error content */
+.error-boundary .error-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .error-boundary .error-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .error-boundary h1 {
+        font-size: 1.75rem;
+    }
+
+    .error-boundary .error-message {
+        font-size: 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .error-boundary {
+        background-color: #1a1a1a;
+    }
+
+    .error-boundary .error-content {
+        background-color: #2d2d2d;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .error-boundary h1 {
+        color: #f77;
+    }
+
+    .error-boundary .error-message {
+        color: #adb5bd;
+    }
+
+    .error-boundary .refresh-button {
+        background-color: #0d6efd;
+    }
+
+    .error-boundary .refresh-button:hover {
+        background-color: #0b5ed7;
+    }
+}
+
+/* Accessibility improvements */
+.error-boundary .refresh-button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (forced-colors: active) {
+    .error-boundary .error-content {
+        border: 1px solid CanvasText;
+    }
+
+    .error-boundary .refresh-button {
+        border: 1px solid ButtonText;
+    }
+}
+
+/* Print styles */
+@media print {
+    .error-boundary {
+        background: none;
+        color: black;
+    }
+
+    .error-boundary .error-content {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .error-boundary .refresh-button {
+        display: none;
+    }
 }

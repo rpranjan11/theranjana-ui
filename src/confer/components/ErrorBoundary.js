@@ -1,5 +1,6 @@
 // src/confer/components/ErrorBoundary.js
 import React from 'react';
+import './ErrorBoundary.css';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -15,34 +16,26 @@ class ErrorBoundary extends React.Component {
         console.error('Error caught by boundary:', error, errorInfo);
     }
 
+    handleRefresh = () => {
+        window.location.reload();
+    };
+
     render() {
         if (this.state.hasError) {
             return (
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    padding: '20px',
-                    textAlign: 'center'
-                }}>
-                    <h1>Something went wrong</h1>
-                    <p>{this.state.error?.message}</p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        style={{
-                            padding: '10px 20px',
-                            marginTop: '20px',
-                            backgroundColor: '#007bff',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Refresh Page
-                    </button>
+                <div className="error-boundary">
+                    <div className="error-content">
+                        <h1>Something went wrong</h1>
+                        <p className="error-message">
+                            {this.state.error?.message || 'An unexpected error occurred'}
+                        </p>
+                        <button
+                            className="refresh-button"
+                            onClick={this.handleRefresh}
+                        >
+                            Refresh Page
+                        </button>
+                    </div>
                 </div>
             );
         }

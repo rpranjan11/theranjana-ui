@@ -1,6 +1,7 @@
 // src/confer/client/audience/ConnectionStatus.js
 import React, { useEffect, useState } from 'react';
 import { useWebSocket } from '../shared/WebSocketContext';
+import './ConnectionStatus.css';
 
 const ConnectionStatus = () => {
     const { connectionStatus } = useWebSocket();
@@ -8,7 +9,6 @@ const ConnectionStatus = () => {
 
     useEffect(() => {
         if (connectionStatus.status === 'connected') {
-            // Hide the status after 2 seconds when connected
             const timer = setTimeout(() => {
                 setVisible(false);
             }, 2000);
@@ -21,22 +21,12 @@ const ConnectionStatus = () => {
     if (!visible) return null;
 
     return (
-        <div className="connection-status-banner" style={{
-            position: 'fixed',
-            top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            padding: '10px 20px',
-            backgroundColor: connectionStatus.status === 'connected' ? '#4caf50' : '#ff9800',
-            color: 'white',
-            borderRadius: '0 0 5px 5px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-            zIndex: 1000,
-            transition: 'all 0.3s ease'
-        }}>
-            {connectionStatus.status === 'connected' ? 'Connected' : 'Connecting...'}
+        <div className={`connection-status-banner ${connectionStatus.status}`}>
+            <span className="status-text">
+                {connectionStatus.status === 'connected' ? 'Connected' : 'Connecting...'}
+            </span>
             {connectionStatus.error && (
-                <span style={{ marginLeft: '10px', color: '#ffebee' }}>
+                <span className="error-text">
                     ({connectionStatus.error})
                 </span>
             )}
