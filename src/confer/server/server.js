@@ -135,6 +135,19 @@ wss.on('connection', (ws, req) => {
                     }
                     break;
 
+                case 'clear_messages':
+                    if (ws.isAdmin) {
+                        // Clear messages for this admin
+                        messageStore.clearMessages(ws.adminId);
+
+                        // Notify all audience members
+                        sessionManager.notifyAudiences({
+                            type: 'clear_messages',
+                            adminId: ws.adminId
+                        });
+                    }
+                    break;
+
                 case 'admin_logout':
                     if (ws.isAdmin) {
                         // Remove admin session

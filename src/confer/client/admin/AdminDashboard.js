@@ -1,5 +1,5 @@
 // src/confer/client/admin/AdminDashboard.js
-import React, { useState, useEffect, useRef } from 'react'; // Add useRef import
+import React, { useState, useEffect, useRef } from 'react';
 import { useWebSocket } from '../shared/WebSocketContext';
 import './AdminDashboard.css';
 
@@ -8,35 +8,42 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
     const [messages, setMessages] = useState([]);
     const [predefinedMessages, setPredefinedMessages] = useState([]);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-
-    // Add ref for message list container
     const messageListRef = useRef(null);
 
-    // Add scroll to bottom function
     const scrollToBottom = () => {
         if (messageListRef.current) {
             messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
         }
     };
 
-    // Update useEffect to react to selectedTopic prop changes
+    // Reset messages when topic changes
     useEffect(() => {
+        // Clear messages when topic changes
+        setMessages([]);
+        setCurrentMessageIndex(0);
+
+        // Notify server about clearing messages
+        if (adminSession) {
+            sendMessage({
+                type: 'clear_messages'
+            });
+        }
+
+        // Load new messages for the selected topic
         const loadMessages = async () => {
             if (selectedTopic) {
                 try {
                     const messages = await import(`../../confer_topic/${selectedTopic}/data/predefinedMessages`);
                     setPredefinedMessages(messages.default);
-                    setCurrentMessageIndex(0);
                 } catch (error) {
                     console.error('Error loading messages:', error);
                     setPredefinedMessages([]);
-                    setCurrentMessageIndex(0);
                 }
             }
         };
 
         loadMessages();
-    }, [selectedTopic]);
+    }, [selectedTopic, adminSession, sendMessage]);
 
     useEffect(() => {
         if (connectionStatus.status === 'connected' && !adminSession) {
@@ -47,10 +54,9 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
         }
     }, [connectionStatus.status, adminSession, credentials, sendMessage]);
 
-    // Add useEffect to scroll to bottom when messages update
     useEffect(() => {
         scrollToBottom();
-    }, [messages]); // This will trigger whenever messages change
+    }, [messages]);
 
     const pushMessage = () => {
         if (currentMessageIndex < predefinedMessages.length) {
@@ -89,7 +95,6 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
             hour12: true
         });
     };
-
 
     return (
         <div className="admin-dashboard">

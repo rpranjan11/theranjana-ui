@@ -67,6 +67,18 @@ const MessageDisplay = () => {
                     setMessages([]); // Clear messages when there's no active admin
                     startAdminCheck();
                     break;
+
+                case 'clear_messages':
+                    console.log('Processing clear messages command');
+                    setMessages([]); // Clear messages when topic changes
+                    if (data.adminId) {
+                        setAdminActive(true);
+                        setLastAdminId(data.adminId);
+                    }
+                    break;
+
+                default:
+                    console.log('Unhandled message type:', data.type);
             }
         } catch (error) {
             console.error('Error processing message:', error);
@@ -164,7 +176,7 @@ const MessageDisplay = () => {
                 )}
 
                 {messages.map((message, index) => (
-                    <div key={index} className={`message-item ${message.type}`}>
+                    <div key={index} className="message-item">
                         {message.type === 'image' ? (
                             <div className="image-container">
                                 <img
