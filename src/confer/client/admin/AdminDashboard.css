@@ -55,9 +55,9 @@
     opacity: 0.65;
 }
 
-.message-list {
-    margin-top: 140px;
-    padding: 20px 150px; /* Consistent 150px padding */
+.admin-dashboard .message-list {  /* Make it specific to admin dashboard */
+    margin-top: 100px;
+    padding: 20px 150px;
     overflow-y: auto;
     flex: 1;
     scroll-behavior: smooth;

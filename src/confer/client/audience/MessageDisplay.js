@@ -154,15 +154,15 @@ const MessageDisplay = () => {
 
     return (
         <div className="message-display">
-            {!adminActive && (
-                <div className="no-admin-notice">
-                    <h2>Waiting for Conference</h2>
-                    <p>There is no active conference at the moment.</p>
-                    <p>The page will automatically update when a conference begins.</p>
-                </div>
-            )}
+            <div className={`message-list ${!adminActive || messages.length === 0 ? 'empty' : ''}`} ref={messageListRef}>
+                {(!adminActive || messages.length === 0) && (
+                    <div className="no-admin-notice">
+                        <h2>Waiting for Conference</h2>
+                        <p>There is no active conference at the moment.</p>
+                        <p>The page will automatically update when a conference begins.</p>
+                    </div>
+                )}
 
-            <div className="message-list" ref={messageListRef}>
                 {messages.map((message, index) => (
                     <div key={index} className={`message-item ${message.type}`}>
                         {message.type === 'image' ? (
@@ -173,14 +173,14 @@ const MessageDisplay = () => {
                                     loading="lazy"
                                 />
                                 <span className="timestamp">
-                                    {message.timestamp ? formatTimestamp(message.timestamp) : ''}
+                                    {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
                             </div>
                         ) : (
                             <div className="text-container">
-                                <p className="message-content">{message.content}</p>
+                                <p>{message.content}</p>
                                 <span className="timestamp">
-                                    {message.timestamp ? formatTimestamp(message.timestamp) : ''}
+                                    {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
                             </div>
                         )}

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { WebSocketProvider } from '../shared/WebSocketContext';
 import MessageDisplay from './MessageDisplay';
-import ConnectionStatus from './ConnectionStatus';
+import AudienceNavbar from './AudienceNavbar';
 import './AudiencePage.css';
 
 const AudiencePage = () => {
@@ -15,7 +15,7 @@ const AudiencePage = () => {
     return (
         <WebSocketProvider>
             <div className="audience-page">
-                <ConnectionStatus />
+                <AudienceNavbar />
                 {initialized && <MessageDisplay />}
             </div>
         </WebSocketProvider>
