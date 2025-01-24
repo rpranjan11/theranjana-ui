@@ -34,7 +34,7 @@
 .audience-message-item {
     margin-bottom: 20px;
     padding: 15px;
-    background: white;
+    background-color: #f0f8ff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: relative;
@@ -72,7 +72,7 @@
     right: 12px;
     margin: 0;
     padding: 2px 5px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(250, 255, 255, 0.8);
     border-radius: 4px;
 }
 

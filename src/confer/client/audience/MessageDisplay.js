@@ -179,23 +179,16 @@ const MessageDisplay = () => {
                     <div key={index} className="audience-message-item">
                         {message.type === 'image' ? (
                             <div className="audience-image-container">
-                                <img
-                                    src={message.content}
-                                    alt={`Slide ${index + 1}`}
-                                    loading="lazy"
-                                />
-                                <span className="audience-message-timestamp">
-                                    {message.timestamp && formatTimestamp(message.timestamp)}
-                                </span>
+                                <img src={message.content} alt={`Slide ${index + 1}`} loading="lazy"/>
                             </div>
                         ) : (
                             <div className="audience-text-container">
                                 <p>{message.content}</p>
-                                <span className="audience-message-timestamp">
-                                    {message.timestamp && formatTimestamp(message.timestamp)}
-                                </span>
                             </div>
                         )}
+                        <span className="audience-message-timestamp">
+                            {message.timestamp && formatTimestamp(message.timestamp)}
+                        </span>
                     </div>
                 ))}
             </div>
