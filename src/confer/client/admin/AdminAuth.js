@@ -1,10 +1,18 @@
 // src/confer/client/admin/AdminAuth.js
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './AdminAuth.css';
 
 const AdminAuth = ({ onAuth }) => {
     const [credentials, setCredentials] = useState('');
     const [error, setError] = useState('');
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        // Focus the input element when component mounts
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []); // Empty dependency array means this runs once on mount
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,6 +35,8 @@ const AdminAuth = ({ onAuth }) => {
         } else {
             setError('Invalid credentials');
             setCredentials(''); // Clear the input on wrong attempt
+            // Re-focus the input after invalid attempt
+            inputRef.current?.focus();
         }
     };
 
@@ -43,6 +53,7 @@ const AdminAuth = ({ onAuth }) => {
                     {error && <div className="admin-error-message">{error}</div>}
                     <div className="admin-input-group">
                         <input
+                            ref={inputRef}
                             type="password"
                             value={credentials}
                             onChange={handleInputChange}
