@@ -81,6 +81,23 @@ export const WebSocketProvider = ({ children }) => {
                         setCurrentTopic(message.currentTopic);
                     }
                     break;
+                case 'transfer_session_response':
+                    if (message.status === 'success') {
+                        setConnectionStatus({
+                            status: 'connected',
+                            error: null
+                        });
+                        setAdminSession({
+                            adminId: message.adminId,
+                            lastActivity: Date.now()
+                        });
+                    } else {
+                        setConnectionStatus({
+                            status: 'error',
+                            error: message.message || 'Session transfer failed'
+                        });
+                    }
+                    break;
                 case 'new_message':
                 case 'message_deleted':
                 case 'admin_disconnected':
@@ -180,6 +197,17 @@ export const WebSocketProvider = ({ children }) => {
 
     const handleAuthResponse = useCallback((message) => {
         if (message.status === 'success') {
+            // Verify credentials are in sessionStorage
+            const credentials = sessionStorage.getItem('admin_credentials');
+            if (!credentials) {
+                console.warn('Admin credentials not found in sessionStorage');
+                setConnectionStatus({
+                    status: 'error',
+                    error: 'Authentication credentials missing'
+                });
+                return;
+            }
+
             setAdminSession({
                 adminId: message.adminId,
                 lastActivity: Date.now()
@@ -210,6 +238,7 @@ export const WebSocketProvider = ({ children }) => {
     }, []);
 
     const handleSessionExtended = useCallback((message) => {
+        console.log('Received session_extended response:', message); // Debug level log
         if (message.success) {
             setConnectionStatus({
                 status: 'connected',

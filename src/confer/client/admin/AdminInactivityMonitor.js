@@ -14,6 +14,7 @@ const AdminInactivityMonitor = () => {
             clearTimeout(timeoutRef.current);
         }
         timeoutRef.current = setTimeout(() => {
+            console.log('Sending session extension request'); // Debug level log
             sendMessage({ type: 'extend_session' });
         }, INACTIVITY_THRESHOLD);
     };

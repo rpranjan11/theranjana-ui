@@ -31,6 +31,9 @@ const AdminAuth = ({ onAuth }) => {
 
         // Verify the credentials
         if (credentials === adminCredential) {
+            // Store credentials in sessionStorage before calling onAuth
+            sessionStorage.setItem('admin_credentials', credentials);
+            console.log('Admin credentials stored in session storage'); // Debug log
             onAuth(credentials);
         } else {
             setError('Invalid credentials');
