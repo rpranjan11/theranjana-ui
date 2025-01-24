@@ -1,5 +1,6 @@
 // src/confer/client/admin/AdminPage.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Add this import
 import { WebSocketProvider, useWebSocket } from '../shared/WebSocketContext';
 import AdminDashboard from './AdminDashboard';
 import AdminAuth from './AdminAuth';
@@ -11,6 +12,17 @@ import './AdminPage.css';
 const AdminPageContent = ({ credentials }) => {
     const { connectionStatus, adminSession } = useWebSocket();
     const [selectedTopic, setSelectedTopic] = useState('');
+    const navigate = useNavigate(); // Add this
+
+    useEffect(() => {
+        // Check if there are no credentials stored
+        const hasCredentials = localStorage.getItem('adminCredentials') ||
+            sessionStorage.getItem('adminCredentials');
+
+        if (!hasCredentials) {
+            navigate('/confer/client/admin', { replace: true });
+        }
+    }, [navigate]);
 
     return (
         <>

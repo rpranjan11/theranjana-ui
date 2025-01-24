@@ -7,9 +7,32 @@
 
 .navbar-container {
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Top row styling */
+.navbar-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+}
+
+.navbar-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+    white-space: nowrap;
+}
+
+/* Bottom row styling */
+.navbar-bottom-row {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    gap: 15rem;
 }
 
 .connection-status {
@@ -51,20 +74,21 @@
     background-color: rgba(255, 193, 7, 0.1);
 }
 
+/* Topic selector styling */
 .topic-selector {
     position: relative;
-    min-width: 200px; /* Minimum width for the selector */
+    min-width: 200px;
     width: auto;
 }
 
 .topic-selector select {
     width: 100%;
-    padding: 0.5rem 2rem 0.5rem 0.5rem; /* Added right padding for the arrow */
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
     border-radius: 4px;
     border: 1px solid #ced4da;
     background-color: white;
     cursor: pointer;
-    appearance: none; /* Remove default arrow */
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     font-size: 1rem;
@@ -98,10 +122,25 @@
     cursor: not-allowed;
 }
 
-/* Style for the options */
-.topic-selector select option {
-    padding: 10px;
-    white-space: normal; /* Allow text to wrap in dropdown */
+/* Logout button styling */
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.logout-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
 
 /* Custom width class for selected option */

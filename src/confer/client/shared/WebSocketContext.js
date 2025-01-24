@@ -6,13 +6,14 @@ const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
     const [connectionStatus, setConnectionStatus] = useState({
-        status: 'connecting',
+        status: 'disconnected',
         error: null
     });
     const [adminSession, setAdminSession] = useState(null);
     const wsRef = useRef(null);
     const reconnectTimeoutRef = useRef(null);
     const heartbeatIntervalRef = useRef(null);
+    const [shouldConnect, setShouldConnect] = useState(true);
 
     const handleWebSocketError = useCallback((error) => {
         console.error('WebSocket Error:', error);
@@ -85,10 +86,19 @@ export const WebSocketProvider = ({ children }) => {
         }
     }, []);
 
-    const connect = useCallback(() => {
+    const connect = () => {
+        if (!shouldConnect) return; // Don't connect if shouldConnect is false
+
         try {
             const ws = new WebSocket(config.wsUrl);
             wsRef.current = ws;
+
+            wsRef.current.onopen = () => {
+                setConnectionStatus({
+                    status: 'connected',
+                    error: null
+                });
+            };
 
             ws.onopen = () => {
                 console.log('WebSocket connected');
@@ -117,40 +127,47 @@ export const WebSocketProvider = ({ children }) => {
         } catch (error) {
             console.error('Connection creation failed:', error);
             setConnectionStatus({
-                status: 'error',
+                status: 'disconnected',
                 error: 'Failed to create connection'
             });
-            scheduleReconnect();
         }
-    }, [handleMessage, handleUnexpectedClosure, handleWebSocketError, handleInvalidMessage, startHeartbeat]);
+    };
 
-    const sendMessage = useCallback((message) => {
-        if (wsRef.current?.readyState === WebSocket.OPEN) {
-            try {
-                wsRef.current.send(JSON.stringify(message));
-                return true;
-            } catch (error) {
-                console.error('Failed to send message:', error);
-                return false;
-            }
+    const disconnect = () => {
+        setShouldConnect(false); // Prevent auto-reconnection
+        if (wsRef.current) {
+            wsRef.current.close();
         }
-        return false;
-    }, []);
+        if (reconnectTimeoutRef.current) {
+            clearTimeout(reconnectTimeoutRef.current);
+        }
+        setAdminSession(null);
+        setConnectionStatus({
+            status: 'disconnected',
+            error: null
+        });
+    };
 
     useEffect(() => {
-        connect();
+        if (shouldConnect) {
+            connect();
+        }
+
         return () => {
-            if (heartbeatIntervalRef.current) {
-                clearInterval(heartbeatIntervalRef.current);
+            if (wsRef.current) {
+                wsRef.current.close();
             }
             if (reconnectTimeoutRef.current) {
                 clearTimeout(reconnectTimeoutRef.current);
             }
-            if (wsRef.current) {
-                wsRef.current.close(1000, 'Component unmounting');
-            }
         };
-    }, [connect]);
+    }, [shouldConnect]); // Add shouldConnect to dependency array
+
+    const sendMessage = (message) => {
+        if (wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify(message));
+        }
+    };
 
     const handleAuthResponse = useCallback((message) => {
         if (message.status === 'success') {
@@ -198,14 +215,17 @@ export const WebSocketProvider = ({ children }) => {
         }
     }, [adminSession]);
 
+    const value = {
+        wsRef,
+        connectionStatus,
+        sendMessage,
+        adminSession,
+        setAdminSession,
+        disconnect, // Add disconnect to context value
+    };
+
     return (
-        <WebSocketContext.Provider value={{
-            connectionStatus,
-            adminSession,
-            sendMessage,
-            connect,
-            wsRef
-        }}>
+        <WebSocketContext.Provider value={value}>
             {children}
         </WebSocketContext.Provider>
     );
@@ -218,5 +238,3 @@ export const useWebSocket = () => {
     }
     return context;
 };
-
-export default WebSocketContext;

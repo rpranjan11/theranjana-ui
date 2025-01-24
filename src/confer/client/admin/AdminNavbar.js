@@ -1,5 +1,7 @@
 // src/confer/client/admin/AdminNavbar.js
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useWebSocket } from '../shared/WebSocketContext';
 import './AdminNavbar.css';
 
 const AdminNavbar = ({
@@ -9,6 +11,8 @@ const AdminNavbar = ({
                          adminSession
                      }) => {
     const [topicSelectorWidth, setTopicSelectorWidth] = useState('auto');
+    const navigate = useNavigate();
+    const { sendMessage, wsRef, disconnect } = useWebSocket();
 
     // Function to format topic for display
     const formatTopicDisplay = (topic) => {
@@ -35,10 +39,30 @@ const AdminNavbar = ({
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            // Send logout message to server
+            sendMessage({
+                type: 'admin_logout'
+            });
+
+            // Clear any stored credentials
+            localStorage.removeItem('adminCredentials');
+            sessionStorage.removeItem('adminCredentials');
+
+            // Call disconnect to cleanup WebSocket context
+            disconnect();
+
+            // Navigate to login page
+            navigate('/confer/client/admin', { replace: true });
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
+
     // Update width when topic changes
     useEffect(() => {
         if (selectedTopic) {
-            // Create a temporary span to measure text width
             const span = document.createElement('span');
             span.style.visibility = 'hidden';
             span.style.position = 'absolute';
@@ -59,25 +83,33 @@ const AdminNavbar = ({
     return (
         <nav className="admin-navbar">
             <div className="navbar-container">
-                <div className="connection-status">
-                    Status: <span className={`status-text ${getStatusClass(connectionStatus.status)}`}>
-                        {connectionStatus.status}
-                    </span>
-                    {connectionStatus.error && <p className="error">{connectionStatus.error}</p>}
+                <div className="navbar-top-row">
+                    <h1 className="navbar-title">Confer Admin</h1>
+                    <div className={`topic-selector ${selectedTopic ? 'has-selection' : ''}`}
+                         style={{ width: topicSelectorWidth }}>
+                        <select
+                            value={selectedTopic}
+                            onChange={(e) => onTopicSelect(e.target.value)}
+                            disabled={!adminSession}
+                            style={{ width: topicSelectorWidth }}
+                        >
+                            <option value="">Select Topic</option>
+                            <option value="social_customs">Social Customs</option>
+                            <option value="geographic_diversity_of_india">Geographic Diversity of India</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div className={`topic-selector ${selectedTopic ? 'has-selection' : ''}`}
-                     style={{ width: topicSelectorWidth }}>
-                    <select
-                        value={selectedTopic}
-                        onChange={(e) => onTopicSelect(e.target.value)}
-                        disabled={!adminSession}
-                        style={{ width: topicSelectorWidth }}
-                    >
-                        <option value="">Select Topic</option>
-                        <option value="social_customs">Social Customs</option>
-                        <option value="geographic_diversity_of_india">Geographic Diversity of India</option>
-                    </select>
+                <div className="navbar-bottom-row">
+                    <div className="connection-status">
+                        Status: <span className={`status-text ${getStatusClass(connectionStatus.status)}`}>
+                            {connectionStatus.status}
+                        </span>
+                        {connectionStatus.error && <p className="error">{connectionStatus.error}</p>}
+                    </div>
+                    <button className="logout-button" onClick={handleLogout}>
+                        Logout
+                    </button>
                 </div>
             </div>
         </nav>

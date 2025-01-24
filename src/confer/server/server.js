@@ -135,6 +135,24 @@ wss.on('connection', (ws, req) => {
                     }
                     break;
 
+                case 'admin_logout':
+                    if (ws.isAdmin) {
+                        // Remove admin session
+                        sessionManager.removeAdmin(ws.adminId);
+
+                        // Send confirmation to the admin client
+                        if (ws.readyState === WebSocket.OPEN) {
+                            ws.send(JSON.stringify({
+                                type: 'logout_success'
+                            }));
+                        }
+
+                        // Clear the admin flags
+                        ws.isAdmin = false;
+                        ws.adminId = null;
+                    }
+                    break;
+
                 default:
                     if (ws.isAdmin) {
                         handleAdminMessage(ws, message, ws.adminId);
