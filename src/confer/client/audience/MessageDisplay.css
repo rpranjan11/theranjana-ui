@@ -1,5 +1,5 @@
 /* src/confer/client/audience/MessageDisplay.css */
-.message-display {
+.audience-message-display {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -7,7 +7,7 @@
     background-color: #f5f5f5;
 }
 
-.message-display .message-list {  /* Make it specific to message display */
+.audience-message-display .audience-message-list {  /* Make it specific to message display */
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -15,57 +15,57 @@
 }
 
 /* Remove the extra spacing when empty */
-.message-list.empty {
+.audience-message-list.empty {
     margin-top: 0;
     justify-content: center;
 }
 
-.no-admin-notice {
+.audience-no-admin-notice {
     text-align: center;
     padding: 40px;
     color: #666;
     align-self: center;
 }
 
-.no-admin-notice h2 {
+.audience-no-admin-notice h2 {
     color: #333;
     margin-bottom: 15px;
 }
 
-.message-item {
+.audience-message-item {
     margin-bottom: 20px;
     padding: 15px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: relative;
-    padding-bottom: 30px; /* Space for timestamp */
+    padding-bottom: 30px; /* Space for audience-message-timestamp */
 }
 
-.message-item .image-container {
+.audience-message-item .audience-image-container {
     position: relative;
     width: 100%;
 }
 
-.message-item .image-container img {
+.audience-message-item .audience-image-container img {
     max-width: 100%;
     height: auto;
     border-radius: 4px;
     display: block;
 }
 
-.message-item .text-container {
+.audience-message-item .audience-text-container {
     position: relative;
 }
 
-.message-item .text-container p {
+.audience-message-item .audience-text-container p {
     margin: 0;
     color: #2c5282;
     line-height: 1.5;
     word-wrap: break-word;
 }
 
-.timestamp {
+.audience-message-timestamp {
     font-size: 0.8em;
     color: #4a5568;
     position: absolute;
@@ -78,11 +78,11 @@
 }
 
 /* Add subtle border between messages */
-.message-item + .message-item {
+.audience-message-item + .audience-message-item {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Ensure proper spacing for the last message */
-.message-item:last-child {
+.audience-message-item:last-child {
     margin-bottom: 0;
 }

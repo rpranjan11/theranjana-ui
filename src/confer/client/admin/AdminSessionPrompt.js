@@ -18,12 +18,12 @@ const AdminSessionPrompt = () => {
     };
 
     return (
-        <div className="session-prompt-overlay">
-            <div className="session-prompt-modal">
+        <div className="admin-session-prompt-overlay">
+            <div className="admin-session-prompt-modal">
                 <h2>Existing Session Detected</h2>
                 <p>Would you like to continue your session here?</p>
                 <p>The session on the other device will be disconnected.</p>
-                <div className="prompt-buttons">
+                <div className="admin-prompt-buttons">
                     <button onClick={handleTransfer}>
                         Continue Here
                     </button>

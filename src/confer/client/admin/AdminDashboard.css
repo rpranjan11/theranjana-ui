@@ -6,7 +6,7 @@
     width: 100%;
 }
 
-.message-controls {
+.admin-message-controls {
     position: fixed;
     top: 140px;
     left: 0;
@@ -20,7 +20,7 @@
 }
 
 /* Base button styles */
-.message-controls button {
+.admin-message-controls button {
     padding: 8px 16px;
     border-radius: 4px;
     border: 1px solid #007bff;
@@ -31,31 +31,31 @@
 }
 
 /* Specific style for the delete button */
-.message-controls button.delete-button {
+.admin-message-controls button.delete-button {
     border-color: #dc3545; /* Red border */
 }
 
 /* Active state for delete button */
-.message-controls button.delete-button:not(:disabled) {
+.admin-message-controls button.delete-button:not(:disabled) {
     background-color: #dc3545; /* Red background when active */
     border-color: #dc3545;
 }
 
 /* Hover state for delete button when active */
-.message-controls button.delete-button:not(:disabled):hover {
+.admin-message-controls button.delete-button:not(:disabled):hover {
     background-color: #c82333; /* Darker red on hover */
     border-color: #bd2130;
 }
 
 /* Disabled state for all buttons */
-.message-controls button:disabled {
+.admin-message-controls button:disabled {
     background-color: #ccc;
     border-color: #ccc;
     cursor: not-allowed;
     opacity: 0.65;
 }
 
-.admin-dashboard .message-list {  /* Make it specific to admin dashboard */
+.admin-dashboard .admin-message-list {  /* Make it specific to admin dashboard */
     margin-top: 100px;
     padding: 20px 150px;
     overflow-y: auto;
@@ -65,7 +65,7 @@
     box-sizing: border-box;
 }
 
-.message-item {
+.admin-message-item {
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
@@ -79,39 +79,39 @@
     box-sizing: border-box;
 }
 
-.message-item:hover {
+.admin-message-item:hover {
     background-color: #e6f3ff;
 }
 
-.text-container {
+.admin-text-container {
     position: relative;
 }
 
-.text-container p {
+.admin-text-container p {
     margin: 0;
     color: #2c5282;
     line-height: 1.5;
     word-wrap: break-word;
 }
 
-.image-container, .text-container {
+.admin-image-container, .admin-text-container {
     position: relative;
 }
 
-.image-container {
+.admin-image-container {
     position: relative;
     margin-bottom: 5px;
     width: 100%;
 }
 
-.image-container img {
+.admin-image-container img {
     max-width: 100%;
     height: auto;
     border-radius: 4px;
     display: block;
 }
 
-.timestamp {
+.admin-message-timestamp {
     font-size: 0.8em;
     color: #4a5568;
     position: absolute;
@@ -124,6 +124,6 @@
 }
 
 /* Optional: Add a subtle border to separate multiple messages */
-.message-item + .message-item {
+.admin-message-item + .admin-message-item {
     border-top: 1px solid rgba(135, 206, 235, 0.1);
 }

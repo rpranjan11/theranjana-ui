@@ -27,13 +27,13 @@ const AdminNavbar = ({
     const getStatusClass = (status) => {
         switch (status.toLowerCase()) {
             case 'connected':
-                return 'status-connected';
+                return 'admin-status-connected';
             case 'connecting':
-                return 'status-connecting';
+                return 'admin-status-connecting';
             case 'disconnected':
-                return 'status-disconnected';
+                return 'admin-status-disconnected';
             case 'timeout_warning':
-                return 'status-warning';
+                return 'admin-status-warning';
             default:
                 return '';
         }
@@ -82,9 +82,9 @@ const AdminNavbar = ({
 
     return (
         <nav className="admin-navbar">
-            <div className="navbar-container">
-                <div className="navbar-top-row">
-                    <h1 className="navbar-title">Confer Admin</h1>
+            <div className="admin-nav-container">
+                <div className="admin-nav-top-row">
+                    <h1 className="admin-nav-title">Confer Admin</h1>
                     <div className={`topic-selector ${selectedTopic ? 'has-selection' : ''}`}
                          style={{ width: topicSelectorWidth }}>
                         <select
@@ -100,9 +100,9 @@ const AdminNavbar = ({
                     </div>
                 </div>
 
-                <div className="navbar-bottom-row">
-                    <div className="connection-status">
-                        Status: <span className={`status-text ${getStatusClass(connectionStatus.status)}`}>
+                <div className="admin-nav-bottom-row">
+                    <div className="admin-connection-status">
+                        Status: <span className={`admin-status-text ${getStatusClass(connectionStatus.status)}`}>
                             {connectionStatus.status}
                         </span>
                         {connectionStatus.error && <p className="error">{connectionStatus.error}</p>}

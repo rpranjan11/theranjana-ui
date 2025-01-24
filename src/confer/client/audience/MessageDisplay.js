@@ -165,10 +165,10 @@ const MessageDisplay = () => {
     };
 
     return (
-        <div className="message-display">
-            <div className={`message-list ${!adminActive || messages.length === 0 ? 'empty' : ''}`} ref={messageListRef}>
+        <div className="audience-message-display">
+            <div className={`audience-message-list ${!adminActive || messages.length === 0 ? 'empty' : ''}`} ref={messageListRef}>
                 {(!adminActive || messages.length === 0) && (
-                    <div className="no-admin-notice">
+                    <div className="audience-no-admin-notice">
                         <h2>Waiting for Conference</h2>
                         <p>There is no active conference at the moment.</p>
                         <p>The page will automatically update when a conference begins.</p>
@@ -176,22 +176,22 @@ const MessageDisplay = () => {
                 )}
 
                 {messages.map((message, index) => (
-                    <div key={index} className="message-item">
+                    <div key={index} className="audience-message-item">
                         {message.type === 'image' ? (
-                            <div className="image-container">
+                            <div className="audience-image-container">
                                 <img
                                     src={message.content}
                                     alt={`Slide ${index + 1}`}
                                     loading="lazy"
                                 />
-                                <span className="timestamp">
+                                <span className="audience-message-timestamp">
                                     {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
                             </div>
                         ) : (
-                            <div className="text-container">
+                            <div className="audience-text-container">
                                 <p>{message.content}</p>
-                                <span className="timestamp">
+                                <span className="audience-message-timestamp">
                                     {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
                             </div>

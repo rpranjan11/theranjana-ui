@@ -37,11 +37,11 @@ const AdminAuth = ({ onAuth }) => {
 
     return (
         <div className="admin-auth">
-            <div className="auth-container">
+            <div className="admin-auth-container">
                 <form onSubmit={handleSubmit}>
                     <h2>Admin Login</h2>
-                    {error && <div className="error-message">{error}</div>}
-                    <div className="input-group">
+                    {error && <div className="admin-error-message">{error}</div>}
+                    <div className="admin-input-group">
                         <input
                             type="password"
                             value={credentials}

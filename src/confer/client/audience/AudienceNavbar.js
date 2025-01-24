@@ -10,13 +10,13 @@ const AudienceNavbar = () => {
     const getStatusClass = (status) => {
         switch (status.toLowerCase()) {
             case 'connected':
-                return 'status-connected';
+                return 'audience-status-connected';
             case 'connecting':
-                return 'status-connecting';
+                return 'audience-status-connecting';
             case 'disconnected':
-                return 'status-disconnected';
+                return 'audience-status-disconnected';
             case 'timeout_warning':
-                return 'status-warning';
+                return 'audience-status-warning';
             default:
                 return '';
         }
@@ -24,16 +24,16 @@ const AudienceNavbar = () => {
 
     return (
         <nav className="audience-navbar">
-            <div className="navbar-container">
-                <div className="navbar-title-section">
-                    <h1 className="navbar-title">Confer Audience</h1>
-                    <div className="navbar-subtitle">
+            <div className="audience-nav-container">
+                <div className="audience-nav-title-section">
+                    <h1 className="audience-nav-title">Confer Audience</h1>
+                    <div className="audience-nav-subtitle">
                         Confers' Topic: <span className="topic-name">Social Customs</span>
                     </div>
                 </div>
 
-                <div className="connection-status">
-                    Status: <span className={`status-text ${getStatusClass(connectionStatus.status)}`}>
+                <div className="audience-connection-status">
+                    Status: <span className={`audience-status-text ${getStatusClass(connectionStatus.status)}`}>
                         {connectionStatus.status}
                     </span>
                     {connectionStatus.error && (

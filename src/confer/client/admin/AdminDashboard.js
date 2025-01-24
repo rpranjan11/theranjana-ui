@@ -108,7 +108,7 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
                 </div>
             ) : (
                 <>
-                    <div className="message-controls">
+                    <div className="admin-message-controls">
                         <button
                             onClick={pushMessage}
                             disabled={!adminSession || !selectedTopic || currentMessageIndex >= predefinedMessages.length}
@@ -124,19 +124,19 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
                         </button>
                     </div>
 
-                    <div className="message-list admin-content-container" ref={messageListRef}>
+                    <div className="admin-message-list admin-content-container" ref={messageListRef}>
                         {messages.map((message, index) => (
-                            <div key={index} className="message-item">
+                            <div key={index} className="admin-message-item">
                                 {message.type === 'image' ? (
-                                    <div className="image-container">
+                                    <div className="admin-image-container">
                                         <img src={message.content} alt="Presentation content"/>
                                     </div>
                                 ) : (
-                                    <div className="text-container">
+                                    <div className="admin-text-container">
                                         <p>{message.content}</p>
                                     </div>
                                 )}
-                                <span className="timestamp">
+                                <span className="admin-message-timestamp">
                                     {message.timestamp && formatTimestamp(message.timestamp)}
                                 </span>
                             </div>
