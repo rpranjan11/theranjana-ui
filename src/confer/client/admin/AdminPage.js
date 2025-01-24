@@ -9,7 +9,7 @@ import AdminInactivityMonitor from './AdminInactivityMonitor';
 import AdminNavbar from './AdminNavbar';
 import './AdminPage.css';
 
-const AdminPageContent = ({ credentials }) => {
+const AdminPageContent = ({ credentials, onLogout }) => {
     const { connectionStatus, adminSession } = useWebSocket();
     const [selectedTopic, setSelectedTopic] = useState('');
     const navigate = useNavigate(); // Add this
@@ -31,6 +31,7 @@ const AdminPageContent = ({ credentials }) => {
                 selectedTopic={selectedTopic}
                 onTopicSelect={setSelectedTopic}
                 adminSession={adminSession}
+                onLogout={onLogout}  // Pass the logout handler
             />
             <AdminInactivityMonitor />
             <AdminDashboard
@@ -46,6 +47,11 @@ const AdminPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [credentials, setCredentials] = useState('');
 
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        setCredentials('');
+    };
+
     return (
         <WebSocketProvider>
             <div className="admin-page">
@@ -57,7 +63,10 @@ const AdminPage = () => {
                         }}
                     />
                 ) : (
-                    <AdminPageContent credentials={credentials} />
+                    <AdminPageContent
+                        credentials={credentials}
+                        onLogout={handleLogout}
+                    />
                 )}
             </div>
         </WebSocketProvider>

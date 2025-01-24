@@ -5,11 +5,12 @@ import { useWebSocket } from '../shared/WebSocketContext';
 import './AdminNavbar.css';
 
 const AdminNavbar = ({
-                         connectionStatus,
-                         selectedTopic,
-                         onTopicSelect,
-                         adminSession
-                     }) => {
+     connectionStatus,
+     selectedTopic,
+     onTopicSelect,
+     adminSession,
+     onLogout
+ }) => {
     const [topicSelectorWidth, setTopicSelectorWidth] = useState('auto');
     const navigate = useNavigate();
     const { sendMessage, wsRef, disconnect } = useWebSocket();
@@ -51,22 +52,26 @@ const AdminNavbar = ({
 
     const handleLogout = async () => {
         try {
-            // Send logout message to server
-            sendMessage({
-                type: 'admin_logout'
-            });
+            // First disconnect the WebSocket to prevent reconnection attempts
+            disconnect();
 
-            // Clear any stored credentials
+            // Clear credentials
             localStorage.removeItem('adminCredentials');
             sessionStorage.removeItem('adminCredentials');
 
-            // Call disconnect to cleanup WebSocket context
-            disconnect();
+            // Update authentication state in parent component
+            // We'll need to add this prop
+            if (onLogout) {
+                onLogout();
+            }
 
             // Navigate to login page
+            // Using replace: true to prevent going back to the admin page with browser back button
             navigate('/confer/client/admin', { replace: true });
         } catch (error) {
             console.error('Error during logout:', error);
+            // Even if there's an error, attempt to navigate to login
+            navigate('/confer/client/admin', { replace: true });
         }
     };
 
