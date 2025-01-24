@@ -10,6 +10,7 @@ export const WebSocketProvider = ({ children }) => {
         error: null
     });
     const [adminSession, setAdminSession] = useState(null);
+    const [currentTopic, setCurrentTopic] = useState('');
     const wsRef = useRef(null);
     const reconnectTimeoutRef = useRef(null);
     const heartbeatIntervalRef = useRef(null);
@@ -59,6 +60,7 @@ export const WebSocketProvider = ({ children }) => {
 
     const handleMessage = useCallback((message) => {
         try {
+            console.log('WebSocket message received:', message.type); // Add debug log
             switch (message.type) {
                 case 'auth_response':
                     handleAuthResponse(message);
@@ -69,8 +71,15 @@ export const WebSocketProvider = ({ children }) => {
                 case 'session_extended':
                     handleSessionExtended(message);
                     break;
+                case 'topic_update':
+                    console.log('Topic update received:', message); // Add debug log
+                    setCurrentTopic(message.topic);
+                    break;
                 case 'initial_state':
-                    // Don't modify connection status here
+                    console.log('Initial state received:', message); // Add debug log
+                    if (message.currentTopic) {
+                        setCurrentTopic(message.currentTopic);
+                    }
                     break;
                 case 'new_message':
                 case 'message_deleted':
@@ -221,6 +230,7 @@ export const WebSocketProvider = ({ children }) => {
         sendMessage,
         adminSession,
         setAdminSession,
+        currentTopic,
         disconnect, // Add disconnect to context value
     };
 

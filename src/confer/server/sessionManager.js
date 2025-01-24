@@ -7,6 +7,18 @@ class SessionManager {
         this.adminTimeout = null;
         this.audiences = new Map(); // clientId -> WebSocket
         this.ADMIN_TIMEOUT_DURATION = 30 * 60 * 1000; // 30 minutes
+        this.currentTopic = '';
+    }
+
+    // Add method to update topic
+    setCurrentTopic(topic) {
+        console.log('Setting current topic:', topic); // Add debug log
+        this.currentTopic = topic;
+    }
+
+    // Add method to get current topic
+    getCurrentTopic() {
+        return this.currentTopic;
     }
 
     generateSessionId() {
@@ -128,12 +140,17 @@ class SessionManager {
     }
 
     notifyAudiences(message) {
+        console.log('Notifying audiences:', message);
         const messageStr = JSON.stringify(message);
-        for (const [_, ws] of this.audiences) {
+        this.audiences.forEach((ws) => {
             if (ws.readyState === WebSocket.OPEN) {
-                ws.send(messageStr);
+                try {
+                    ws.send(messageStr);
+                } catch (error) {
+                    console.error('Error sending message to audience:', error);
+                }
             }
-        }
+        });
     }
 
     getActiveAdminId() {

@@ -23,6 +23,16 @@ const AdminNavbar = ({
             .join(' ');
     };
 
+    const handleTopicSelect = (topic) => {
+        console.log('Topic selected:', topic); // Add debug log
+        // Send topic update to server
+        sendMessage({
+            type: 'topic_update',
+            topic: topic
+        });
+        onTopicSelect(topic);
+    };
+
     // Function to get status class
     const getStatusClass = (status) => {
         switch (status.toLowerCase()) {
@@ -89,9 +99,9 @@ const AdminNavbar = ({
                          style={{ width: topicSelectorWidth }}>
                         <select
                             value={selectedTopic}
-                            onChange={(e) => onTopicSelect(e.target.value)}
+                            onChange={(e) => handleTopicSelect(e.target.value)}
                             disabled={!adminSession}
-                            style={{ width: topicSelectorWidth }}
+                            style={{width: topicSelectorWidth}}
                         >
                             <option value="">Select Topic</option>
                             <option value="social_customs">Social Customs</option>

@@ -108,10 +108,13 @@ wss.on('connection', (ws, req) => {
                     const adminId = sessionManager.getActiveAdminId();
                     if (adminId) {
                         const messages = messageStore.getMessages(adminId);
+                        const currentTopic = sessionManager.getCurrentTopic();
+                        console.log('Sending initial state to audience with topic:', currentTopic); // Add debug log
                         ws.send(JSON.stringify({
                             type: 'initial_state',
                             adminId,
-                            messages
+                            messages,
+                            currentTopic
                         }));
                     } else {
                         ws.send(JSON.stringify({
@@ -163,6 +166,18 @@ wss.on('connection', (ws, req) => {
                         // Clear the admin flags
                         ws.isAdmin = false;
                         ws.adminId = null;
+                    }
+                    break;
+
+                case 'topic_update':
+                    if (ws.isAdmin) {
+                        console.log('Admin updating topic:', message.topic); // Add debug log
+                        sessionManager.setCurrentTopic(message.topic);
+                        // Send the update to all audience members
+                        sessionManager.notifyAudiences({
+                            type: 'topic_update',
+                            topic: message.topic
+                        });
                     }
                     break;
 
