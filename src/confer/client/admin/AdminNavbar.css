@@ -16,15 +16,16 @@
 .admin-nav-top-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 2rem;
 }
 
 .admin-nav-title {
     margin: 0;
-    font-size: 1.5rem;
-    color: #333;
+    font-size: 2rem;
+    color: #1a73e8;
     white-space: nowrap;
+    font-weight: bold;
 }
 
 /* Bottom row styling */
@@ -36,7 +37,7 @@
 }
 
 .admin-connection-status {
-    display: flex;
+    display: block;
     align-items: center;
     gap: 0.5rem;
 }
@@ -124,7 +125,6 @@
 
 /* Logout button styling */
 .logout-button {
-    padding: 0.5rem 1rem;
     background-color: #dc3545;
     color: white;
     border: none;

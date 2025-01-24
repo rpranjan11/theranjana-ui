@@ -17,7 +17,6 @@
 /* Remove the extra spacing when empty */
 .audience-message-list.empty {
     margin-top: 0;
-    justify-content: center;
 }
 
 .audience-no-admin-notice {

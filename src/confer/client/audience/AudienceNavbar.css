@@ -38,7 +38,7 @@
 }
 
 .audience-connection-status {
-    display: flex;
+    display: block;
     align-items: center;
     gap: 0.5rem;
 }
