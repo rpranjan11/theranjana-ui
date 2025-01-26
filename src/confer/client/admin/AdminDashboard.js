@@ -133,7 +133,30 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
                                     </div>
                                 ) : (
                                     <div className="admin-text-container">
-                                        <p>{message.content}</p>
+                                        <p>{message.content === "ThankYou | 감사합니다" ?
+                                            <span style={{
+                                                display: 'block',
+                                                textAlign: 'center',
+                                                fontWeight: 'bold',
+                                                fontSize: '1.5em'
+                                            }}>
+                                    {message.content}
+                                    </span>
+                                            :
+                                            message.content.includes("<=>") ?
+                                                <>
+                                                    {message.content.split("<=>")[0]}
+                                                    <div style={{
+                                                        color: '#1a73e8',
+                                                        textAlign: 'start',
+                                                        fontWeight: 'bold',
+                                                        fontSize: '1em'
+                                                    }}>&lt;=&gt;</div>
+                                                    {message.content.split("<=>")[1]}
+                                                </>
+                                                :
+                                                message.content}
+                                        </p>
                                     </div>
                                 )}
                                 <span className="admin-message-timestamp">
