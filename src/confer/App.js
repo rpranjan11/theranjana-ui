@@ -8,6 +8,7 @@ import AdminPage from './client/admin/AdminPage';
 import AudiencePage from './client/audience/AudiencePage';
 import NotFoundPage from './components/NotFoundPage';
 import './App.css';
+import './client/shared/responsive.css';
 
 function ConferApp() {
     // Extract the base path from the current URL

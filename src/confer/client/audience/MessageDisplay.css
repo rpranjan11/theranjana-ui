@@ -96,3 +96,21 @@
 .audience-message-item:last-child {
     margin-bottom: 0;
 }
+
+/* Add these media queries directly in MessageDisplay.css */
+@media screen and (max-width: 768px) {
+    .audience-message-display {
+        padding: 10px !important; /* Mobile padding */
+    }
+
+    .audience-message-item {
+        width: 100% !important;
+        margin: 10px 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .audience-message-item .audience-image-container img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}

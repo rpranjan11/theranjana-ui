@@ -58,3 +58,20 @@
     color: #888;
     font-style: italic;
 }
+
+/* Add these media queries directly in AudiencePage.css */
+@media screen and (max-width: 768px) {
+    .message-display {
+        padding: 10px !important;
+        margin: 0 !important;
+    }
+
+    .message-list {
+        padding: 5px !important;
+    }
+
+    .message-item {
+        margin-bottom: 10px !important;
+        padding: 10px !important;
+    }
+}

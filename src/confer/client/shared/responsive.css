@@ -1,0 +1,52 @@
+/* src/confer/client/shared/responsive.css */
+
+@media screen and (max-width: 768px) {
+    /* Global mobile styles */
+    body {
+        overflow-x: hidden !important;
+    }
+
+    /* Admin styles */
+    .admin-page .admin-content-container {
+        padding: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Audience styles */
+    .audience-page .message-display,
+    .message-display,
+    .audience-message-display {
+        padding: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Navigation styles */
+    .admin-navbar,
+    .audience-navbar {
+        padding: 1rem 10px !important;
+    }
+
+    /* Message display */
+    .message-list,
+    .audience-message-list {
+        padding: 5px !important;
+    }
+
+    .message-item,
+    .audience-message-item {
+        margin: 10px 0 !important;
+        padding: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* Landscape mode adjustments */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .message-display,
+    .audience-message-display {
+        max-height: calc(100vh - 70px) !important;
+    }
+}
