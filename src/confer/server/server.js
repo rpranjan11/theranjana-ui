@@ -16,7 +16,10 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ status: 'Server is running' }));
 });
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({
+    server,
+    perMessageDeflate: false  // Disable compression if it's causing issues
+});
 
 const handleAdminMessage = (ws, message, adminId) => {
     try {

@@ -117,6 +117,7 @@ export const WebSocketProvider = ({ children }) => {
 
         try {
             const ws = new WebSocket(config.wsUrl);
+            ws.binaryType = 'blob';  // Explicitly set binary type
             wsRef.current = ws;
 
             wsRef.current.onopen = () => {
@@ -135,14 +136,24 @@ export const WebSocketProvider = ({ children }) => {
                 startHeartbeat();
             };
 
-            ws.onmessage = (event) => {
+            ws.onmessage = async (event) => {
                 try {
-                    const data = JSON.parse(event.data);
+                    let data;
+                    if (event.data instanceof Blob) {
+                        // Handle Blob data
+                        const text = await event.data.text();
+                        data = JSON.parse(text);
+                    } else {
+                        // Handle string data
+                        data = JSON.parse(event.data);
+                    }
+
                     if (data.type !== 'heartbeat' && data.type !== 'heartbeat_ack') {
                         console.log('WebSocket message received:', data.type);
                     }
                     handleMessage(data);
                 } catch (error) {
+                    console.error('WebSocket Error:', error);
                     handleInvalidMessage(error, event.data);
                 }
             };

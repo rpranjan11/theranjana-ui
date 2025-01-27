@@ -1,6 +1,15 @@
 // src/confer/config/wsConfig.js
+
 const getWebSocketUrl = () => {
+    const isProduction = process.env.NODE_ENV === 'production';
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+
+    if (isProduction) {
+        // For Render deployment
+        return `${protocol}//${window.location.host}`;
+    }
+
+    // For local development
     const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname || '192.168.1.21';
     const port = process.env.REACT_APP_CONFER_API_PORT || '8080';
     return `${protocol}//${host}:${port}`;
