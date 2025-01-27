@@ -60,10 +60,33 @@ export const WebSocketProvider = ({ children }) => {
 
     const handleMessage = useCallback((message) => {
         try {
-            console.log('WebSocket message received:', message.type); // Add debug log
+            // Only log non-heartbeat messages
+            if (message.type !== 'heartbeat' && message.type !== 'heartbeat_ack') {
+                console.log('WebSocket message received:', message.type);
+            }
+
             switch (message.type) {
                 case 'auth_response':
                     handleAuthResponse(message);
+                    break;
+                case 'admin_auth':
+                    // Handle admin authentication response
+                    if (message.status === 'success') {
+                        setAdminSession({
+                            adminId: message.adminId,
+                            lastActivity: Date.now()
+                        });
+                        setConnectionStatus({
+                            status: 'connected',
+                            error: null
+                        });
+                    }
+                    break;
+                case 'heartbeat':
+                    // Send heartbeat acknowledgment
+                    if (wsRef.current?.readyState === WebSocket.OPEN) {
+                        wsRef.current.send(JSON.stringify({ type: 'heartbeat_ack' }));
+                    }
                     break;
                 case 'admin_timeout_warning':
                     handleTimeoutWarning(message);
@@ -72,11 +95,9 @@ export const WebSocketProvider = ({ children }) => {
                     handleSessionExtended(message);
                     break;
                 case 'topic_update':
-                    console.log('Topic update received:', message); // Add debug log
                     setCurrentTopic(message.topic);
                     break;
                 case 'initial_state':
-                    console.log('Initial state received:', message); // Add debug log
                     if (message.currentTopic) {
                         setCurrentTopic(message.currentTopic);
                     }
@@ -91,41 +112,26 @@ export const WebSocketProvider = ({ children }) => {
                             adminId: message.adminId,
                             lastActivity: Date.now()
                         });
-                    } else {
-                        setConnectionStatus({
-                            status: 'error',
-                            error: message.message || 'Session transfer failed'
-                        });
                     }
                     break;
-                case 'new_message':
-                case 'message_deleted':
-                case 'admin_disconnected':
-                case 'no_active_admin':
-                    // These messages are handled by the MessageDisplay component
-                    break;
                 default:
-                    console.log('Unhandled message type:', message.type);
+                    // Only log unhandled messages that aren't heartbeat-related
+                    if (message.type !== 'heartbeat_ack') {
+                        console.log('Unhandled message type:', message.type);
+                    }
             }
         } catch (error) {
             console.error('Error in message handler:', error);
         }
-    }, []);
+    }, [handleAuthResponse, handleTimeoutWarning, handleSessionExtended, setCurrentTopic]);
 
     const connect = () => {
-        if (!shouldConnect) return; // Don't connect if shouldConnect is false
+        if (!shouldConnect) return;
 
         try {
             const ws = new WebSocket(config.wsUrl);
-            ws.binaryType = 'blob';  // Explicitly set binary type
+            ws.binaryType = 'blob';
             wsRef.current = ws;
-
-            wsRef.current.onopen = () => {
-                setConnectionStatus({
-                    status: 'connected',
-                    error: null
-                });
-            };
 
             ws.onopen = () => {
                 console.log('WebSocket connected');

@@ -94,6 +94,13 @@ wss.on('connection', (ws, req) => {
                     }
                     break;
 
+                case 'heartbeat':
+                    if (ws.isAdmin) {
+                        sessionManager.updateAdminActivity();
+                        ws.send(JSON.stringify({ type: 'heartbeat_ack' }));
+                    }
+                    break;
+
                 case 'transfer_session':
                     const transferResult = sessionManager.transferAdminSession(ws, message.credentials);
                     ws.send(JSON.stringify({
