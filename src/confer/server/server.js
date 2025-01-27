@@ -18,7 +18,9 @@ const server = http.createServer((req, res) => {
 
 const wss = new WebSocket.Server({
     server,
-    perMessageDeflate: false  // Disable compression if it's causing issues
+    perMessageDeflate: false,  // Disable compression
+    clientTracking: true,      // Enable client tracking
+    handleProtocols: () => 'confer-protocol'  // Optional: Use a specific protocol
 });
 
 const handleAdminMessage = (ws, message, adminId) => {
@@ -56,6 +58,21 @@ const handleAdminMessage = (ws, message, adminId) => {
                 sessionManager.updateAdminActivity();
                 ws.send(JSON.stringify({ type: 'heartbeat_ack' }));
                 break;
+
+            case 'topic_update':
+                console.log('Admin updating topic:', message.topic);
+                sessionManager.setCurrentTopic(message.topic);
+                // Notify all audience members about topic update
+                sessionManager.notifyAudiences({
+                    type: 'topic_update',
+                    topic: message.topic
+                });
+                // Clear messages for this topic
+                messageStore.clearMessages(adminId);
+                sessionManager.notifyAudiences({
+                    type: 'clear_messages'
+                });
+                break;
         }
     } catch (error) {
         console.error('Error handling admin message:', error);
@@ -72,6 +89,7 @@ wss.on('connection', (ws, req) => {
     ws.on('message', async (data) => {
         try {
             const message = JSON.parse(data);
+            console.log('Received message type:', message.type);
 
             switch (message.type) {
                 case 'admin_auth':
@@ -119,7 +137,11 @@ wss.on('connection', (ws, req) => {
                     if (adminId) {
                         const messages = messageStore.getMessages(adminId);
                         const currentTopic = sessionManager.getCurrentTopic();
-                        console.log('Sending initial state to audience with topic:', currentTopic); // Add debug log
+                        console.log('Sending initial state to audience:', {
+                            adminId,
+                            messages,
+                            currentTopic
+                        });
                         ws.send(JSON.stringify({
                             type: 'initial_state',
                             adminId,
@@ -181,12 +203,17 @@ wss.on('connection', (ws, req) => {
 
                 case 'topic_update':
                     if (ws.isAdmin) {
-                        console.log('Admin updating topic:', message.topic); // Add debug log
+                        console.log('Admin updating topic:', message.topic);
                         sessionManager.setCurrentTopic(message.topic);
                         // Send the update to all audience members
                         sessionManager.notifyAudiences({
                             type: 'topic_update',
                             topic: message.topic
+                        });
+                        // Clear messages when topic changes
+                        messageStore.clearMessages(ws.adminId);
+                        sessionManager.notifyAudiences({
+                            type: 'clear_messages'
                         });
                     }
                     break;

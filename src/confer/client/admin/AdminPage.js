@@ -1,23 +1,24 @@
 // src/confer/client/admin/AdminPage.js
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import React, { useEffect, useState, Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { WebSocketProvider, useWebSocket } from '../shared/WebSocketContext';
 import AdminDashboard from './AdminDashboard';
 import AdminAuth from './AdminAuth';
 import AdminSessionPrompt from './AdminSessionPrompt';
 import AdminInactivityMonitor from './AdminInactivityMonitor';
 import AdminNavbar from './AdminNavbar';
+import ErrorBoundary from '../../components/ErrorBoundary';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import './AdminPage.css';
 
 const AdminPageContent = ({ credentials, onLogout }) => {
     const { connectionStatus, adminSession } = useWebSocket();
     const [selectedTopic, setSelectedTopic] = useState('');
-    const navigate = useNavigate(); // Add this
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if there are no credentials stored
         const hasCredentials = localStorage.getItem('adminCredentials') ||
-            sessionStorage.getItem('adminCredentials');
+            sessionStorage.getItem('admin_credentials');
 
         if (!hasCredentials) {
             navigate('/confer/client/admin', { replace: true });
@@ -25,21 +26,23 @@ const AdminPageContent = ({ credentials, onLogout }) => {
     }, [navigate]);
 
     return (
-        <>
-            <AdminNavbar
-                connectionStatus={connectionStatus}
-                selectedTopic={selectedTopic}
-                onTopicSelect={setSelectedTopic}
-                adminSession={adminSession}
-                onLogout={onLogout}  // Pass the logout handler
-            />
-            <AdminInactivityMonitor />
-            <AdminDashboard
-                credentials={credentials}
-                selectedTopic={selectedTopic}
-            />
-            <AdminSessionPrompt />
-        </>
+        <ErrorBoundary>
+            <Suspense fallback={<LoadingSpinner />}>
+                <AdminNavbar
+                    connectionStatus={connectionStatus}
+                    selectedTopic={selectedTopic}
+                    onTopicSelect={setSelectedTopic}
+                    adminSession={adminSession}
+                    onLogout={onLogout}
+                />
+                <AdminInactivityMonitor />
+                <AdminDashboard
+                    credentials={credentials}
+                    selectedTopic={selectedTopic}
+                />
+                <AdminSessionPrompt />
+            </Suspense>
+        </ErrorBoundary>
     );
 };
 

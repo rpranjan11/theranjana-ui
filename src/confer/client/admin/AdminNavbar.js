@@ -25,13 +25,14 @@ const AdminNavbar = ({
     };
 
     const handleTopicSelect = (topic) => {
-        console.log('Topic selected:', topic); // Add debug log
-        // Send topic update to server
-        sendMessage({
-            type: 'topic_update',
-            topic: topic
-        });
-        onTopicSelect(topic);
+        console.log('Topic selected:', topic);
+        if (adminSession) {
+            sendMessage({
+                type: 'topic_update',
+                topic: topic
+            });
+            onTopicSelect(topic);
+        }
     };
 
     // Function to get status class

@@ -1,22 +1,20 @@
 // src/confer/config/wsConfig.js
-
 const getWebSocketUrl = () => {
     const isProduction = process.env.NODE_ENV === 'production';
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 
     if (isProduction) {
-        // For Render deployment
-        return `${protocol}//${window.location.host}`;
+        const apiUrl = process.env.REACT_APP_CONFER_API_HOST_URL;
+        return apiUrl.replace('https://', 'wss://').replace('http://', 'ws://');
     }
 
     // For local development
-    const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname || '192.168.1.21';
+    const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname;
     const port = process.env.REACT_APP_CONFER_API_PORT || '8080';
-    return `${protocol}//${host}:${port}`;
+    return `ws://${host}:${port}`;
 };
 
 const config = {
-    wsUrl: process.env.REACT_APP_CONFER_API_HOST_URL || getWebSocketUrl(),
+    wsUrl: getWebSocketUrl(),
     reconnect: {
         initialDelay: 1000,
         maxDelay: 30000,
@@ -25,9 +23,9 @@ const config = {
         timeout: 10000,
     },
     session: {
-        inactivityTimeout: 30 * 60 * 1000, // 30 minutes
-        warningTime: 5 * 60 * 1000, // 5 minutes before timeout
-        checkInterval: 60 * 1000, // Check every minute
+        inactivityTimeout: 30 * 60 * 1000,
+        warningTime: 5 * 60 * 1000,
+        checkInterval: 60 * 1000,
     },
     heartbeat: {
         interval: 15000,

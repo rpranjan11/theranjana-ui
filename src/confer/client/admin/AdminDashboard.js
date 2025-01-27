@@ -47,12 +47,28 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
 
     useEffect(() => {
         if (connectionStatus.status === 'connected' && !adminSession) {
+            console.log('Sending admin auth message...');
             sendMessage({
                 type: 'admin_auth',
                 credentials
             });
         }
     }, [connectionStatus.status, adminSession, credentials, sendMessage]);
+
+    // Add this effect to handle topic selection
+    useEffect(() => {
+        if (selectedTopic && adminSession) {
+            console.log('Topic selection state:', {
+                selectedTopic,
+                adminSession,
+                connectionStatus
+            });
+            sendMessage({
+                type: 'topic_update',
+                topic: selectedTopic
+            });
+        }
+    }, [selectedTopic, adminSession, sendMessage]);
 
     useEffect(() => {
         scrollToBottom();

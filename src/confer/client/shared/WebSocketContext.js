@@ -11,6 +11,7 @@ export const WebSocketProvider = ({ children }) => {
     });
     const [adminSession, setAdminSession] = useState(null);
     const [currentTopic, setCurrentTopic] = useState('');
+    const [messages, setMessages] = useState([]);
     const wsRef = useRef(null);
     const reconnectTimeoutRef = useRef(null);
     const heartbeatIntervalRef = useRef(null);
@@ -42,14 +43,6 @@ export const WebSocketProvider = ({ children }) => {
         scheduleReconnect();
     }, []);
 
-    const handleInvalidMessage = useCallback((error, data) => {
-        console.error('Invalid message received:', error);
-        setConnectionStatus(prev => ({
-            ...prev,
-            error: 'Received invalid data from server'
-        }));
-    }, []);
-
     const startHeartbeat = useCallback(() => {
         if (heartbeatIntervalRef.current) {
             clearInterval(heartbeatIntervalRef.current);
@@ -63,16 +56,6 @@ export const WebSocketProvider = ({ children }) => {
 
     const handleAuthResponse = useCallback((message) => {
         if (message.status === 'success') {
-            const credentials = sessionStorage.getItem('admin_credentials');
-            if (!credentials) {
-                console.warn('Admin credentials not found in sessionStorage');
-                setConnectionStatus({
-                    status: 'error',
-                    error: 'Authentication credentials missing'
-                });
-                return;
-            }
-
             setAdminSession({
                 adminId: message.adminId,
                 lastActivity: Date.now()
@@ -102,26 +85,16 @@ export const WebSocketProvider = ({ children }) => {
         });
     }, []);
 
-    const handleSessionExtended = useCallback((message) => {
-        console.log('Received session_extended response:', message);
-        if (message.success) {
-            setConnectionStatus({
-                status: 'connected',
-                error: null
-            });
-            if (adminSession) {
-                setAdminSession({
-                    ...adminSession,
-                    lastActivity: Date.now()
-                });
-            }
-        }
-    }, [adminSession]);
-
     const handleMessage = useCallback((message) => {
+        console.log('Message received:', {
+            type: message.type,
+            payload: message,
+            currentTopic,
+            adminSession
+        });
         try {
             if (message.type !== 'heartbeat' && message.type !== 'heartbeat_ack') {
-                console.log('WebSocket message received:', message.type);
+                console.log('WebSocket message received:', message.type, message);
             }
 
             switch (message.type) {
@@ -134,11 +107,42 @@ export const WebSocketProvider = ({ children }) => {
                             adminId: message.adminId,
                             lastActivity: Date.now()
                         });
-                        setConnectionStatus({
-                            status: 'connected',
-                            error: null
+                    }
+                    break;
+                case 'audience_connect':
+                    // For audience, set initial state
+                    if (message.adminId) {
+                        setMessages(message.messages || []);
+                        setCurrentTopic(message.currentTopic || '');
+                    }
+                    break;
+                case 'initial_state':
+                    if (message.currentTopic) {
+                        setCurrentTopic(message.currentTopic);
+                    }
+                    if (message.messages) {
+                        setMessages(message.messages);
+                    }
+                    if (message.adminId) {
+                        setAdminSession({
+                            adminId: message.adminId,
+                            lastActivity: Date.now()
                         });
                     }
+                    break;
+                case 'new_message':
+                    setMessages(prev => [...prev, message.data]);
+                    break;
+                case 'message_deleted':
+                    setMessages(prev => prev.slice(0, -1));
+                    break;
+                case 'clear_messages':
+                    setMessages([]);
+                    break;
+                case 'topic_update':
+                    console.log('Topic update received:', message.topic);
+                    setCurrentTopic(message.topic);
+                    setMessages([]); // Clear messages when topic changes
                     break;
                 case 'heartbeat':
                     if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -148,29 +152,6 @@ export const WebSocketProvider = ({ children }) => {
                 case 'admin_timeout_warning':
                     handleTimeoutWarning(message);
                     break;
-                case 'session_extended':
-                    handleSessionExtended(message);
-                    break;
-                case 'topic_update':
-                    setCurrentTopic(message.topic);
-                    break;
-                case 'initial_state':
-                    if (message.currentTopic) {
-                        setCurrentTopic(message.currentTopic);
-                    }
-                    break;
-                case 'transfer_session_response':
-                    if (message.status === 'success') {
-                        setConnectionStatus({
-                            status: 'connected',
-                            error: null
-                        });
-                        setAdminSession({
-                            adminId: message.adminId,
-                            lastActivity: Date.now()
-                        });
-                    }
-                    break;
                 default:
                     if (message.type !== 'heartbeat_ack') {
                         console.log('Unhandled message type:', message.type);
@@ -179,7 +160,7 @@ export const WebSocketProvider = ({ children }) => {
         } catch (error) {
             console.error('Error in message handler:', error);
         }
-    }, [handleAuthResponse, handleTimeoutWarning, handleSessionExtended]);
+    }, [handleAuthResponse, handleTimeoutWarning]);
 
     const connect = useCallback(() => {
         if (!shouldConnect) return;
@@ -190,7 +171,7 @@ export const WebSocketProvider = ({ children }) => {
             wsRef.current = ws;
 
             ws.onopen = () => {
-                console.log('WebSocket connected');
+                console.log('WebSocket connected with URL:', config.wsUrl);
                 setConnectionStatus({
                     status: 'connected',
                     error: null
@@ -209,8 +190,7 @@ export const WebSocketProvider = ({ children }) => {
                     }
                     handleMessage(data);
                 } catch (error) {
-                    console.error('WebSocket Error:', error);
-                    handleInvalidMessage(error, event.data);
+                    console.error('Error processing message:', error);
                 }
             };
 
@@ -224,7 +204,7 @@ export const WebSocketProvider = ({ children }) => {
                 error: 'Failed to create connection'
             });
         }
-    }, [shouldConnect, startHeartbeat, handleMessage, handleUnexpectedClosure, handleWebSocketError, handleInvalidMessage]);
+    }, [shouldConnect, startHeartbeat, handleMessage, handleUnexpectedClosure, handleWebSocketError]);
 
     const disconnect = useCallback(() => {
         setShouldConnect(false);
@@ -238,6 +218,8 @@ export const WebSocketProvider = ({ children }) => {
             clearInterval(heartbeatIntervalRef.current);
         }
         setAdminSession(null);
+        setCurrentTopic('');
+        setMessages([]);
         setConnectionStatus({
             status: 'disconnected',
             error: null
@@ -246,7 +228,10 @@ export const WebSocketProvider = ({ children }) => {
 
     const sendMessage = useCallback((message) => {
         if (wsRef.current?.readyState === WebSocket.OPEN) {
+            console.log('Sending message:', message);
             wsRef.current.send(JSON.stringify(message));
+        } else {
+            console.warn('WebSocket is not open. Message not sent:', message);
         }
     }, []);
 
@@ -275,6 +260,7 @@ export const WebSocketProvider = ({ children }) => {
         adminSession,
         setAdminSession,
         currentTopic,
+        messages,
         disconnect,
     };
 
