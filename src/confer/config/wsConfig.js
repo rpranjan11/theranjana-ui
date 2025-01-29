@@ -1,16 +1,15 @@
 // src/confer/config/wsConfig.js
 const getWebSocketUrl = () => {
-    const isProduction = process.env.NODE_ENV === 'production';
+    const isProduction = process.env.REACT_APP_CONFER_SERVER_ENV === 'production';
 
     if (isProduction) {
         return process.env.REACT_APP_CONFER_API_HOST_URL;
-        // return apiUrl.replace('https://', 'wss://').replace('http://', 'ws://');
+    } else {
+        // For local development
+        const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname;
+        const port = process.env.REACT_APP_CONFER_API_PORT || '8080';
+        return `ws://${host}:${port}`;
     }
-
-    // For local development
-    const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname;
-    const port = process.env.REACT_APP_CONFER_API_PORT || '8080';
-    return `ws://${host}:${port}`;
 };
 
 const config = {
