@@ -3,8 +3,8 @@ const getWebSocketUrl = () => {
     const isProduction = process.env.NODE_ENV === 'production';
 
     if (isProduction) {
-        const apiUrl = process.env.REACT_APP_CONFER_API_HOST_URL;
-        return apiUrl.replace('https://', 'wss://').replace('http://', 'ws://');
+        return process.env.REACT_APP_CONFER_API_HOST_URL;
+        // return apiUrl.replace('https://', 'wss://').replace('http://', 'ws://');
     }
 
     // For local development
