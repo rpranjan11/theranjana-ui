@@ -47,11 +47,15 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
 
     useEffect(() => {
         if (connectionStatus.status === 'connected' && !adminSession) {
-            console.log('Sending admin auth message...');
-            sendMessage({
-                type: 'admin_auth',
-                credentials
-            });
+            console.log('Sending admin auth message with credentials:', credentials);
+            try {
+                sendMessage({
+                    type: 'admin_auth',
+                    credentials
+                });
+            } catch (error) {
+                console.error('Error sending admin authentication:', error);
+            }
         }
     }, [connectionStatus.status, adminSession, credentials, sendMessage]);
 

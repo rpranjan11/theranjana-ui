@@ -3,7 +3,15 @@ const getWebSocketUrl = () => {
     const isProduction = process.env.REACT_APP_CONFER_SERVER_ENV === 'production';
 
     if (isProduction) {
-        return process.env.REACT_APP_CONFER_API_HOST_URL;
+        // Get the WebSocket URL from environment variable
+        const wsUrl = process.env.REACT_APP_CONFER_API_HOST_URL || '';
+        // Ensure we're using wss:// for secure connections
+        if (wsUrl.startsWith('https://')) {
+            return wsUrl.replace('https://', 'wss://');
+        } else if (wsUrl.startsWith('http://')) {
+            return wsUrl.replace('http://', 'ws://');
+        }
+        return `wss://${wsUrl}`;
     } else {
         // For local development
         const host = process.env.REACT_APP_CONFER_API_HOST || window.location.hostname;

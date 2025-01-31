@@ -166,12 +166,13 @@ export const WebSocketProvider = ({ children }) => {
         if (!shouldConnect) return;
 
         try {
+            console.log('Attempting to connect to WebSocket URL:', config.wsUrl);
             const ws = new WebSocket(config.wsUrl);
             ws.binaryType = 'blob';
             wsRef.current = ws;
 
             ws.onopen = () => {
-                console.log('WebSocket connected with URL:', config.wsUrl);
+                console.log('WebSocket connected successfully to:', config.wsUrl);
                 setConnectionStatus({
                     status: 'connected',
                     error: null
@@ -188,20 +189,31 @@ export const WebSocketProvider = ({ children }) => {
                     } else {
                         data = JSON.parse(event.data);
                     }
+                    // Add more detailed logging for auth-related messages
+                    if (data.type === 'auth_response' || data.type === 'admin_auth') {
+                        console.log('Authentication-related message received:', data);
+                    }
                     handleMessage(data);
                 } catch (error) {
                     console.error('Error processing message:', error);
                 }
             };
 
-            ws.onclose = handleUnexpectedClosure;
-            ws.onerror = handleWebSocketError;
+            ws.onclose = (event) => {
+                console.log('WebSocket connection closed:', event.code, event.reason);
+                handleUnexpectedClosure(event);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error occurred:', error);
+                handleWebSocketError(error);
+            };
 
         } catch (error) {
             console.error('Connection creation failed:', error);
             setConnectionStatus({
                 status: 'disconnected',
-                error: 'Failed to create connection'
+                error: 'Failed to create connection: ' + error.message
             });
         }
     }, [shouldConnect, startHeartbeat, handleMessage, handleUnexpectedClosure, handleWebSocketError]);
