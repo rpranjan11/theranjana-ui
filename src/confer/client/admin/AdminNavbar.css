@@ -1,0 +1,150 @@
+/* src/confer/client/admin/AdminNavbar.css */
+.admin-navbar {
+    background-color: #f8f9fa;
+    padding: 1rem 150px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admin-nav-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Top row styling */
+.admin-nav-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.admin-nav-title {
+    margin: 0;
+    font-size: 2rem;
+    color: #1a73e8;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+/* Bottom row styling */
+.admin-nav-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15rem;
+}
+
+.admin-connection-status {
+    display: block;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-connection-status .error {
+    color: #dc3545;
+    margin: 0;
+}
+
+/* Status colors */
+.admin-status-text {
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.admin-status-connected {
+    color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.admin-status-connecting {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.admin-status-disconnected {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.admin-status-warning {
+    color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* Topic selector styling */
+.topic-selector {
+    position: relative;
+    min-width: 200px;
+    width: auto;
+}
+
+.topic-selector select {
+    width: 100%;
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Custom arrow indicator */
+.topic-selector::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #666;
+    pointer-events: none;
+}
+
+.topic-selector select:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.topic-selector select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Logout button styling */
+.logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.logout-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Custom width class for selected option */
+.topic-selector.has-selection select {
+    width: auto;
+    min-width: 100%;
+}

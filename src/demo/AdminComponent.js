@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { AppContext } from './AppContext';
 
 const AdminComponent = () => {
-    const { messages, pushNextMessage, deleteLastMessage } = useContext(AppContext);
+    const { messages, pushNextMessage, deleteLastMessage, isConnected } = useContext(AppContext);
 
     return (
         <div>
