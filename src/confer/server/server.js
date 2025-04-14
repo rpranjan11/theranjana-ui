@@ -255,11 +255,17 @@ wss.on('connection', (ws, req) => {
                     if (ws.isAdmin) {
                         const deletedMessage = messageStore.deleteLastMessage(ws.adminId);
                         if (deletedMessage) {
-                            // Notify all audience members about the deleted message
-                            sessionManager.notifyAudiences({
+                            // Send notification to all clients INCLUDING ADMIN
+                            const notificationMessage = {
                                 type: 'message_deleted',
                                 timestamp: new Date().toISOString()
-                            });
+                            };
+
+                            // Send to all audience clients
+                            sessionManager.notifyAudiences(notificationMessage);
+
+                            // ALSO send back to the admin who requested the deletion
+                            ws.send(JSON.stringify(notificationMessage));
                         }
                     }
                     break;

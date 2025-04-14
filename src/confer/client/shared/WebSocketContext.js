@@ -101,6 +101,7 @@ export const WebSocketProvider = ({ children }) => {
                 case 'auth_response':
                     handleAuthResponse(message);
                     break;
+
                 case 'admin_auth':
                     if (message.status === 'success') {
                         setAdminSession({
@@ -109,55 +110,121 @@ export const WebSocketProvider = ({ children }) => {
                         });
                     }
                     break;
+
                 case 'audience_connect':
-                    // For audience, set initial state
-                    if (message.adminId) {
-                        setMessages(message.messages || []);
-                        setCurrentTopic(message.currentTopic || '');
-                    }
-                    break;
                 case 'initial_state':
-                    if (message.currentTopic) {
-                        setCurrentTopic(message.currentTopic);
-                    }
-                    if (message.messages) {
-                        setMessages(message.messages);
-                    }
                     if (message.adminId) {
+                        setConnectionStatus({
+                            status: 'connected',
+                            error: null
+                        });
+                        if (message.messages) {
+                            setMessages(message.messages);
+                        }
+                        if (message.currentTopic) {
+                            setCurrentTopic(message.currentTopic);
+                        }
                         setAdminSession({
                             adminId: message.adminId,
                             lastActivity: Date.now()
                         });
+                    } else {
+                        setConnectionStatus({
+                            status: 'disconnected',
+                            error: 'No active admin session'
+                        });
                     }
                     break;
-                case 'new_message':
-                    setMessages(prev => [...prev, message.data]);
+
+                case 'existing_session':
+                    setConnectionStatus({
+                        status: 'existing_session',
+                        sessionTransferAvailable: true
+                    });
                     break;
+
+                case 'new_message':
+                    console.log('New message received:', message.data);
+                    setMessages(prev => {
+                        // Check if message already exists in the array
+                        const messageExists = prev.some(msg =>
+                            msg.timestamp === message.data.timestamp &&
+                            msg.content === message.data.content
+                        );
+                        if (messageExists) {
+                            return prev;
+                        }
+                        return [...prev, message.data];
+                    });
+                    break;
+
+                case 'push_message':
+                    console.log('Push message received:', message.data);
+                    if (message.data) {
+                        const newMessage = {
+                            ...message.data,
+                            timestamp: message.data.timestamp || new Date().toISOString()
+                        };
+
+                        // Update messages state
+                        setMessages(prevMessages => {
+                            console.log('WebSocketContext - Adding message, current count:', prevMessages.length);
+
+                            // Check if message already exists to prevent duplicates
+                            const messageExists = prevMessages.some(msg =>
+                                msg.timestamp === newMessage.timestamp &&
+                                msg.content === newMessage.content
+                            );
+
+                            if (messageExists) {
+                                console.log('WebSocketContext - Duplicate message detected, not adding');
+                                return prevMessages;
+                            }
+
+                            console.log('WebSocketContext - Adding new message');
+                            return [...prevMessages, newMessage];
+                        });
+                    }
+                    break;
+
                 case 'message_deleted':
+                    console.log('Message deletion notification received');
                     setMessages(prev => prev.slice(0, -1));
                     break;
+
+                case 'delete_message':
+                    console.log('Delete message request processed');
+                    // Don't update messages here - wait for server confirmation
+                    break;
+
                 case 'clear_messages':
+                    console.log('Clear messages command received');
                     setMessages([]);
                     break;
+
                 case 'topic_update':
                     console.log('Topic update received:', message.topic);
                     setCurrentTopic(message.topic);
                     setMessages([]); // Clear messages when topic changes
                     break;
+
                 case 'heartbeat':
                     if (wsRef.current?.readyState === WebSocket.OPEN) {
                         wsRef.current.send(JSON.stringify({ type: 'heartbeat_ack' }));
                     }
                     break;
+
                 case 'admin_timeout_warning':
                     handleTimeoutWarning(message);
                     break;
+
                 case 'admin_connected':
                     setConnectionStatus({
                         status: 'connected',
                         error: null
                     });
                     break;
+
                 case 'admin_disconnected':
                     setConnectionStatus({
                         status: 'disconnected',
@@ -167,6 +234,25 @@ export const WebSocketProvider = ({ children }) => {
                     setCurrentTopic('');
                     setMessages([]);
                     break;
+
+                case 'transfer_response':
+                    if (message.status === 'transferred') {
+                        setAdminSession({
+                            adminId: message.adminId,
+                            lastActivity: Date.now()
+                        });
+                        setConnectionStatus({
+                            status: 'connected',
+                            error: null
+                        });
+                    } else {
+                        setConnectionStatus({
+                            status: 'error',
+                            error: message.message || 'Session transfer failed'
+                        });
+                    }
+                    break;
+
                 default:
                     if (message.type !== 'heartbeat_ack') {
                         console.log('Unhandled message type:', message.type);
@@ -204,6 +290,8 @@ export const WebSocketProvider = ({ children }) => {
                     } else {
                         data = JSON.parse(event.data);
                     }
+                    console.log('WebSocket message received:', data.type, data);
+
                     // Add more detailed logging for auth-related messages
                     if (data.type === 'auth_response' || data.type === 'admin_auth') {
                         console.log('Authentication-related message received:', data);
@@ -280,6 +368,10 @@ export const WebSocketProvider = ({ children }) => {
         };
     }, [shouldConnect, connect]);
 
+    useEffect(() => {
+        console.log('WebSocketContext messages state:', messages.length);
+    }, [messages]);
+
     const value = {
         wsRef,
         connectionStatus,
@@ -288,6 +380,7 @@ export const WebSocketProvider = ({ children }) => {
         setAdminSession,
         currentTopic,
         messages,
+        setMessages,
         disconnect,
     };
 

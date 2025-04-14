@@ -4,11 +4,18 @@ import { useWebSocket } from '../shared/WebSocketContext';
 import './AdminDashboard.css';
 
 const AdminDashboard = ({ credentials, selectedTopic }) => {
-    const { connectionStatus, adminSession, sendMessage } = useWebSocket();
-    const [messages, setMessages] = useState([]);
+    const { connectionStatus, adminSession, sendMessage, messages, setMessages } = useWebSocket();
     const [predefinedMessages, setPredefinedMessages] = useState([]);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
     const messageListRef = useRef(null);
+
+    console.log('AdminDashboard render state:', {
+        adminSession,
+        messagesLength: messages ? messages.length : 'null',
+        disabledCondition: !adminSession || messages.length === 0,
+        currentMessageIndex,
+        predefinedMessagesLength: predefinedMessages ? predefinedMessages.length : 'null'
+    });
 
     const scrollToBottom = () => {
         if (messageListRef.current) {
@@ -78,25 +85,40 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
         scrollToBottom();
     }, [messages]);
 
+    useEffect(() => {
+        console.log('Messages changed in AdminDashboard:', messages.length);
+        // Force re-render when messages change
+        const forceUpdate = setTimeout(() => {}, 0);
+        return () => clearTimeout(forceUpdate);
+    }, [messages]);
+
     const pushMessage = () => {
+        console.log('Push button clicked, current state:', {
+            currentMessageIndex,
+            predefinedMessagesLength: predefinedMessages.length,
+            canPush: currentMessageIndex < predefinedMessages.length
+        });
+
         if (currentMessageIndex < predefinedMessages.length) {
             const message = {
                 ...predefinedMessages[currentMessageIndex],
                 timestamp: new Date().toISOString()
             };
+            console.log('Sending push message:', message);
             sendMessage({
                 type: 'push_message',
                 data: message
             });
-            setMessages([...messages, message]);
             setCurrentMessageIndex(prev => prev + 1);
         }
     };
 
     const deleteLastMessage = () => {
         if (messages.length > 0) {
+            console.log('Sending delete message request');
             sendMessage({ type: 'delete_message' });
-            setMessages(prev => prev.slice(0, -1));
+
+            // Let WebSocketContext handle message state updates
             setCurrentMessageIndex(prev => prev - 1);
         }
     };
@@ -139,8 +161,10 @@ const AdminDashboard = ({ credentials, selectedTopic }) => {
                             className="delete-button"
                             onClick={deleteLastMessage}
                             disabled={!adminSession || messages.length === 0}
+                            data-admin={!!adminSession}
+                            data-messages={messages.length}
                         >
-                            Delete Last Message
+                            Delete Last Message ({messages.length} messages)
                         </button>
                     </div>
 
