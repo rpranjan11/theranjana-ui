@@ -84,6 +84,12 @@ const MessageDisplay = () => {
                     setMessages(prev => prev.slice(0, -1));
                     break;
 
+                case 'admin_connected':
+                    console.log('Processing admin connection');
+                    setAdminActive(true);
+                    // You can also add any other state updates needed
+                    break;
+
                 case 'admin_disconnected':
                     console.log('Processing admin disconnection');
                     setAdminActive(false);

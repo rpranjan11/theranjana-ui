@@ -152,6 +152,21 @@ export const WebSocketProvider = ({ children }) => {
                 case 'admin_timeout_warning':
                     handleTimeoutWarning(message);
                     break;
+                case 'admin_connected':
+                    setConnectionStatus({
+                        status: 'connected',
+                        error: null
+                    });
+                    break;
+                case 'admin_disconnected':
+                    setConnectionStatus({
+                        status: 'disconnected',
+                        error: 'Admin has disconnected'
+                    });
+                    setAdminSession(null);
+                    setCurrentTopic('');
+                    setMessages([]);
+                    break;
                 default:
                     if (message.type !== 'heartbeat_ack') {
                         console.log('Unhandled message type:', message.type);

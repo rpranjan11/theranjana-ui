@@ -13,10 +13,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `node server.js`
+### `node ./src/confer/server/server.js`
 This will open the websocket server on port 8080
 
-## Available Scripts
+## To start the react app
 
 In the project directory, you can run:
 

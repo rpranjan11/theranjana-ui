@@ -251,6 +251,19 @@ wss.on('connection', (ws, req) => {
                     }
                     break;
 
+                case 'delete_message':
+                    if (ws.isAdmin) {
+                        const deletedMessage = messageStore.deleteLastMessage(ws.adminId);
+                        if (deletedMessage) {
+                            // Notify all audience members about the deleted message
+                            sessionManager.notifyAudiences({
+                                type: 'message_deleted',
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                    }
+                    break;
+
                 default:
                     if (ws.isAdmin) {
                         handleAdminMessage(ws, message, ws.adminId);
