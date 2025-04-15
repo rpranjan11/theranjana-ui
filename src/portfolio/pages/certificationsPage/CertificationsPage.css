@@ -1,11 +1,4 @@
 .certification-page-content {
-  /* border: 10px solid #efefef;
-  border-radius: 1rem;
-  overflow: auto; */
-  /* height: 518px; */
-  /* aspect-ratio: 8 / 5; */
-  /* height: 500px;
-  width: 800px; */
   margin: 0 !important;
   height: -webkit-fill-available;
   padding: 2rem;
@@ -25,19 +18,24 @@
   border-bottom: 5px dotted #ffffff;
 }
 
-.certification-page-content .details #topic-name {
+.certification-page-content .details #cert-name {
   font-size: 1.2rem;
   color: black;
   margin-bottom: 1rem;
 }
-.certification-page-content .details #authors {
+.certification-page-content .details #issuing-authority {
+  font-size: 1rem;
+  color: rgb(88, 88, 88);
+  margin-bottom: 0.5rem;
+}
+.certification-page-content .details #issue-date {
   font-size: 1rem;
   color: rgb(88, 88, 88);
   margin-bottom: 1rem;
 }
-.certification-page-content .details #place {
+.certification-page-content .details #credential {
   font-size: 1rem;
-  color: rgb(164, 164, 164);
+  color: rgb(88, 88, 88);
   margin-bottom: 1rem;
 }
 .certification-page-content .details #links {

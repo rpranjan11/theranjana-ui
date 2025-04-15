@@ -27,15 +27,15 @@ export default function CertificationsPage(props) {
             {certificationData.map((elem, idx) => {
                 return (
                     <div key={idx} className="details">
-                        <span id="topic-name" className="">{elem.title}</span>
+                        <span id="cert-name" className=""><strong>{elem.title}</strong></span>
                         <span id="issuing-authority"
-                              className="">Issuing Organization : {elem.issuingOrganization}</span>
+                              className=""><strong>Issuing Organization :</strong> {elem.issuingOrganization}</span>
                         <span id="links" className="">
-                            <span id="place" className="">Issue Date : {elem.issueDate} </span>
-                            <span id="place" className="">[No Expiration]</span>
+                            <span id="issue-date" className=""><strong>Issue Date :</strong> {elem.issueDate} - </span>
+                            <span id="expiry" className="">No Expiration</span>
                         </span>
                         <span id="links" className="">
-                            <span id="place" className="">Credentials : {elem.credentials} </span>
+                            <span id="credential" className=""><strong>Credentials :</strong> {elem.credentials} </span>
                             {elem.showCredentialsLink && <a href={elem.showCredentialsLink} target="_blank"
                                                             rel="noopener">[Show Credentials]</a>}
                         </span>
