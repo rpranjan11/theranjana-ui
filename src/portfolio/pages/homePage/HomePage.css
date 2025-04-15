@@ -133,7 +133,7 @@
     border: 10px solid #efefef;
     border-radius: 1rem;
     overflow: auto;
-    aspect-ratio: 8 / 5;
+    aspect-ratio: 8 / 6;
   }
 
   #personal-info {
@@ -186,7 +186,7 @@
     border: 10px solid #efefef;
     border-radius: 1rem;
     overflow: auto;
-    aspect-ratio: 8 / 5;
+    aspect-ratio: 8 / 6;
   }
 
   #personal-info {

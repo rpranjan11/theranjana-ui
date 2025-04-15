@@ -63,15 +63,18 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                 <Container
                     className="page-content"
                 >
-                    <Header setPageOpen={setPageOpen} pageOpen={pageOpen} mobileView={mobileView} />
+                    <Header setPageOpen={setPageOpen} pageOpen={pageOpen} mobileView={mobileView}/>
                     <div className={mobileView ? "wrapper-mobile-view" : "wrapper"}>
                         {!pageOpen ? (
                             <Row className="card-content">
-                                <Col md={mobileView ? 12 : 6} lg={mobileView ? 12 : 6} sm={12} className={mobileView ? "profile-image" : "profile-image after"}>
-                                    <img className="card_Avatar" style={{ border: 'none', boxShadow: 'none' }} src={userData.profile_picture ? userData.profile_picture : ''}></img>
+                                <Col md={mobileView ? 12 : 6} lg={mobileView ? 12 : 6} sm={12}
+                                     className={mobileView ? "profile-image" : "profile-image after"}>
+                                    <img className="card_Avatar" style={{border: 'none', boxShadow: 'none'}}
+                                         src={userData.profile_picture ? userData.profile_picture : ''}></img>
                                     <span className={mobileView ? "partition-dash" : 'partition-dash-hide'}></span>
                                 </Col>
-                                <Col md={mobileView ? 12 : 6} lg={mobileView ? 12 : 6} sm={12} className="personal-content">
+                                <Col md={mobileView ? 12 : 6} lg={mobileView ? 12 : 6} sm={12}
+                                     className="personal-content">
                                     <div id="personal-info">
                                         <div
                                             style={{
@@ -81,23 +84,43 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                                                 minWidth: "210px",
                                             }}
                                         >
-                                            <span className="" id="college-name" style={{ display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden', WebkitLineClamp: 1, whiteSpace: 'normal', paddingBottom: '10px' }}>
+                                            <span className="" id="college-name" style={{
+                                                display: '-webkit-box',
+                                                WebkitBoxOrient: 'vertical',
+                                                overflow: 'hidden',
+                                                WebkitLineClamp: 1,
+                                                whiteSpace: 'normal',
+                                                paddingBottom: '10px'
+                                            }}>
                                                 {userData.name}
                                             </span>
-                                            <span className="" id="post-name" style={{ display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden', WebkitLineClamp: 1, whiteSpace: 'normal', paddingBottom: '10px' }}>
+                                            <span className="" id="post-name" style={{
+                                                display: '-webkit-box',
+                                                WebkitBoxOrient: 'vertical',
+                                                overflow: 'hidden',
+                                                WebkitLineClamp: 1,
+                                                whiteSpace: 'normal',
+                                                paddingBottom: '10px'
+                                            }}>
                                                 {userData.position}
                                             </span>
-                                            <span className="" id="location" style={{ display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden', WebkitLineClamp: 1, whiteSpace: 'normal' }}>
+                                            <span className="" id="location" style={{
+                                                display: '-webkit-box',
+                                                WebkitBoxOrient: 'vertical',
+                                                overflow: 'hidden',
+                                                WebkitLineClamp: 1,
+                                                whiteSpace: 'normal'
+                                            }}>
                                                 <i
-                                                    style={{ color: "black" }}
+                                                    style={{color: "black"}}
                                                     className="bi bi-geo-alt-fill me-2"
                                                 ></i>
                                                 {userData.location}
                                             </span>
                                         </div>
 
-                                        <div className="mt-4 mb-4" style={{ textAlign: "center" }}>
-                                            <span id="designation" className="" style={{ whiteSpace: 'normal' }}>
+                                        <div className="mt-4 mb-4" style={{textAlign: "center"}}>
+                                            <span id="designation" className="" style={{whiteSpace: 'normal'}}>
                                                 {userData.description}
                                             </span>
                                         </div>
@@ -171,11 +194,11 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                                 </Col>
                             </Row>
                         ) : pageOpen === "Experiences" ? (
-                            <ExperiencesPage uid={uid} />
+                            <ExperiencesPage uid={uid}/>
                         ) : pageOpen === "Projects" ? (
-                            <ProjectsPage uid={uid} />
+                            <ProjectsPage uid={uid}/>
                         ) : (
-                            <CertificationsPage uid={uid} />
+                            <CertificationsPage uid={uid}/>
                         )}
                     </div>
 
@@ -185,7 +208,9 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                 {/*    <img className="" style={{ height: '55px', border: 'none', boxShadow: 'none' }} src={userData.profile_logo ? userData.profile_logo : ''}></img>*/}
                 {/*</div>*/}
 
-                <Footer />
+                <div style={{width: '100%', maxWidth: '1000px', margin: '0 auto'}}>
+                    <Footer className={mobileView ? "footer-mobile-view" : "footer"}/>
+                </div>
             </div>
         </>
     );

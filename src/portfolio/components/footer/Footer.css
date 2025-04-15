@@ -1,17 +1,15 @@
-.footer{
-    /* position: fixed; */
-    /* left: 45%; */
-    /* z-index: 1;
-    display: flex; */
+/* In Footer.css */
+.footer, .footer-mobile-view {
     font-size: 1rem;
-    /* bottom: 0; */
-    padding: 15px;
+    padding: 10px;
     background-color: #f1f1f1;
-    margin-top: 1px;
+    margin-top: 10px !important;
     border: 5px solid #efefef;
     border-radius: 1rem;
+    box-sizing: border-box;
+    width: 100%; /* This makes it take the width of its parent */
 }
 
 .footer p {
-    background-color: white;
+    margin: 0 !important;
 }
