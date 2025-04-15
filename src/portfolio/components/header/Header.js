@@ -1,8 +1,7 @@
 import React, { useState,useEffect } from "react";
 import "./Header.css"
-import { useNavigate } from "react-router-dom";
+
 export default function Header(props) {
-    let navigate = useNavigate()
     const { pageOpen, setPageOpen, mobileView } = props
     const [needMargin, setNeedMargin] = useState(false)
 
@@ -35,7 +34,6 @@ export default function Header(props) {
 
     useEffect(()=>{
         if (window.innerWidth > 425) {
-            console.log(window.innerWidth)
             setNeedMargin(true)
         }
     },[])
@@ -56,23 +54,23 @@ export default function Header(props) {
                 </div>
 
                 <div className={needMargin?"me-5":""} style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} onClick={() => {
-                    setPageOpen("Videos")
+                    setPageOpen("Experiences")
                 }}>
-                    <span style={pageOpen === "Videos" ? { color: '#434343' } : { color: '#589cf7' }} >Videos</span>
-                    {pageOpen === "Videos" ? <span className="dash" /> : ""}
+                    <span style={pageOpen === "Experiences" ? { color: '#434343' } : { color: '#589cf7' }} >Experiences</span>
+                    {pageOpen === "Experiences" ? <span className="dash" /> : ""}
                 </div>
 
                 <div className={needMargin?"me-5":""} style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} onClick={() => {
-                    setPageOpen("Papers")
+                    setPageOpen("Projects")
                 }}>
-                    <span style={pageOpen === "Papers" ? { color: '#434343' } : { color: '#589cf7' }} >Papers</span>
-                    {pageOpen === "Papers" ? <span className="dash" /> : ""}
+                    <span style={pageOpen === "Projects" ? { color: '#434343' } : { color: '#589cf7' }} >Projects</span>
+                    {pageOpen === "Projects" ? <span className="dash" /> : ""}
                 </div>
                 <div className="" style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} onClick={() => {
-                    setPageOpen("Presentation")
+                    setPageOpen("Certifications")
                 }}>
-                    <span style={pageOpen === "Presentation" ? { color: '#434343' } : { color: '#589cf7' }} >Presentations</span>
-                    {pageOpen === "Presentation" ? <span className="dash" /> : ""}
+                    <span style={pageOpen === "Certifications" ? { color: '#434343' } : { color: '#589cf7' }} >Certifications</span>
+                    {pageOpen === "Certifications" ? <span className="dash" /> : ""}
                 </div>
             </div>
         </>

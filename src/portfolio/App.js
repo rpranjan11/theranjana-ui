@@ -1,8 +1,8 @@
 import './App.css';
 import HomePage from './pages/homePage/HomePage';
-import PapersPage from './pages/papersPage/PapersPage';
-import PresentationsPage from './pages/presentationsPage/PresentationsPage';
-import VideoPage from './pages/videoPage/VideoPage';
+import ProjectsPage from './pages/projectsPage/ProjectsPage';
+import CertificationsPage from './pages/certificationsPage/CertificationsPage';
+import ExperiencesPage from "./pages/experiencesPage/ExperiencesPage";
 import {BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { FirebaseProvider } from './firebase/userContext';
 
@@ -12,9 +12,9 @@ function App() {
             <BrowserRouter basename="/portfolio">
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/papers" element={<PapersPage />} />
-                    <Route path="/presentations" element={<PresentationsPage />} />
-                    <Route path="/videos" element={<VideoPage />} />
+                    <Route path="/experiences" element={<ExperiencesPage />} />
+                    <Route path="/projects" element={<ProjectsPage />} />
+                    <Route path="/certifications" element={<CertificationsPage />} />
                     <Route path="*" element={<Navigate to="/404" replace />} />
                 </Routes>
             </BrowserRouter>

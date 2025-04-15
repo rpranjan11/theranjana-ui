@@ -4,16 +4,14 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./HomePage.css";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import PapersPage from "../papersPage/PapersPage";
-import PresentationsPage from "../presentationsPage/PresentationsPage";
+import ExperiencesPage from "../experiencesPage/ExperiencesPage";
+import ProjectsPage from "../projectsPage/ProjectsPage";
+import CertificationsPage from "../certificationsPage/CertificationsPage";
 import { useFirebase } from "../../firebase/userContext"
-import VideosPage from "../videoPage/VideoPage";
 const uid = 'GDlai5dHijSaKcUW2R9xsGcS6Cn1'
-// const uid = 'cS8oudEyTJYa7XpYdZHCNZte63n2'
 
-export default function HomePage({ initialUserData, isLoading }) {
+export default function HomePage({ initialUserData = {}, isLoading = false }) {
     const [pageOpen, setPageOpen] = useState("");
-    const [showDialogBox, setShowDialogBox] = useState(true)
     const [userData, setuserData] = useState({})
     const [mobileView, setMobileView] = useState(false)
     let firebase = useFirebase()
@@ -30,8 +28,6 @@ export default function HomePage({ initialUserData, isLoading }) {
         };
     }
 
-
-    // In HomePage.js
     const handleResize = useCallback(
         debounce(() => {
             if (window.innerHeight > window.innerWidth) {
@@ -60,12 +56,7 @@ export default function HomePage({ initialUserData, isLoading }) {
             setMobileView(true)
         }
     }, [])
-    // window.addEventListener('resize',()=>{
-    //     console.log(window.innerWidth, window.innerHeight)
-    // })
-    // useEffect(()=>{
 
-    // },[])
     return (
         <>
             <div className={mobileView ? "home-page-content-mobiel-view" : "home-page-content"}>
@@ -106,7 +97,7 @@ export default function HomePage({ initialUserData, isLoading }) {
                                         </div>
 
                                         <div className="mt-4 mb-4" style={{ textAlign: "center" }}>
-                                            <span id="designation" className="" style={{ display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden', WebkitLineClamp: 6, whiteSpace: 'normal' }}>
+                                            <span id="designation" className="" style={{ whiteSpace: 'normal' }}>
                                                 {userData.description}
                                             </span>
                                         </div>
@@ -175,57 +166,25 @@ export default function HomePage({ initialUserData, isLoading }) {
                                                 </span>}
                                             </div>
 
-
-                                            <div className="icon orcid">
-                                                <div className="tooltip">
-                                                    OrcId
-                                                </div>
-                                                {/* {userData.collegeId &&  */}
-                                                <span>
-                                                    <a
-                                                        href={userData.collegeId || ""}
-                                                        target="_blank"
-                                                        rel="noopener"
-                                                    >
-                                                        <i style={{ color: 'rgba(var(--bs-link-color-rgb)' }} className="fa-brands fa-orcid"></i>                                                </a>
-                                                </span>
-                                                {/* } */}
-                                            </div>
-
-
-                                            <div className="icon google-scholar">
-                                                <div className="tooltip">
-                                                    GoogleScholar
-                                                </div>
-                                                {userData.googleScholar && <span>
-                                                    <a
-                                                        href={userData.googleScholar}
-                                                        target="_blank"
-                                                        rel="noopener"
-                                                    >
-                                                        <i className="fa-brands fa-google-scholar"></i>
-                                                    </a>
-                                                </span>}
-                                            </div>
                                         </div>
                                     </div>
                                 </Col>
                             </Row>
-                        ) : pageOpen === "Papers" ? (
-                            <PapersPage uid={uid} />
-                        ) :
-                            pageOpen === "Videos" ? (
-                                <VideosPage uid={uid} />
-                            ) :
-                                (
-                                    <PresentationsPage uid={uid} />
-                                )}
+                        ) : pageOpen === "Experiences" ? (
+                            <ExperiencesPage uid={uid} />
+                        ) : pageOpen === "Projects" ? (
+                            <ProjectsPage uid={uid} />
+                        ) : (
+                            <CertificationsPage uid={uid} />
+                        )}
                     </div>
 
                 </Container>
-                <div style={{ marginTop: 'auto', padding: '25px' }}>
-                    <img className="" style={{ height: '55px', border: 'none', boxShadow: 'none' }} src={userData.profile_logo ? userData.profile_logo : ''}></img>
-                </div>
+
+                {/*<div style={{ marginTop: 'auto', padding: '25px' }}>*/}
+                {/*    <img className="" style={{ height: '55px', border: 'none', boxShadow: 'none' }} src={userData.profile_logo ? userData.profile_logo : ''}></img>*/}
+                {/*</div>*/}
+
                 <Footer />
             </div>
         </>
@@ -242,15 +201,7 @@ HomePage.propTypes = {
         linkedIn: PropTypes.string,
         github: PropTypes.string,
         twitter: PropTypes.string,
-        collegeId: PropTypes.string,
-        googleScholar: PropTypes.string,
         profile_picture: PropTypes.string,
-        profile_logo: PropTypes.string
     }),
     isLoading: PropTypes.bool
-};
-
-HomePage.defaultProps = {
-    isLoading: false,
-    initialUserData: {}
 };

@@ -1,0 +1,66 @@
+.experiences-page-content {
+  padding: 2rem;
+  margin: 0 !important;
+  height: 100%;
+  overflow-y: scroll; /* Always show vertical scrollbar */
+}
+
+.wrapper{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.experiences-page-content .details {
+  display: flex;
+  flex-direction: column;
+  margin-right: 0;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.experiences-page-content .details:not(:last-child) {
+  border-bottom: 5px dotted #ffffff;
+}
+
+
+.experiences-page-content .details #line1{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.experiences-page-content .details #designation {
+  font-size: 1.2rem;
+  color: black;
+  margin-bottom: 0.5rem;
+}
+.experiences-page-content .details #employer {
+  font-size: 1.2rem;
+  color: rgb(164, 164, 164);
+  margin-bottom: 0.5rem;
+}
+.experiences-page-content .details #location {
+  font-size: 1rem;
+  color: rgb(88, 88, 88);
+  margin-bottom: 1rem;
+}
+.experiences-page-content .details #period {
+  font-size: 1rem;
+  color: rgb(88, 88, 88);
+  margin-bottom: 1rem;
+}
+.experiences-page-content .details #description {
+  font-size: 1rem;
+  color: rgb(88, 88, 88);
+  margin-bottom: 1rem;
+}
+.experiences-page-content .details #techs {
+  font-size: 1rem;
+  color: rgb(88, 88, 88);
+  margin-bottom: 1rem;
+}
+
+

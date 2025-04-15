@@ -2,10 +2,13 @@ import React from "react";
 import PropTypes from 'prop-types';
 import "./Footer.css"
 
-export default function Footer({ socialLinks, copyrightText }) {
+export default function Footer({
+                                   socialLinks = [],
+                                   copyrightText = `© ${new Date().getFullYear()} TheRanjana. All rights reserved.`
+                               }) {
     return (
         <footer className="footer" style={{ marginTop: 'auto', textAlign: 'center' }}>
-            <p>© 2023 Samviddhi</p>
+            <p>Copyright© 2025 TheRanjana. All rights reserved.</p>
         </footer>
     )
 }
@@ -19,9 +22,4 @@ Footer.propTypes = {
         })
     ),
     copyrightText: PropTypes.string
-};
-
-Footer.defaultProps = {
-    socialLinks: [],
-    copyrightText: `© ${new Date().getFullYear()} Prashant. All rights reserved.`
 };

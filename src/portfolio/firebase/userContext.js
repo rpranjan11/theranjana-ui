@@ -102,17 +102,25 @@ export const FirebaseProvider = (props) => {
         });
     }
 
-    const getPapers = async (key, callback) => {
-        const paperRef = ref(database, `papers/${key}`);
-        onValue(paperRef, (snapshot) => {
+    const getProjects = async (key, callback) => {
+        const projectRef = ref(database, `projects/${key}`);
+        onValue(projectRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
 
-    const getPresentations = async (key, callback) => {
-        const presentationRef = ref(database, `presentations/${key}`);
-        onValue(presentationRef, (snapshot) => {
+    const getExperiences = async (key, callback) => {
+        const experienceRef = ref(database, `experiences/${key}`);
+        onValue(experienceRef, (snapshot) => {
+            const data = snapshot.val();
+            callback(data);
+        });
+    }
+
+    const getCertifications = async (key, callback) => {
+        const certificationRef = ref(database, `certifications/${key}`);
+        onValue(certificationRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
@@ -133,8 +141,9 @@ export const FirebaseProvider = (props) => {
                 getVideos,
                 getDataOnce,
                 getUserData,
-                getPapers,
-                getPresentations,
+                getProjects,
+                getExperiences,
+                getCertifications,
                 getUsersBio,
             }}
         >
