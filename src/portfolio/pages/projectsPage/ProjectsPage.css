@@ -34,6 +34,8 @@
   font-size: 1rem;
   color: rgb(88, 88, 88);
   margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+  text-align: justify;
 }
 .projects-page-content .details #techs {
   font-size: 1rem;
