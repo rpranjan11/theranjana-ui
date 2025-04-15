@@ -5,13 +5,22 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: {
         main: './src/index.js',
+        llmchatbot: './src/llmchatbot/index.js',
+        portfolio: './src/portfolio/index.js',
         confer: './src/confer/index.js',
         demo: './src/demo/index.js',
-        llmchatbot: './src/llmchatbot/index.js'
     },
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
+    },
+    resolve: {
+        extensions: ['.js', '.jsx', '.json'],
+        fallback: {
+            "path": require.resolve("path-browserify"),
+            "os": require.resolve("os-browserify/browser"),
+            "crypto": require.resolve("crypto-browserify")
+        }
     },
     module: {
         rules: [
@@ -48,6 +57,16 @@ module.exports = {
             filename: 'index.html'
         }),
         new HtmlWebpackPlugin({
+            template: './src/portfolio/index.html',
+            chunks: ['portfolio'],
+            filename: 'portfolio.html'
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/llmchatbot/index.html',
+            chunks: ['llmchatbot'],
+            filename: 'llmchatbot.html'
+        }),
+        new HtmlWebpackPlugin({
             template: './src/confer/index.html',
             chunks: ['confer'],
             filename: 'confer.html'
@@ -56,11 +75,6 @@ module.exports = {
             template: './src/demo/index.html',
             chunks: ['demo'],
             filename: 'demo.html'
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/llmchatbot/index.html',
-            chunks: ['llmchatbot'],
-            filename: 'llmchatbot.html'
         })
     ],
     devServer: {

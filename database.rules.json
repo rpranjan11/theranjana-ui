@@ -1,0 +1,34 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".write": "'GDlai5dHijSaKcUW2R9xsGcS6Cn1' === auth.uid",
+        ".read": "true"
+      }
+    },
+    "bio": {
+      "$uid": {
+        ".write": "'GDlai5dHijSaKcUW2R9xsGcS6Cn1' === auth.uid",
+        ".read": "true"
+      }
+    },
+    "presentations": {
+      "$uid": {
+        ".write": "'GDlai5dHijSaKcUW2R9xsGcS6Cn1' === auth.uid",
+        ".read": "true"
+      }
+    },
+    "papers": {
+      "$uid": {
+        ".write": "'GDlai5dHijSaKcUW2R9xsGcS6Cn1' === auth.uid",
+        ".read": "true"
+      }
+    },
+    "videos": {
+      "$uid": {
+        ".write": "'GDlai5dHijSaKcUW2R9xsGcS6Cn1' === auth.uid",
+        ".read": "true"
+      }
+    }
+  }
+}

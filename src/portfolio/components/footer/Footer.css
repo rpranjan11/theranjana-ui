@@ -1,0 +1,15 @@
+/* In Footer.css */
+.footer, .footer-mobile-view {
+    font-size: 1rem;
+    padding: 10px;
+    background-color: #f1f1f1;
+    margin-top: 10px !important;
+    border: 5px solid #efefef;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    width: 100%; /* This makes it take the width of its parent */
+}
+
+.footer p {
+    margin: 0 !important;
+}

@@ -1,10 +1,11 @@
 // src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ConferApp from './confer/App';
 import DemoApp from './demo/App';
 import LLMChatbot from './llmchatbot/App';
+import Portfolio from './portfolio/App';
 
 const App = () => {
     const path = window.location.pathname;
@@ -20,6 +21,8 @@ const App = () => {
         return <DemoApp />;
     } else if (path.startsWith('/llmchatbot')) {
         return <LLMChatbot />;
+    } else if (path.startsWith('/portfolio')) {
+        return <Portfolio />;
     } else {
         return (
             <div style={{
@@ -30,16 +33,20 @@ const App = () => {
                 justifyContent: 'center'
             }}>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
+                        onClick={() => window.location.href = '/portfolio'}>
+                    Portfolio
+                </button>
+                <button style={{width: '300px', margin: '15px', padding: '10px'}}
+                        onClick={() => window.location.href = '/llmchatbot'}>
+                    LLM Chatbot
+                </button>
+                <button style={{width: '300px', margin: '15px', padding: '10px'}}
                         onClick={() => window.location.href = '/confer/client/admin'}>
                     Confer : Admin
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
                         onClick={() => window.location.href = '/confer/client/audience'}>
                     Confer : Audience
-                </button>
-                <button style={{width: '300px', margin: '15px', padding: '10px'}}
-                        onClick={() => window.location.href = '/llmchatbot'}>
-                    LLM Chatbot
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
                         onClick={() => window.location.href = '/demo/admin'}>
@@ -54,4 +61,5 @@ const App = () => {
     }
 };
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
