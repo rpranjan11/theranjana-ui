@@ -23,25 +23,27 @@ export default function ProjectsPage(props) {
             {projectsData.map((elem, idx) => {
                 return (
                     <div key={idx} className="details">
-                        <span id="topic-name">{elem.title}</span>
+                        <span id="project-name"><strong>{elem.title}</strong></span>
                         <span id="description">{elem.description}</span>
-                        <span id="techs">Technology : {elem.techs}</span>
+                        <span id="techs"><strong>Technology :</strong> {elem.techs}</span>
                         <span id="publish">
-                            <span id="develop-date">Developed on : {elem.publishedOn} </span>
+                            <span id="develop-date"><strong>Developed on :</strong> {elem.publishedOn} <span
+                                style={{marginRight: "2rem"}}></span></span>
                             {elem.projectLink &&
                                 <a className="mb-3" href={elem.projectLink} target="_blank"
-                                   rel="noopener">[LLMChatBot]</a>}
+                                   rel="noopener">[App : LLMChatBot]</a>}
                         </span>
                         <span id="links">
                             {elem.backendSourceCodeLink &&
                                 <a className="mb-3" href={elem.backendSourceCodeLink} target="_blank"
-                                   rel="noopener">[Backend Source Code]</a>}
+                                   rel="noopener">Backend Source Code</a>}
+                            <span style={{marginRight: "2rem"}}></span>
                             {elem.frontendSourceCodeLink &&
                                 <a className="mb-3" href={elem.frontendSourceCodeLink} target="_blank"
-                                   rel="noopener">[Frontend Source Code]</a>}
+                                   rel="noopener">Frontend Source Code</a>}
                         </span>
                     </div>
-            )
+                )
             })}
         </Row>
     )
