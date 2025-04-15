@@ -31,8 +31,8 @@ export default function ExperiencesPage(props) {
                             <span id="location">At <strong>{elem.location}</strong></span>
                             <span id="period"> working between <strong>{elem.period}</strong></span>
                     </span>
-                        <span id="description">{elem.description}</span>
-                        <span id="techs">Technology : {elem.techs}</span>
+                        <span id="achievements">{elem.achievements}</span>
+                        <span id="techs"><strong>Technology used:</strong> {elem.techs}</span>
                     </div>
                 )
             })}
