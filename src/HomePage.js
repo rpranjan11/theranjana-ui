@@ -1,6 +1,7 @@
 // src/HomePage.js
 import React from 'react';
 import './HomePage.css';
+import logo from './logo-marginless-transparent.png';
 
 const HomePage = () => {
     // App data structure to easily manage and add future apps
@@ -67,11 +68,12 @@ const HomePage = () => {
             <div className="animated-background"></div>
 
             <header className="app-store-header">
-                <h1>TheRanjana App Store</h1>
+                <img src={logo} alt="TheRanjana Logo" className="app-logo"/>
+                <h1>App Store</h1>
             </header>
 
             <main className="app-store-content">
-                {/* Standalone Apps */}
+            {/* Standalone Apps */}
                 <div className="app-category standalone-apps">
                     {categorizedApps.standalone.map(app => (
                         <div

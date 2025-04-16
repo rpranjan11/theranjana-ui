@@ -1,6 +1,39 @@
 /* src/HomePage.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+.app-store-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    gap: 1rem; /* Space between logo and text */
+}
+
+.app-logo {
+    height: 80px;
+}
+
+.app-store-header h1 {
+    margin: 0; /* Remove default margins */
+    font-size: 2.5rem; /* Adjust to match logo height */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .app-store-header {
+        flex-direction: column;
+    }
+
+    .app-logo {
+        height: 60px;
+        margin-bottom: 0.5rem;
+    }
+
+    .app-store-header h1 {
+        font-size: 2rem;
+    }
+}
+
 :root {
     /* Updated with more harmonious gradient colors - avoiding light purples */
     --background-start: #1a237e; /* Dark Indigo */
@@ -52,7 +85,7 @@ body {
             var(--background-end)
     );
     background-size: 400% 400%; /* Larger size for smoother transitions */
-    animation: gradient-animation 20s ease infinite; /* Much slower animation */
+    animation: gradient-animation 25s ease infinite; /* Much slower animation */
     z-index: -1;
 }
 
