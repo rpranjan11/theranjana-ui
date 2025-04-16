@@ -58,7 +58,7 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
     }, [])
 
     return (
-        <div className={mobileView ? "home-page-content-mobiel-view" : "home-page-content"}>
+        <div className={mobileView ? "home-page-content-mobile-view" : "home-page-content"}>
             <Container className="page-content">
                 <Header setPageOpen={setPageOpen} pageOpen={pageOpen} mobileView={mobileView}/>
                 <div className={mobileView ? "wrapper-mobile-view" : "wrapper"}>
@@ -66,55 +66,28 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                         <Row className="card-content">
                             <Col md={mobileView ? 12 : 6} lg={mobileView ? 12 : 6} sm={12}
                                  className={mobileView ? "profile-image" : "profile-image after"}>
-                                <img className="card_Avatar" style={{border: 'none', boxShadow: 'none'}}
+                                <img className="card_Avatar profile-image-no-border"
                                      src={userData.profile_picture ? userData.profile_picture : ''}></img>
                                 <span className={mobileView ? "partition-dash" : 'partition-dash-hide'}></span>
                             </Col>
                             <Col md={mobileView ? 12 : 6} lg={mobileView ? 12 : 6} sm={12}
                                  className="personal-content">
                                 <div id="personal-info">
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            alignItems: "center",
-                                            minWidth: "210px",
-                                        }}
-                                    >
-                                        <span className="" id="college-name" style={{
-                                            display: '-webkit-box',
-                                            WebkitBoxOrient: 'vertical',
-                                            overflow: 'hidden',
-                                            WebkitLineClamp: 1,
-                                            whiteSpace: 'normal',
-                                            paddingBottom: '10px'
-                                        }}>
+                                    <div className="user-details">
+                                        <span className="user-name text-truncate" id="college-name">
                                             {userData.name}
                                         </span>
-                                        <span className="" id="post-name" style={{
-                                            display: '-webkit-box',
-                                            WebkitBoxOrient: 'vertical',
-                                            overflow: 'hidden',
-                                            WebkitLineClamp: 1,
-                                            whiteSpace: 'normal',
-                                            paddingBottom: '10px'
-                                        }}>
+                                        <span className="user-position text-truncate" id="post-name">
                                             {userData.position}
                                         </span>
-                                        <span className="" id="location" style={{
-                                            display: '-webkit-box',
-                                            WebkitBoxOrient: 'vertical',
-                                            overflow: 'hidden',
-                                            WebkitLineClamp: 1,
-                                            whiteSpace: 'normal'
-                                        }}>
-                                            <i style={{color: "black"}} className="bi bi-geo-alt-fill me-2"></i>
+                                        <span className="user-location text-truncate" id="location">
+                                            <i className="location-icon bi bi-geo-alt-fill me-2"></i>
                                             {userData.location}
                                         </span>
                                     </div>
 
-                                    <div className="mt-4 mb-4" style={{textAlign: "center"}}>
-                                        <span id="designation" className="" style={{whiteSpace: 'normal'}}>
+                                    <div className="user-description">
+                                        <span id="designation" className="description-text">
                                             {userData.description}
                                         </span>
                                     </div>
@@ -177,14 +150,13 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                         <CertificationsPage uid={uid}/>
                     )}
                 </div>
-
             </Container>
 
             {/*<div style={{ marginTop: 'auto', padding: '25px' }}>*/}
             {/*    <img className="" style={{ height: '55px', border: 'none', boxShadow: 'none' }} src={userData.profile_logo ? userData.profile_logo : ''}></img>*/}
             {/*</div>*/}
 
-            <div style={{width: '100%', maxWidth: '1000px', margin: '0 auto'}}>
+            <div className="footer-wrapper">
                 <Footer className={mobileView ? "footer-mobile-view" : "footer"}/>
             </div>
         </div>
