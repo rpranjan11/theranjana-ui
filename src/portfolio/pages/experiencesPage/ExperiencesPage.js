@@ -29,7 +29,7 @@ export default function ExperiencesPage(props) {
                         </span>
                         <span id="line2">
                             <span id="location">At <strong>{elem.location}</strong></span>
-                            <span id="period"> working between <strong>{elem.period}</strong></span>
+                            <span id="period"> work from <strong>{elem.period}</strong></span>
                     </span>
                         <span id="achievements">{elem.achievements}</span>
                         <span id="techs"><strong>Technology used:</strong> {elem.techs}</span>
