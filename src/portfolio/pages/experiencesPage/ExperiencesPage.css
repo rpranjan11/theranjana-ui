@@ -30,6 +30,17 @@
   align-items: center;
   gap: 0.5rem;
 }
+@media screen and (max-width: 767px) {
+  .experiences-page-content .details #line1 {
+    display: block;
+  }
+
+  .experiences-page-content .details #designation,
+  .experiences-page-content .details #employer {
+    display: block;
+    line-height: 1.3;
+  }
+}
 .experiences-page-content .details #designation {
   font-size: 1.2rem;
   color: black;
@@ -46,15 +57,26 @@
   align-items: center;
   gap: 0.5rem;
 }
+@media screen and (max-width: 767px) {
+  .experiences-page-content .details #line2 {
+    display: block;
+  }
+
+  .experiences-page-content .details #location,
+  .experiences-page-content .details #period {
+    display: block;
+    line-height: 1.3;
+  }
+}
 .experiences-page-content .details #location {
   font-size: 1rem;
   color: rgb(88, 88, 88);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 .experiences-page-content .details #period {
   font-size: 1rem;
   color: rgb(88, 88, 88);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 .experiences-page-content .details #achievements {
   font-size: 1rem;

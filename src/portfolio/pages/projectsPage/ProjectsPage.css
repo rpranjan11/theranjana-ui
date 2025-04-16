@@ -70,5 +70,20 @@
   font-size: 1.2rem;
   text-decoration: none;
 }
+@media screen and (max-width: 767px) {
+  .projects-page-content .details #links {
+    display: block;
+  }
+
+  .projects-page-content .details #links a {
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .projects-page-content .details #links span[style] {
+    display: none;
+  }
+}
 
 
