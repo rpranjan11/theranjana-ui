@@ -9,6 +9,44 @@
   --black-color: #000;
   --spacing-small: 10px;
   --spacing-medium: 25px;
+  --gradient-light: #f5f9ff;
+  --gradient-medium: #eef4ff;
+  --gradient-accent: rgba(88, 156, 247, 0.08);
+}
+
+/* Simpler Background Animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Background Gradient */
+body {
+  background: linear-gradient(135deg, #ffffff 0%, #f2f7ff 30%, #e4f0ff 70%, #d0e6ff 100%);
+  background-size: 200% 200%;
+  animation: gradientAnimation 15s ease infinite;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Add a subtle color accent to the corner */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle at top right, rgba(88, 156, 247, 0.07), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Font Definitions */
@@ -57,12 +95,16 @@
   border-radius: var(--border-radius);
   overflow: auto;
   aspect-ratio: 8 / 6;
+  background-color: white;
+  box-shadow: 0 10px 30px rgba(88, 156, 247, 0.1); /* Add subtle shadow */
 }
 
 .wrapper-mobile-view {
   border: var(--main-border);
   border-radius: var(--border-radius);
   overflow: auto;
+  background-color: white;
+  box-shadow: 0 10px 30px rgba(88, 156, 247, 0.1); /* Add subtle shadow */
 }
 
 .partition-dash {
