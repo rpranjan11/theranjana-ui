@@ -37,6 +37,10 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
         []
     );
 
+    const handleScrollApps = () => {
+        window.location.href = "/";
+    };
+
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         return () => {
@@ -98,7 +102,8 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                                                 Mail
                                             </div>
                                             {userData.email && <span>
-                                                <a href={`mailto:${userData.email}`} target="_blank" rel="noopener noreferrer">
+                                                <a href={`mailto:${userData.email}`} target="_blank"
+                                                   rel="noopener noreferrer">
                                                     <i className="bi bi-envelope-fill"></i>
                                                 </a>
                                             </span>}
@@ -137,7 +142,17 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                                                 </a>
                                             </span>}
                                         </div>
+                                    </div>
 
+                                    <div className="scroll-apps-container">
+                                        <button
+                                            className="scroll-apps-button"
+                                            onClick={handleScrollApps}
+                                            aria-label="Scroll My Apps"
+                                        >
+                                            <i className="bi bi-app-indicator me-2"></i>
+                                            Scroll My Apps
+                                        </button>
                                     </div>
                                 </div>
                             </Col>

@@ -232,6 +232,70 @@ a:hover {
   background: var(--social-hover-color);
 }
 
+/* Scroll Apps Button Styling */
+.scroll-apps-container {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.scroll-apps-button {
+  background: linear-gradient(135deg, var(--text-color) 0%, #3a7bd5 100%);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.8rem 1.8rem;
+  font-family: "QuickSand";
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(88, 156, 247, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-apps-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s ease;
+}
+
+.scroll-apps-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(88, 156, 247, 0.5);
+}
+
+.scroll-apps-button:hover::before {
+  left: 100%;
+}
+
+.scroll-apps-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(88, 156, 247, 0.4);
+}
+
+.scroll-apps-button i {
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+}
+
+/* Mobile styles for the button */
+@media screen and (max-width: 767px) {
+  .scroll-apps-button {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
 /* Personal Info Section */
 #personal-info {
   display: flex;
