@@ -41,11 +41,11 @@ const App = () => {
                     LLM Chatbot
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
-                        onClick={() => window.location.href = '/confer/client/admin'}>
+                        onClick={() => window.location.href = 'confer/profile/admin'}>
                     Confer : Admin
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
-                        onClick={() => window.location.href = '/confer/client/audience'}>
+                        onClick={() => window.location.href = 'confer/profile/audience'}>
                     Confer : Audience
                 </button>
                 <button style={{width: '300px', margin: '15px', padding: '10px'}}
