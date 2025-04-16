@@ -128,6 +128,7 @@
 
 #designation {
   font-size: 1.2rem;
+  text-align: justify;
   max-width: 320px;
   display: flex;
 }
