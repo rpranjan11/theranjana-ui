@@ -20,16 +20,16 @@ function ConferApp() {
                 <Suspense fallback={<LoadingSpinner />}>
                     <Routes>
                         <Route
-                            path={`${basePath}/client/admin/*`}
+                            path={`${basePath}/profile/admin/*`}
                             element={<AdminPage />}
                         />
                         <Route
-                            path={`${basePath}/client/audience/*`}
+                            path={`${basePath}/profile/audience/*`}
                             element={<AudiencePage />}
                         />
                         <Route
                             path={`${basePath}`}
-                            element={<Navigate to={`${basePath}/client/audience`} replace />}
+                            element={<Navigate to={`${basePath}/profile/audience`} replace />}
                         />
                         <Route
                             path="*"
