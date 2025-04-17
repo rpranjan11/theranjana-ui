@@ -1,29 +1,39 @@
-import React from "react";
+// src/llmchatbot/Navbar/Navbar.js
+import React, { useState } from "react";
 import "./Navbar.css";
 import { Col, Row } from "react-bootstrap";
+import HelpPanel from "../help/HelpPanel";
 
+const Navbar = () => {
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-const Navbar = (props) => {
+    const toggleHelp = () => {
+        setIsHelpOpen(!isHelpOpen);
+    };
 
-  return (
-    <div className="border-shadow header col-md-12 py-4">
-      <div className="responsive-width px-4">
-        <Row className="responsive-md resposive-lg m-0 p-0">
-          <Col className="cursor-pointer d-flex align-items-center p-0">
-            <span id="heading">ChatBot & PDF Summary</span>
+    return (
+        <>
+            <div className="header col-md-12">
+                <div className="responsive-width px-4">
+                    <Row className="responsive-md resposive-lg m-0 p-0">
+                        <Col className="cursor-pointer d-flex align-items-center p-0">
+                            <div className="app-icon">
+                                <i className="bi bi-chat-square-text-fill"></i>
+                            </div>
+                            <span id="heading">LLMChatBot : General & PDF-based</span>
+                        </Col>
+                        <Col xs="auto" className="d-flex align-items-center">
+                            <button className="help-button" onClick={toggleHelp}>
+                                Help <i className="bi bi-question-circle-fill"></i>
+                            </button>
+                        </Col>
+                    </Row>
+                </div>
+            </div>
 
-          </Col>
-          {/* <Col xs sm={6} md={6} lg={6} className="text-overflow align-self-center p-0 nav-content">
-            <Nav className="display-flex justify-content-between align-items-center">
-              <div>
-                <button onClick={handleUploadPdf} id="contact-btn">Upload PDF</button>
-              </div>
-            </Nav>
-          </Col> */}
-        </Row>
-      </div>
-    </div>
-  )
+            <HelpPanel isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+        </>
+    );
 };
 
 export default Navbar;
