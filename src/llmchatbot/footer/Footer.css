@@ -1,10 +1,17 @@
 /* src/llmchatbot/footer/Footer.css */
 .footer {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.8) !important;
   backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #efefef !important;
   padding: 1rem 0;
   width: 100%;
+  position: relative;
+  left: 0;
+  right: 0;
+  /* Ensure the footer breaks out of any container constraints */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: none !important;
 }
 
 .footer-content {
@@ -17,7 +24,7 @@
 }
 
 .copyright {
-  color: rgba(50, 50, 50, 1);
+  color: white;
   font-size: 0.875rem;
   text-align: center;
 }
