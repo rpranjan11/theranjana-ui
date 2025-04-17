@@ -1,11 +1,12 @@
 // src/llmchatbot/ChatPage.js
 import React, { useState, useRef, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
 import "./ChatPage.css";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./footer/Footer";
 import pdfToText from 'react-pdftotext';
 import axios from "axios";
+
+const isMobile = window.innerWidth <= 576;
 
 export const ChatPage = () => {
     const llmchatbotServiceDomain = process.env.REACT_APP_LLMCHATBOT_API_URL;
@@ -346,7 +347,8 @@ export const ChatPage = () => {
                                 </div>
 
                                 <div className="chat-input-container">
-                                    <div className={`chat-input-wrapper ${chatGptQueryType === "pdf_based" ? "pdf-mode" : ""}`}>
+                                    <div
+                                        className={`chat-input-wrapper ${chatGptQueryType === "pdf_based" ? "pdf-mode" : ""}`}>
                                         <input
                                             type="text"
                                             className="chat-input"
@@ -354,7 +356,9 @@ export const ChatPage = () => {
                                             onChange={(e) => setChatGptQuery(e.target.value)}
                                             onKeyPress={(e) => handleKeyPress(e, 'chatgpt')}
                                             disabled={isLoading.chatGpt}
-                                            placeholder={isLoading.chatGpt ? "Generating response..." : "Ask ChatGPT a question..."}
+                                            placeholder={isLoading.chatGpt
+                                                ? (isMobile ? "Generating..." : "Generating response...")
+                                                : (isMobile ? "Ask ChatGPT" : "Ask ChatGPT a question...")}
                                         />
                                         <div className="input-actions">
                                             <select
@@ -390,7 +394,7 @@ export const ChatPage = () => {
                         <div className="chat-column">
                             <div className="chat-card">
                                 <div className="chat-header ollama-header">
-                                    <div className="model-icon">
+                                <div className="model-icon">
                                         <i className="bi bi-cpu"></i>
                                     </div>
                                     <div className="model-select-container">
@@ -428,7 +432,8 @@ export const ChatPage = () => {
                                 </div>
 
                                 <div className="chat-input-container">
-                                    <div className={`chat-input-wrapper ${ollamaQueryType === "pdf_based" ? "pdf-mode" : ""}`}>
+                                    <div
+                                        className={`chat-input-wrapper ${ollamaQueryType === "pdf_based" ? "pdf-mode" : ""}`}>
                                         <input
                                             type="text"
                                             className="chat-input"
@@ -436,7 +441,9 @@ export const ChatPage = () => {
                                             onChange={(e) => setOllamaQuery(e.target.value)}
                                             onKeyPress={(e) => handleKeyPress(e, 'ollama')}
                                             disabled={isLoading.ollama}
-                                            placeholder={isLoading.ollama ? "Generating response..." : "Ask Ollama a question..."}
+                                            placeholder={isLoading.ollama
+                                                ? (isMobile ? "Generating..." : "Generating response...")
+                                                : (isMobile ? "Ask Ollama" : "Ask Ollama a question...")}
                                         />
                                         <div className="input-actions">
                                             <select
@@ -470,7 +477,7 @@ export const ChatPage = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

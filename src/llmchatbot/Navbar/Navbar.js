@@ -12,7 +12,7 @@ const Navbar = () => {
                         <div className="app-icon">
                             <i className="bi bi-chat-square-text-fill"></i>
                         </div>
-                        <span id="heading">ChatBot & PDF Summary</span>
+                        <span id="heading">LLMChatBot : General & PDF-based</span>
                     </Col>
                 </Row>
             </div>
