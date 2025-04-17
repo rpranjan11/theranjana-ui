@@ -425,6 +425,30 @@ body {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    position: relative;
+}
+
+.chat-input-container::before {
+    content: attr(data-mode);
+    position: absolute;
+    top: -8px;
+    left: 16px;
+    font-size: 0.7rem;
+    background-color: var(--primary);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    z-index: 5;
+    display: none; /* Hidden by default */
+}
+
+/* Only show for PDF mode */
+.chat-input-container[data-mode="PDF"]::before {
+    display: block;
 }
 
 .chat-input-wrapper {
@@ -462,44 +486,71 @@ body {
     transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: var(--space-1);
+    gap: 4px;
 }
 
 .query-type-select {
-    background: transparent;
-    border: none;
-    color: var(--gray-400);
-    font-size: 0.75rem;
-    cursor: pointer;
-    padding: var(--space-1) var(--space-2);
+    background-color: rgba(255, 255, 255, 0.1); /* Visible background */
+    color: white; /* Brighter text */
+    padding: 4px 8px; /* More padding for better visibility */
+    border-radius: var(--radius-md); /* Rounded corners */
+    margin-right: 8px; /* Space before send button */
+    font-weight: 500; /* Slightly bolder */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border */
+    transition: all var(--transition-fast) ease;
+}
+
+.query-type-select:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Lighter on hover */
+    border-color: var(--primary-light);
 }
 
 .query-type-select:focus {
     outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
 }
 
+/* Apply a highlight style for the PDF option when PDF is uploaded */
+.query-type-select option[value="pdf_based"]:not([disabled]) {
+    color: var(--primary-light); /* Special color for enabled PDF option */
+}
+
+/* Visual indicator for PDF-based query mode */
+.chat-input-wrapper.pdf-mode .chat-input {
+    border-color: var(--primary);
+}
+
+/* Enhanced Send Button */
 .send-button {
-    background: none;
-    border: none;
-    color: var(--primary-light);
-    font-size: 1.4rem;
-    cursor: pointer;
+    color: white; /* Brighter base color instead of var(--primary-light) */
+    background-color: var(--primary); /* Add background color */
+    border-radius: 50%; /* Keep it circular */
+    width: 36px; /* Set explicit width */
+    height: 36px; /* Set explicit height */
     display: flex;
+    font-size: 1.4rem;
     align-items: center;
     justify-content: center;
-    padding: var(--space-1);
-    border-radius: var(--radius-full);
     transition: all var(--transition-fast) ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
 }
 
 .send-button:hover {
-    color: var(--primary);
-    background: rgba(255, 255, 255, 0.1);
+    background-color: var(--primary-dark); /* Darker background on hover */
+    color: white; /* Keep text white */
+    transform: scale(1.25); /* Slightly enlarge on hover */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+}
+
+.send-button:active {
+    transform: scale(0.95); /* Slightly shrink when clicked */
 }
 
 .send-button:disabled {
-    color: var(--gray-500);
-    cursor: not-allowed;
+    background-color: var(--gray-600); /* More visible disabled state */
+    color: var(--gray-200);
+    box-shadow: none;
 }
 
 .spinner {

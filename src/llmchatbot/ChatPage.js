@@ -346,7 +346,7 @@ export const ChatPage = () => {
                                 </div>
 
                                 <div className="chat-input-container">
-                                    <div className="chat-input-wrapper">
+                                    <div className={`chat-input-wrapper ${chatGptQueryType === "pdf_based" ? "pdf-mode" : ""}`}>
                                         <input
                                             type="text"
                                             className="chat-input"
@@ -428,7 +428,7 @@ export const ChatPage = () => {
                                 </div>
 
                                 <div className="chat-input-container">
-                                    <div className="chat-input-wrapper">
+                                    <div className={`chat-input-wrapper ${ollamaQueryType === "pdf_based" ? "pdf-mode" : ""}`}>
                                         <input
                                             type="text"
                                             className="chat-input"
