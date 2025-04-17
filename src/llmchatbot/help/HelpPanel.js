@@ -1,5 +1,5 @@
 // src/llmchatbot/help/HelpPanel.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HelpPanel.css';
 
 const HelpPanel = ({ isOpen, onClose }) => {
@@ -9,11 +9,29 @@ const HelpPanel = ({ isOpen, onClose }) => {
         setLanguage(e.target.value);
     };
 
+    // Close panel when clicking outside (on the left 50% of screen)
+    useEffect(() => {
+        const handleOutsideClick = (e) => {
+            // Only run this on desktop and only if panel is open
+            if (isOpen && window.innerWidth > 768) {
+                // Check if click is on the left side of the screen (outside the panel)
+                if (e.clientX < window.innerWidth * 0.5) {
+                    onClose();
+                }
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, [isOpen, onClose]);
+
     return (
         <div className={`help-panel ${isOpen ? 'open' : ''}`}>
             <div className="help-header">
                 <button className="home-button" onClick={onClose}>
-                    <i className="bi bi-arrow-left"></i> Home
+                    <i className="bi-arrow-return-left"></i> Home
                 </button>
                 <select
                     className="language-selector"
@@ -106,7 +124,7 @@ const HelpPanel = ({ isOpen, onClose }) => {
                         </ul>
                     </>
                 ) : (
-                    // Korean Instructions - You can translate the English content to Korean
+                    // Korean Instructions - Complete translation
                     <>
                         <h1>LLM 챗봇: 사용자 가이드</h1>
 
@@ -119,7 +137,6 @@ const HelpPanel = ({ isOpen, onClose }) => {
                             <li>업로드된 PDF에서 특정 정보 쿼리하기</li>
                         </ul>
 
-                        {/* Add the rest of the Korean translation here */}
                         <h2>PDF 처리 기능</h2>
                         <h3>PDF 업로드하기</h3>
                         <ol>
@@ -131,7 +148,59 @@ const HelpPanel = ({ isOpen, onClose }) => {
                             <li>처리가 완료되면 두 AI 모델 모두 PDF 내용의 요약을 제공합니다</li>
                         </ol>
 
-                        {/* Continue with the Korean translation of all sections */}
+                        <h3>중요 PDF 참고사항</h3>
+                        <ul>
+                            <li>PDF 파일만 허용됩니다 (.pdf 확장자)</li>
+                            <li>최대 파일 크기는 2MB입니다</li>
+                            <li>다른 PDF를 업로드해야 하는 경우, 파일 이름 옆의 "X" 버튼을 클릭하여 현재 파일을 제거하세요</li>
+                        </ul>
+
+                        <h2>AI 모델과 채팅하기</h2>
+                        <h3>ChatGPT 사용하기</h3>
+                        <ol>
+                            <li>왼쪽 패널에서 ChatGPT 인터페이스를 볼 수 있습니다</li>
+                            <li>기본 모델은 GPT-3.5 Turbo입니다</li>
+                            <li>하단의 입력 필드에 질문을 입력하세요</li>
+                            <li>Enter 키를 누르거나 전송 버튼을 클릭하여 질문을 제출하세요</li>
+                            <li>ChatGPT가 응답을 생성할 때까지 기다리세요</li>
+                            <li>대화 기록이 입력 필드 위에 표시됩니다</li>
+                        </ol>
+
+                        <h3>Ollama 사용하기</h3>
+                        <ol>
+                            <li>오른쪽 패널에서 Ollama 인터페이스를 볼 수 있습니다</li>
+                            <li>드롭다운에서 다른 모델을 선택할 수 있습니다 (Llama 3.2, Orca Mini 등)</li>
+                            <li>하단의 입력 필드에 질문을 입력하세요</li>
+                            <li>Enter 키를 누르거나 전송 버튼을 클릭하여 질문을 제출하세요</li>
+                            <li>Ollama가 응답을 생성할 때까지 기다리세요</li>
+                            <li>대화 기록이 입력 필드 위에 표시됩니다</li>
+                        </ol>
+
+                        <h2>쿼리 유형</h2>
+                        <h3>일반 모드</h3>
+                        <p>기본적으로 두 채팅 패널 모두 "일반" 모드입니다. 이는 다음을 의미합니다:</p>
+                        <ul>
+                            <li>일반 지식 질문을 할 수 있습니다</li>
+                            <li>AI는 업로드된 PDF에 대한 지식이 없습니다</li>
+                            <li>이 모드는 일반 정보, 코딩 도움, 창의적 글쓰기 등에 이상적입니다</li>
+                        </ul>
+
+                        <h3>PDF 모드</h3>
+                        <p>PDF를 업로드한 후 "PDF" 모드로 전환할 수 있습니다:</p>
+                        <ol>
+                            <li>입력 필드 옆의 드롭다운에서 "PDF"를 선택하세요</li>
+                            <li>입력 필드 위에 "PDF" 표시기가 나타납니다</li>
+                            <li>이 모드에서는 업로드된 PDF의 내용에 대해 특정 질문을 할 수 있습니다</li>
+                        </ol>
+
+                        <h3>최상의 결과를 위한 팁</h3>
+                        <ul>
+                            <li>질문을 구체적으로 하세요</li>
+                            <li>복잡한 주제의 경우, 질문을 더 작은 부분으로 나누세요</li>
+                            <li>필요한 경우 명확히 하는 후속 질문을 하세요</li>
+                            <li>다른 모델은 서로 다른 강점을 가질 수 있으므로 둘 다 시도해 보세요</li>
+                            <li>PDF에 대해 질문할 때는 페이지 번호나 섹션을 참조하세요</li>
+                        </ul>
                     </>
                 )}
             </div>
