@@ -1,36 +1,37 @@
-import React, { useState , useRef, useEffect } from "react";
+// src/llmchatbot/ChatPage.js
+import React, { useState, useRef, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import "./ChatPage.css"
+import "./ChatPage.css";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./footer/Footer";
-import pdfToText from 'react-pdftotext'
+import pdfToText from 'react-pdftotext';
 import axios from "axios";
 
 export const ChatPage = () => {
     const llmchatbotServiceDomain = process.env.REACT_APP_LLMCHATBOT_API_URL;
-    const [file, setFile] = useState("")
-    const [fileName, setFileName] = useState("")
+    const [file, setFile] = useState("");
+    const [fileName, setFileName] = useState("");
     const [selectedChatGptModel, setSelectedChatGptModel] = useState("gpt-3.5-turbo");
     const [selectedOllamaModel, setSelectedOllamaModel] = useState("llama3.2");
     const [chatGptQueryType, setChatGptQueryType] = useState("general");
     const [ollamaQueryType, setOllamaQueryType] = useState("general");
 
-    const textRef = useRef(null);
+    const messagesEndRef = useRef(null);
     const formRef = useRef(null);
 
     // State to store raw text from PDF for future use
-    const [fileText, setFileText] = useState("")
+    const [fileText, setFileText] = useState("");
 
-    const [chatGptQuery, setChatGptQuery] = useState("")
-    const [ollamaQuery, setOllamaQuery] = useState("")
+    const [chatGptQuery, setChatGptQuery] = useState("");
+    const [ollamaQuery, setOllamaQuery] = useState("");
 
-    const [chatGptQueryArray, setChatGptQueryArray] = useState([])
-    const [chatGptAnswerArray, setChatGptAnswerArray] = useState([])
-    const [text1, setText1] = useState("")
+    const [chatGptQueryArray, setChatGptQueryArray] = useState([]);
+    const [chatGptAnswerArray, setChatGptAnswerArray] = useState([]);
+    const [text1, setText1] = useState("");
 
-    const [ollamaQueryArray, setOllamaQueryArray] = useState([])
-    const [ollamaAnswerArray, setOllamaAnswerArray] = useState([])
-    const [text2, setText2] = useState("")
+    const [ollamaQueryArray, setOllamaQueryArray] = useState([]);
+    const [ollamaAnswerArray, setOllamaAnswerArray] = useState([]);
+    const [text2, setText2] = useState("");
 
     const [isUploading, setIsUploading] = useState(false);
     const [isPdfUploaded, setIsPdfUploaded] = useState(false);
@@ -52,50 +53,19 @@ export const ChatPage = () => {
             if (ollamaController) {
                 ollamaController.abort();
             }
-            // Clear any timeouts/intervals if you add them
-            // clearTimeout(timeoutId);
         };
         return cleanup;
     }, [chatGptController, ollamaController]);
 
-    // Update the click handlers for both chat systems
-    const handleChatGptClick = () => {
-        // Abort previous request if exists
-        if (chatGptController) {
-            chatGptController.abort();
-        }
-
-        // Create new controller for this request
-        const controller = new AbortController();
-        setChatGptController(controller);
-
-        // Call the query handler
-        handleChatGptQueries(chatGptQuery, chatGptQueryType);
-    };
-
-    const handleOllamaClick = () => {
-        // Abort previous request if exists
-        if (ollamaController) {
-            ollamaController.abort();
-        }
-
-        // Create new controller for this request
-        const controller = new AbortController();
-        setOllamaController(controller);
-
-        // Call the query handler
-        handleOllamaQueries(ollamaQuery, ollamaQueryType);
-    };
-
     const scrollToBottom = () => {
-        if (textRef.current) {
-            textRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }
-    useEffect(() => {
-        scrollToBottom(); // Scroll to bottom on initial render
-    }, [chatGptAnswerArray, ollamaAnswerArray, textRef]);  // Add dependencies to trigger scroll on new messages
+    };
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [chatGptAnswerArray, ollamaAnswerArray]);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -148,43 +118,42 @@ export const ChatPage = () => {
         formData.append('chatgpt_model', selectedChatGptModel);
         formData.append('ollama_model', selectedOllamaModel);
 
-        setIsUploading(true);  // Set loading state before request
+        setIsUploading(true);
 
         axios.post(`${llmchatbotServiceDomain}/uploadpdf`, formData)
             .then(response => {
                 console.log(response.data);
                 setText1("Uploaded PDF summary:\n" + response.data.chatgptResponse);
                 setText2(response.data.ollamaResponse);
-                setIsPdfUploaded(true); // Set PDF as uploaded on successful response
-                setIsUploading(false); // Clear loading state on success
+                setIsPdfUploaded(true);
+                setIsUploading(false);
             })
             .catch(error => {
                 console.error('Error:', error);
-                setIsUploading(false); // Clear loading state on error
-                setIsPdfUploaded(false); // Ensure PDF is marked as not uploaded on error
+                setIsUploading(false);
+                setIsPdfUploaded(false);
             });
     };
 
     // For ChatGPT queries:
-    const handleChatGptQueries = (text, queryType) => {
-        if (!text.trim()) return;
+    const handleChatGptQueries = () => {
+        if (!chatGptQuery.trim()) return;
 
-        // Set loading state for ChatGPT
         setIsLoading(prev => ({ ...prev, chatGpt: true }));
-
-        setChatGptQueryArray((prev) => [...prev, text]);
+        setChatGptQueryArray((prev) => [...prev, chatGptQuery]);
 
         let url = "";
-        if(queryType === "pdf_based") {
-            url = `${llmchatbotServiceDomain}/chatgptcustomresponse/${selectedChatGptModel}/${text}`;
+        if (chatGptQueryType === "pdf_based") {
+            url = `${llmchatbotServiceDomain}/chatgptcustomresponse/${selectedChatGptModel}/${chatGptQuery}`;
         } else {
-            url = `${llmchatbotServiceDomain}/chatgptgenericresponse/${selectedChatGptModel}/${text}`;
+            url = `${llmchatbotServiceDomain}/chatgptgenericresponse/${selectedChatGptModel}/${chatGptQuery}`;
         }
 
-        setChatGptAnswerArray((prev) => [...prev, "Generating Response ...."]);
+        setChatGptAnswerArray((prev) => [...prev, "Generating response..."]);
         scrollToBottom();
 
         const controller = new AbortController();
+        setChatGptController(controller);
 
         axios.get(url, { signal: controller.signal })
             .then(response => {
@@ -197,43 +166,36 @@ export const ChatPage = () => {
                     console.log('Request canceled');
                 } else {
                     setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
-                        <span key="error" style={{color: 'red'}}>Error: Failed to generate response</span>]);
+                        <span key="error" style={{ color: 'var(--danger)' }}>Error: Failed to generate response</span>]);
                     console.error('Error:', error);
                 }
             })
             .finally(() => {
-                // Reset loading state for ChatGPT
                 setIsLoading(prev => ({ ...prev, chatGpt: false }));
             });
 
         setChatGptQuery("");
-
-        // Return cleanup function
-        return () => {
-            controller.abort(); // Abort the API request if component unmounts or new request is made
-        };
     };
 
     // For Ollama Queries
-    const handleOllamaQueries = (text, queryType) => {
-        if (!text.trim()) return;
+    const handleOllamaQueries = () => {
+        if (!ollamaQuery.trim()) return;
 
-        // Set loading state for Ollama
         setIsLoading(prev => ({ ...prev, ollama: true }));
-
-        setOllamaQueryArray((prev) => [...prev, text]);
+        setOllamaQueryArray((prev) => [...prev, ollamaQuery]);
 
         let url = "";
-        if(queryType === "pdf_based") {
-            url = `${llmchatbotServiceDomain}/ollamacustomresponse/${selectedOllamaModel}/${text}`;
+        if (ollamaQueryType === "pdf_based") {
+            url = `${llmchatbotServiceDomain}/ollamacustomresponse/${selectedOllamaModel}/${ollamaQuery}`;
         } else {
-            url = `${llmchatbotServiceDomain}/ollamagenericresponse/${selectedOllamaModel}/${text}`;
+            url = `${llmchatbotServiceDomain}/ollamagenericresponse/${selectedOllamaModel}/${ollamaQuery}`;
         }
 
-        setOllamaAnswerArray((prev) => [...prev, "Generating Response ...."]);
+        setOllamaAnswerArray((prev) => [...prev, "Generating response..."]);
         scrollToBottom();
 
         const controller = new AbortController();
+        setOllamaController(controller);
 
         axios.get(url, { signal: controller.signal })
             .then(response => {
@@ -246,21 +208,26 @@ export const ChatPage = () => {
                     console.log('Request canceled');
                 } else {
                     setOllamaAnswerArray((prev) => [...prev.slice(0, -1),
-                        <span key="error" style={{color: 'red'}}>Error: Failed to generate response</span>]);
+                        <span key="error" style={{ color: 'var(--danger)' }}>Error: Failed to generate response</span>]);
                     console.error('Error:', error);
                 }
             })
             .finally(() => {
-                // Reset loading state for Ollama
                 setIsLoading(prev => ({ ...prev, ollama: false }));
             });
 
         setOllamaQuery("");
+    };
 
-        // Return cleanup function
-        return () => {
-            controller.abort(); // Abort the API request if component unmounts or new request is made
-        };
+    const handleKeyPress = (e, chatType) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (chatType === 'chatgpt') {
+                handleChatGptQueries();
+            } else {
+                handleOllamaQueries();
+            }
+        }
     };
 
     const onClickCross = () => {
@@ -268,8 +235,7 @@ export const ChatPage = () => {
         setFileName("");
         setText1("");
         setText2("");
-        setIsPdfUploaded(false); // Reset PDF uploaded state
-        // Reset query types to "general" if they were "pdf_based"
+        setIsPdfUploaded(false);
         if (chatGptQueryType === "pdf_based") {
             setChatGptQueryType("general");
         }
@@ -277,206 +243,234 @@ export const ChatPage = () => {
             setOllamaQueryType("general");
         }
         formRef.current.reset();
-    }
+    };
 
-
-      
     return (
         <div className="home_container">
-            <Navbar handleUploadPdf={handleUploadPdf} />
+            <Navbar />
             <div className="home_content">
                 {isUploading && (
-                    <>
-                        <div className="overlay"></div>
+                    <div className="overlay">
                         <div className="spinner-container">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                            <span className="ms-2">Uploading PDF</span>
+                            <div className="loading-spinner"></div>
+                            <span>Uploading and Processing PDF...</span>
                         </div>
-                    </>
-                )}
-                <div className="body_content">
-                    <div style={{display: 'flex', padding: '10px', justifyContent: 'center'}}>
-                        <small style={{color: '#666', marginBottom: '5px'}}>
-                            Please upload a PDF file for specialized query (max file size: 2MB)
-                        </small>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '20px', alignItems: 'center'}}>
-                        <div style={{display: 'flex', alignItems: 'center'}}>
-                            <form ref={formRef} onSubmit={handleFormSubmit} style={{marginRight: '10px'}}>
-                                <input
-                                    type="file"
-                                    accept="application/pdf"
-                                    id="file_input"
-                                    onChange={handleFileChange}
-                                />
-                            </form>
-                            <button
-                                onClick={handleUploadPdf}
-                                id="contact-btn"
-                                aria-label="Upload PDF file"
-                                disabled={!file}
-                            >
-                                Upload PDF
-                            </button>
-                        </div>
-                        {fileName &&
-                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                <span style={{maxWidth: '500px'}}>Selected PDF: <strong>{fileName}</strong></span>
-                                {file && <button id="close-btn" style={{marginLeft: '15px'}} onClick={onClickCross}><i className="bi bi-x-lg"></i></button>}
+                )}
+
+                <div className="body_content">
+                    <div className="upload-section">
+                        <h4 className="text-center mb-4">PDF Processing Tool</h4>
+                        <p className="text-center text-muted mb-4">
+                            Upload a PDF file (max 2MB) to generate a summary or ask specific questions about its content.
+                        </p>
+
+                        <div className="file-selection">
+                            <div className="file-input-container">
+                                <form ref={formRef} onSubmit={handleFormSubmit} className="file-input-wrapper">
+                                    <input
+                                        type="file"
+                                        accept="application/pdf"
+                                        id="file_input"
+                                        className="file-input"
+                                        onChange={handleFileChange}
+                                    />
+                                    <label htmlFor="file_input" className="file-input-button">
+                                        <i className="bi bi-file-earmark-pdf"></i>
+                                        {fileName ? fileName : "Choose PDF File"}
+                                    </label>
+                                </form>
+
+                                <button
+                                    onClick={handleUploadPdf}
+                                    className="upload-btn"
+                                    disabled={!file}
+                                    aria-label="Upload PDF file"
+                                >
+                                    <i className="bi bi-cloud-upload me-2"></i>
+                                    Upload & Process
+                                </button>
                             </div>
-                        }
+
+                            {fileName && (
+                                <div className="file-info">
+                                    <span className="file-name">{fileName}</span>
+                                    <button className="close-btn" onClick={onClickCross}>
+                                        <i className="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
-                    <div style={{flexGrow: '1', display: 'flex'}}>
-                        <Row style={{width: '100%'}}>
-                            <Col md={6} lg={6} className="px-3 pb-4" style={{border: '1px solid #ccc'}}>
-                                <div style={{display: 'flex', alignItems: 'center'}}>
-                                    <label htmlFor="chatgpt-model" style={{marginRight: '10px'}}>Select ChatGpt
-                                        Model:</label>
-                                    <select id="chatgpt-model" style={{flex: 1}} value={selectedChatGptModel}
-                                            onChange={(e) => setSelectedChatGptModel(e.target.value)}>
-                                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                                    </select>
-                                </div>
-                                <div className="card-content">
-                                    <div className="text" id="text-area" ref={textRef}>
-                                        {text1 && <span>{text1}</span>}
-                                        {
-                                            chatGptQueryArray.map((item, idx) => {
-                                                return (
-                                                    chatGptAnswerArray[idx] &&
-                                                    <div key={idx} style={{display: 'flex', flexDirection: 'column'}}>
-                                                        <span id="questions">-{item} </span>
-                                                        <span
-                                                            id={idx !== chatGptAnswerArray.length - 1 ? "answers" : 'latest'}>{chatGptAnswerArray[idx]}</span>
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                    <div className="chat-container">
+                        {/* ChatGPT Column */}
+                        <div className="chat-column">
+                            <div className="chat-card">
+                                <div className="chat-header chatgpt-header">
+                                    <div className="model-icon">
+                                        <i className="bi bi-robot"></i>
                                     </div>
-                                    {/* For ChatGPT section */}
-                                    <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <div className="model-select-container">
+                                        <label htmlFor="chatgpt-model" className="model-label">ChatGPT Model</label>
+                                        <select
+                                            id="chatgpt-model"
+                                            className="model-select"
+                                            value={selectedChatGptModel}
+                                            onChange={(e) => setSelectedChatGptModel(e.target.value)}
+                                        >
+                                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="chat-messages">
+                                    {text1 && <div className="message-summary">{text1}</div>}
+
+                                    {chatGptQueryArray.map((query, idx) => (
+                                        <React.Fragment key={`chat-${idx}`}>
+                                            <div className="message user-message">
+                                                <div className="message-bubble">{query}</div>
+                                                <div className="message-meta">You</div>
+                                            </div>
+
+                                            {chatGptAnswerArray[idx] && (
+                                                <div className="message ai-message">
+                                                    <div className="message-bubble">{chatGptAnswerArray[idx]}</div>
+                                                    <div className="message-meta">ChatGPT</div>
+                                                </div>
+                                            )}
+                                        </React.Fragment>
+                                    ))}
+                                    <div ref={messagesEndRef} />
+                                </div>
+
+                                <div className="chat-input-container">
+                                    <div className="chat-input-wrapper">
                                         <input
-                                            className="input_text"
                                             type="text"
+                                            className="chat-input"
                                             value={chatGptQuery}
                                             onChange={(e) => setChatGptQuery(e.target.value)}
+                                            onKeyPress={(e) => handleKeyPress(e, 'chatgpt')}
                                             disabled={isLoading.chatGpt}
-                                            placeholder={isLoading.chatGpt ? "Generating response..." : "Type your query here..."}
-                                            aria-label="Chat input field"
+                                            placeholder={isLoading.chatGpt ? "Generating response..." : "Ask ChatGPT a question..."}
                                         />
-                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                        <div className="input-actions">
                                             <select
-                                                id="chatgpt-query-type"
+                                                className="query-type-select"
                                                 value={chatGptQueryType}
                                                 onChange={(e) => setChatGptQueryType(e.target.value)}
                                                 disabled={isLoading.chatGpt}
                                             >
-                                                <option value="general">General Query</option>
+                                                <option value="general">General</option>
                                                 <option value="pdf_based" disabled={!isPdfUploaded}>
-                                                    From Pdf {!isPdfUploaded && '(Upload PDF first)'}
+                                                    PDF
                                                 </option>
                                             </select>
-                                            <i
-                                                style={{
-                                                    fontSize: '25px',
-                                                    cursor: isLoading.chatGpt ? 'not-allowed' : 'pointer',
-                                                    opacity: isLoading.chatGpt ? 0.5 : 1
-                                                }}
-                                                onClick={() => !isLoading.chatGpt && handleChatGptClick()}
-                                                className="bi bi-arrow-up-circle-fill px-3" style={{color: '#1a73e8', fontSize: '30px'}}
-                                            />
-                                            {/* Add the ChatGPT loading spinner here */}
-                                            {isLoading.chatGpt && (
-                                                <div
-                                                    className="loading-spinner"
-                                                    role="status"
-                                                    aria-live="polite"
-                                                >
-                                                    <span className="sr-only">Generating ChatGPT response...</span>
-                                                </div>
-                                            )}
+
+                                            <button
+                                                className="send-button"
+                                                onClick={handleChatGptQueries}
+                                                disabled={isLoading.chatGpt || !chatGptQuery.trim()}
+                                            >
+                                                {isLoading.chatGpt ? (
+                                                    <div className="spinner"></div>
+                                                ) : (
+                                                    <i className="bi bi-send-fill"></i>
+                                                )}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </Col>
-                            <Col md={6} lg={6} className="px-3 pb-4" style={{border: '1px solid #ccc'}}>
-                                <div style={{display: 'flex', alignItems: 'center'}}>
-                                    <label htmlFor="ollama-model" style={{marginRight: '10px'}}>Select Ollama
-                                        Model:</label>
-                                    <select id="ollama-model" style={{flex: 1}} value={selectedOllamaModel}
-                                            onChange={(e) => setSelectedOllamaModel(e.target.value)}>
-                                        <option value="llama3.2">Llama 3.2</option>
-                                        <option value="orca-mini">Orca Mini</option>
-                                    </select>
-                                </div>
-                                <div className="card-content">
-                                    <div className="text">
-                                        {text2 && <span>{text2}</span>}
-                                        {
-                                            ollamaQueryArray.map((item, idx) => {
-                                                return (
-                                                    ollamaAnswerArray[idx] &&
-                                                    <div key={idx} style={{display: 'flex', flexDirection: 'column'}}>
-                                                        <span id="questions">{item} </span>
-                                                        <span id="answers">{ollamaAnswerArray[idx]} </span>
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                            </div>
+                        </div>
+
+                        {/* Ollama Column */}
+                        <div className="chat-column">
+                            <div className="chat-card">
+                                <div className="chat-header ollama-header">
+                                    <div className="model-icon">
+                                        <i className="bi bi-cpu"></i>
                                     </div>
-                                    {/* For Ollama section */}
-                                    <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <div className="model-select-container">
+                                        <label htmlFor="ollama-model" className="model-label">Ollama Model</label>
+                                        <select
+                                            id="ollama-model"
+                                            className="model-select"
+                                            value={selectedOllamaModel}
+                                            onChange={(e) => setSelectedOllamaModel(e.target.value)}
+                                        >
+                                            <option value="llama3.2">Llama 3.2</option>
+                                            <option value="orca-mini">Orca Mini</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="chat-messages">
+                                    {text2 && <div className="message-summary">{text2}</div>}
+
+                                    {ollamaQueryArray.map((query, idx) => (
+                                        <React.Fragment key={`ollama-${idx}`}>
+                                            <div className="message user-message">
+                                                <div className="message-bubble">{query}</div>
+                                                <div className="message-meta">You</div>
+                                            </div>
+
+                                            {ollamaAnswerArray[idx] && (
+                                                <div className="message ai-message">
+                                                    <div className="message-bubble">{ollamaAnswerArray[idx]}</div>
+                                                    <div className="message-meta">Ollama</div>
+                                                </div>
+                                            )}
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+
+                                <div className="chat-input-container">
+                                    <div className="chat-input-wrapper">
                                         <input
-                                            className="input_text"
                                             type="text"
+                                            className="chat-input"
                                             value={ollamaQuery}
                                             onChange={(e) => setOllamaQuery(e.target.value)}
+                                            onKeyPress={(e) => handleKeyPress(e, 'ollama')}
                                             disabled={isLoading.ollama}
-                                            placeholder={isLoading.ollama ? "Generating response..." : "Type your query here..."}
+                                            placeholder={isLoading.ollama ? "Generating response..." : "Ask Ollama a question..."}
                                         />
-                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                        <div className="input-actions">
                                             <select
-                                                id="ollama-query-type"
+                                                className="query-type-select"
                                                 value={ollamaQueryType}
                                                 onChange={(e) => setOllamaQueryType(e.target.value)}
                                                 disabled={isLoading.ollama}
                                             >
-                                                <option value="general">General Query</option>
+                                                <option value="general">General</option>
                                                 <option value="pdf_based" disabled={!isPdfUploaded}>
-                                                    From Pdf {!isPdfUploaded && '(Upload PDF first)'}
+                                                    PDF
                                                 </option>
                                             </select>
-                                            <i
-                                                style={{
-                                                    fontSize: '25px',
-                                                    cursor: isLoading.ollama ? 'not-allowed' : 'pointer',
-                                                    opacity: isLoading.ollama ? 0.5 : 1
-                                                }}
-                                                onClick={() => !isLoading.ollama && handleOllamaClick()}
-                                                className="bi bi-arrow-up-circle-fill px-3" style={{color: '#1a73e8', fontSize: '30px'}}
-                                            />
-                                            {/* Add the Ollama loading spinner here */}
-                                            {isLoading.ollama && (
-                                                <div
-                                                    className="loading-spinner"
-                                                    role="status"
-                                                    aria-live="polite"
-                                                >
-                                                    <span className="sr-only">Generating Ollama response...</span>
-                                                </div>
-                                            )}
+
+                                            <button
+                                                className="send-button"
+                                                onClick={handleOllamaQueries}
+                                                disabled={isLoading.ollama || !ollamaQuery.trim()}
+                                            >
+                                                {isLoading.ollama ? (
+                                                    <div className="spinner"></div>
+                                                ) : (
+                                                    <i className="bi bi-send-fill"></i>
+                                                )}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

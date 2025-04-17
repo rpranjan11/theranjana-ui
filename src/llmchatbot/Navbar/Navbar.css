@@ -1,171 +1,89 @@
-.header #heading{
-  font-size: 2rem;
-  color: #1a73e8;
-  text-decoration: none;
-  /* margin-left: 16px !important; */
-  font-weight: 700;
+/* src/llmchatbot/Navbar/Navbar.css */
+.header {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 1rem 0;
 }
 
-
-
-
-
-
-
-
-
-
-.border-shadow {
-  box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
-  border: 1px solid transparent;
-}
-
-
-
-
-
-/* .header {
-  position: fixed;
-  background: #fff;
-  z-index: 9;
+.responsive-width {
+  max-width: 1280px;
+  margin: 0 auto;
   width: 100%;
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media only screen and (max-width: 664px)  {
-  /* small devices */
-  .App,
-  .responsive-width {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-
-  .responsive-md {
-    display: none !important;
-  }
-
 }
 
-@media screen and (min-width: 664px) and (max-width: 768px) {
-  /* //For Tablets */
-  .App,
-  .responsive-width {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+#heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.app-icon {
+  margin-right: 1rem;
+  font-size: 1.75rem;
+  color: #6366f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+}
+
+.nav-content {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #heading {
+    font-size: 1.25rem;
   }
 
-
-
-  .responsive-md {
-    display: flex !important;
+  .app-icon {
+    font-size: 1.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 }
 
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-  /* //For Laptops */
-  .App,
-  .responsive-width {
-    /* width: 738px; */
-    /* width: 850px; */
-    margin-left: auto;
-    margin-right: auto;
+@media (max-width: 576px) {
+  .header {
+    padding: 0.75rem 0;
   }
 
-
-  .responsive-md {
-    display: flex !important;
-  }
-}
-
-@media screen and (min-width: 992px) and (max-width: 1280px) {
-  /* //For Large Laptops */
-  .App,
-  .responsive-width {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+  #heading {
+    font-size: 1.1rem;
   }
 
-
-
-  .responsive-md {
-    display: flex !important;
-  }
-}
-
-@media screen and (min-width: 1280px) and (max-width: 1920px) {
-  /* //For Big TV's (HD Screens)  */
-  .App,
-  .responsive-width {
-    width: 1250px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-
-  .responsive-md {
-    display: flex !important;
-  }
-}
-
-@media screen and (min-width: 1920px) and (max-width: 3840px) {
-  /* //For Projectors or Higher Resolution Screens (Full HD) */
-  .App,
-  .responsive-width {
-    width: 1250px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-  .responsive-md {
-    display: flex !important;
-  }
-}
-
-@media screen and (min-width: 3840px) {
-  /* //For 4K Displays (Ultra HD) */
-  .App,
-  .responsive-width {
-    width: 3810px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-  .responsive-md {
-    display: flex !important;
+  .app-icon {
+    font-size: 1.25rem;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.75rem;
   }
 }
