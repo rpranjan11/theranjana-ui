@@ -1,5 +1,7 @@
 // src/llmchatbot/App.js
 import React from 'react';
+import "./scope.css";
+import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import { ChatPage } from './ChatPage';
@@ -12,11 +14,13 @@ function App() {
             <Helmet>
                 <title>LLM Chatbot | TheRanjana</title>
             </Helmet>
-            <Router>
-                <Routes>
-                    <Route path="/llmchatbot" element={<ChatPage />} />
-                </Routes>
-            </Router>
+            <div id="llm-chatbot-app">
+                <Router>
+                    <Routes>
+                        <Route path="/llmchatbot" element={<ChatPage/>}/>
+                    </Routes>
+                </Router>
+            </div>
         </>
     );
 }

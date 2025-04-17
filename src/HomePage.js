@@ -137,7 +137,7 @@ const HomePage = () => {
             </main>
 
             <footer className="app-store-footer">
-                <p>Gonna introduce more apps soon</p>
+                <p>Gonna introduce more apps soon, stay tuned 😊😊</p>
             </footer>
         </div>
     );

@@ -1,5 +1,5 @@
 /* src/llmchatbot/help/HelpPanel.css */
-.help-panel {
+#llm-chatbot-app .help-panel {
     position: fixed;
     top: 0;
     right: -100%;
@@ -15,11 +15,11 @@
     border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.help-panel.open {
+#llm-chatbot-app .help-panel.open {
     right: 0;
 }
 
-.help-header {
+#llm-chatbot-app .help-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,7 +31,7 @@
     z-index: 10;
 }
 
-.home-button {
+#llm-chatbot-app .home-button {
     display: flex;
     align-items: center;
     padding: 0.5rem 1rem;
@@ -44,15 +44,15 @@
     transition: all 0.2s ease;
 }
 
-.home-button:hover {
+#llm-chatbot-app .home-button:hover {
     background-color: var(--primary-dark);
 }
 
-.home-button i {
+#llm-chatbot-app .home-button i {
     margin-right: 0.5rem;
 }
 
-.language-selector {
+#llm-chatbot-app .language-selector {
     padding: 0.5rem;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
@@ -61,75 +61,75 @@
     cursor: pointer;
 }
 
-.help-content {
+#llm-chatbot-app .help-content {
     padding: 2rem;
     line-height: 1.6;
 }
 
-.help-content h1 {
+#llm-chatbot-app .help-content h1 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     color: var(--primary-light);
 }
 
-.help-content h2 {
+#llm-chatbot-app .help-content h2 {
     font-size: 1.5rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
     color: var(--secondary-light);
 }
 
-.help-content h3 {
+#llm-chatbot-app .help-content h3 {
     font-size: 1.2rem;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
     color: var(--light);
 }
 
-.help-content p, .help-content li {
+#llm-chatbot-app .help-content p, .help-content li {
     margin-bottom: 0.75rem;
     color: var(--gray-300);
 }
 
-.help-content ul, .help-content ol {
+#llm-chatbot-app .help-content ul, .help-content ol {
     padding-left: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
 /* Responsive design for mobile */
 @media (max-width: 768px) {
-    .help-panel {
+    #llm-chatbot-app .help-panel {
         width: 100%;
         right: -100%;
     }
 
-    .help-content {
+    #llm-chatbot-app .help-content {
         padding: 1.5rem;
     }
 
-    .help-content h1 {
+    #llm-chatbot-app .help-content h1 {
         font-size: 1.75rem;
     }
 
-    .help-content h2 {
+    #llm-chatbot-app .help-content h2 {
         font-size: 1.3rem;
     }
 
-    .help-content h3 {
+    #llm-chatbot-app .help-content h3 {
         font-size: 1.1rem;
     }
 }
 
 @media (max-width: 576px) {
-    .help-content {
+    #llm-chatbot-app .help-content {
         padding: 1rem;
     }
 
-    .help-content h1 {
+    #llm-chatbot-app .help-content h1 {
         font-size: 1.5rem;
     }
 
-    .help-header {
+    #llm-chatbot-app .help-header {
         padding: 0.75rem;
     }
 }

@@ -1,5 +1,5 @@
 /* src/llmchatbot/Navbar/Navbar.css */
-.header {
+#llm-chatbot-app .header {
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -9,21 +9,21 @@
   padding: 1rem 0;
 }
 
-.responsive-width {
+#llm-chatbot-app .responsive-width {
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
 }
 
-.cursor-pointer {
+#llm-chatbot-app .cursor-pointer {
   cursor: pointer;
 }
 
-.d-flex {
+#llm-chatbot-app .d-flex {
   display: flex;
 }
 
-.align-items-center {
+#llm-chatbot-app .align-items-center {
   align-items: center;
 }
 
@@ -39,7 +39,7 @@
   letter-spacing: -0.5px;
 }
 
-.app-icon {
+#llm-chatbot-app .app-icon {
   margin-right: 1rem;
   font-size: 1.75rem;
   color: #6366f1;
@@ -53,12 +53,12 @@
   backdrop-filter: blur(5px);
 }
 
-.nav-content {
+#llm-chatbot-app .nav-content {
   display: flex;
   justify-content: flex-end;
 }
 
-.help-button {
+#llm-chatbot-app .help-button {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
@@ -71,11 +71,11 @@
   transition: all 0.2s ease;
 }
 
-.help-button:hover {
+#llm-chatbot-app .help-button:hover {
   background-color: var(--primary, #6366f1);
 }
 
-.help-button i {
+#llm-chatbot-app .help-button i {
   font-size: 1.1em;
 }
 
@@ -85,7 +85,7 @@
     font-size: 1.25rem;
   }
 
-  .app-icon {
+  #llm-chatbot-app .app-icon {
     font-size: 1.5rem;
     width: 2.25rem;
     height: 2.25rem;
@@ -93,7 +93,7 @@
 }
 
 @media (max-width: 576px) {
-  .header {
+  #llm-chatbot-app .header {
     padding: 0.75rem 0;
     color: var(--light);
   }
@@ -102,7 +102,7 @@
     font-size: 1.1rem;
   }
 
-  .app-icon {
+  #llm-chatbot-app .app-icon {
     font-size: 1.25rem;
     width: 2rem;
     height: 2rem;
@@ -111,7 +111,7 @@
 }
 
 @media (max-width: 576px) {
-  .help-button {
+  #llm-chatbot-app .help-button {
     padding: 0.4rem 0.75rem;
     font-size: 0.9rem;
   }
