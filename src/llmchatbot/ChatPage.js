@@ -223,6 +223,7 @@ export const ChatPage = () => {
     const handleKeyPress = (e, chatType) => {
         if (e.key === 'Enter') {
             e.preventDefault();
+            if (isLoading.chatGpt || isLoading.ollama) return;
             if (chatType === 'chatgpt') {
                 handleChatGptQueries();
             } else {
@@ -355,7 +356,7 @@ export const ChatPage = () => {
                                             value={chatGptQuery}
                                             onChange={(e) => setChatGptQuery(e.target.value)}
                                             onKeyPress={(e) => handleKeyPress(e, 'chatgpt')}
-                                            disabled={isLoading.chatGpt}
+                                            disabled={isLoading.chatGpt || isLoading.ollama}
                                             placeholder={isLoading.chatGpt
                                                 ? (isMobile ? "Generating..." : "Generating response...")
                                                 : (isMobile ? "Ask ChatGPT" : "Ask ChatGPT a question...")}
@@ -376,7 +377,7 @@ export const ChatPage = () => {
                                             <button
                                                 className="send-button"
                                                 onClick={handleChatGptQueries}
-                                                disabled={isLoading.chatGpt || !chatGptQuery.trim()}
+                                                disabled={isLoading.chatGpt || isLoading.ollama || !chatGptQuery.trim()}
                                             >
                                                 {isLoading.chatGpt ? (
                                                     <div className="spinner"></div>
@@ -440,7 +441,7 @@ export const ChatPage = () => {
                                             value={ollamaQuery}
                                             onChange={(e) => setOllamaQuery(e.target.value)}
                                             onKeyPress={(e) => handleKeyPress(e, 'ollama')}
-                                            disabled={isLoading.ollama}
+                                            disabled={isLoading.ollama || isLoading.chatGpt}
                                             placeholder={isLoading.ollama
                                                 ? (isMobile ? "Generating..." : "Generating response...")
                                                 : (isMobile ? "Ask Ollama" : "Ask Ollama a question...")}
@@ -461,7 +462,7 @@ export const ChatPage = () => {
                                             <button
                                                 className="send-button"
                                                 onClick={handleOllamaQueries}
-                                                disabled={isLoading.ollama || !ollamaQuery.trim()}
+                                                disabled={isLoading.ollama || isLoading.chatGpt || !ollamaQuery.trim()}
                                             >
                                                 {isLoading.ollama ? (
                                                     <div className="spinner"></div>
