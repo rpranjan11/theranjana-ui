@@ -59,14 +59,43 @@ export const ChatPage = () => {
     }, [chatGptController, ollamaController]);
 
     const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        const chatGptMessagesContainer = document.querySelector('.chatgpt-header + .chat-messages');
+        const ollamaMessagesContainer = document.querySelector('.ollama-header + .chat-messages');
+
+        if (chatGptMessagesContainer) {
+            requestAnimationFrame(() => {
+                chatGptMessagesContainer.scrollTop = chatGptMessagesContainer.scrollHeight;
+            });
+        }
+
+        if (ollamaMessagesContainer) {
+            requestAnimationFrame(() => {
+                ollamaMessagesContainer.scrollTop = ollamaMessagesContainer.scrollHeight;
+            });
         }
     };
 
     useEffect(() => {
         scrollToBottom();
     }, [chatGptAnswerArray, ollamaAnswerArray]);
+
+    useEffect(() => {
+        if (chatGptAnswerArray.length > 0) {
+            scrollToBottom();
+        }
+    }, [chatGptAnswerArray]);
+
+    useEffect(() => {
+        if (ollamaAnswerArray.length > 0) {
+            scrollToBottom();
+        }
+    }, [ollamaAnswerArray]);
+
+    useEffect(() => {
+        if (text1 || text2) {
+            scrollToBottom();
+        }
+    }, [text1, text2]);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -142,6 +171,7 @@ export const ChatPage = () => {
 
         setIsLoading(prev => ({ ...prev, chatGpt: true }));
         setChatGptQueryArray((prev) => [...prev, chatGptQuery]);
+        setTimeout(scrollToBottom, 0);
 
         let url = "";
         if (chatGptQueryType === "pdf_based") {
@@ -151,7 +181,7 @@ export const ChatPage = () => {
         }
 
         setChatGptAnswerArray((prev) => [...prev, "Generating response..."]);
-        scrollToBottom();
+        setTimeout(scrollToBottom, 0);
 
         const controller = new AbortController();
         setChatGptController(controller);
@@ -160,7 +190,7 @@ export const ChatPage = () => {
             .then(response => {
                 console.log('Response: ', response.data);
                 setChatGptAnswerArray((prev) => [...prev.slice(0, -1), response.data.chatgptResponse]);
-                scrollToBottom();
+                setTimeout(scrollToBottom, 0);
             })
             .catch(error => {
                 if (axios.isCancel(error)) {
@@ -169,6 +199,8 @@ export const ChatPage = () => {
                     setChatGptAnswerArray((prev) => [...prev.slice(0, -1),
                         <span key="error" style={{ color: 'var(--danger)' }}>Error: Failed to generate response</span>]);
                     console.error('Error:', error);
+
+                    setTimeout(scrollToBottom, 0);
                 }
             })
             .finally(() => {
@@ -184,6 +216,7 @@ export const ChatPage = () => {
 
         setIsLoading(prev => ({ ...prev, ollama: true }));
         setOllamaQueryArray((prev) => [...prev, ollamaQuery]);
+        setTimeout(scrollToBottom, 0);
 
         let url = "";
         if (ollamaQueryType === "pdf_based") {
@@ -193,7 +226,7 @@ export const ChatPage = () => {
         }
 
         setOllamaAnswerArray((prev) => [...prev, "Generating response..."]);
-        scrollToBottom();
+        setTimeout(scrollToBottom, 0);
 
         const controller = new AbortController();
         setOllamaController(controller);
@@ -202,7 +235,7 @@ export const ChatPage = () => {
             .then(response => {
                 console.log('Response: ', response.data);
                 setOllamaAnswerArray((prev) => [...prev.slice(0, -1), response.data.ollamaResponse]);
-                scrollToBottom();
+                setTimeout(scrollToBottom, 0);
             })
             .catch(error => {
                 if (axios.isCancel(error)) {
@@ -211,6 +244,7 @@ export const ChatPage = () => {
                     setOllamaAnswerArray((prev) => [...prev.slice(0, -1),
                         <span key="error" style={{ color: 'var(--danger)' }}>Error: Failed to generate response</span>]);
                     console.error('Error:', error);
+                    setTimeout(scrollToBottom, 0);
                 }
             })
             .finally(() => {
