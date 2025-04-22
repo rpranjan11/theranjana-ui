@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import "./ProjectsPage.css"
 import { useFirebase } from "../../firebase/userContext";
-export default function ProjectsPage(props) {
-    const { uid } = props
+export default function ProjectsPage() {
 
     const [projectsData, setprojectsData] = useState([])
     let firebase = useFirebase()
 
     useEffect(() => {
-        firebase.getProjects(uid, (data) => {
+        firebase.getProjects(data => {
             let arr = []
-            for (let uid in data) {
-                arr.push(data[uid])
+            for (let id in data) {
+                arr.push(data[id])
             }
             setprojectsData([...arr])
         })
