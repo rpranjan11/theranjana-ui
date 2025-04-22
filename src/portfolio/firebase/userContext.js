@@ -1,22 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-
 import { getStorage } from "firebase/storage";
-
-import {
-    getAuth,
-    onAuthStateChanged,
-} from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import {
-    getDatabase,
-    ref,
-    child,
-    get,
-    query,
-    orderByChild,
-    equalTo,
-    onValue,
-} from "firebase/database";
+import { getDatabase, ref, child, get, query, orderByChild, equalTo, onValue } from "firebase/database";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -30,31 +15,12 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-export const firebaseAuth = getAuth(firebaseApp);
 export const storage = getStorage(firebaseApp);
-
 const database = getDatabase(firebaseApp);
-
 export const FirebaseContext = createContext(null);
 export const useFirebase = () => useContext(FirebaseContext);
-
 export const FirebaseProvider = (props) => {
 
-    const [isUserLoggedIn, setIsUserLoggedIn] = useState("")
-
-    useEffect(() => {
-        onAuthStateChanged(firebaseAuth, (user0) => {
-            if (user0) {
-                const uid = user0.uid;
-                localStorage.setItem('mySpaceUid', uid)
-                setIsUserLoggedIn(true)
-            } else {
-                setIsUserLoggedIn(false)
-            }
-        });
-    }, []);
-
-    // In userContext.js
     const getDataOnce = async (email) => {
         try {
             const data = query(
@@ -86,54 +52,53 @@ export const FirebaseProvider = (props) => {
     };
 
 
-    const getUserData = async (key, callback) => {
-        const userRef = ref(database, `users/${key}`);
+    const getUserData = async (callback) => {
+        const userRef = ref(database, `users`);
         onValue(userRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
 
-    const getUsersBio = async (key, callback) => {
-        const userRef = ref(database, `bio/${key}`);
+    const getUsersBio = async (callback) => {
+        const userRef = ref(database, `bio`);
         onValue(userRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
 
-    const getProjects = async (key, callback) => {
-        const projectRef = ref(database, `projects/${key}`);
+    const getProjects = async (callback) => {
+        const projectRef = ref(database, `projects`);
         onValue(projectRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
 
-    const getExperiences = async (key, callback) => {
-        const experienceRef = ref(database, `experiences/${key}`);
+    const getExperiences = async (callback) => {
+        const experienceRef = ref(database, `experiences`);
         onValue(experienceRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
 
-    const getCertifications = async (key, callback) => {
-        const certificationRef = ref(database, `certifications/${key}`);
+    const getCertifications = async (callback) => {
+        const certificationRef = ref(database, `certifications`);
         onValue(certificationRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
 
-    const getVideos = async (key, callback) => {
-        const paperRef = ref(database, `videos/${key}`);
+    const getVideos = async (callback) => {
+        const paperRef = ref(database, `videos`);
         onValue(paperRef, (snapshot) => {
             const data = snapshot.val();
             callback(data);
         });
     }
-    // getVideos("cS8oudEyTJYa7XpYdZHCNZte63n2", (data) => { console.log("data") })
 
     return (
         <FirebaseContext.Provider

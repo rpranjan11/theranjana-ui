@@ -3,19 +3,16 @@ import { Row } from "react-bootstrap";
 import "./CertificationsPage.css"
 import { useFirebase } from "../../firebase/userContext";
 
-export default function CertificationsPage(props) {
-
-    const { uid } = props
+export default function CertificationsPage() {
 
     const [certificationData, setCertificationData] = useState([]);
-
     let firebase = useFirebase();
 
     useEffect(() => {
-        firebase.getCertifications(uid, (data) => {
+        firebase.getCertifications(data => {
             let arr = []
-            for (let uid in data) {
-                arr.push(data[uid])
+            for (let id in data) {
+                arr.push(data[id])
             }
             setCertificationData([...arr])
         })

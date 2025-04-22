@@ -8,7 +8,6 @@ import ExperiencesPage from "../experiencesPage/ExperiencesPage";
 import ProjectsPage from "../projectsPage/ProjectsPage";
 import CertificationsPage from "../certificationsPage/CertificationsPage";
 import { useFirebase } from "../../firebase/userContext"
-const uid = 'GDlai5dHijSaKcUW2R9xsGcS6Cn1'
 
 export default function HomePage({ initialUserData = {}, isLoading = false }) {
     const [pageOpen, setPageOpen] = useState("");
@@ -49,13 +48,11 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
     }, [handleResize]);
 
     useEffect(() => {
-        if (uid) {
-            firebase.getUsersBio(uid, (data) => {
-                if (data) {
-                    setuserData(data)
-                }
-            })
-        }
+        firebase.getUsersBio(data => {
+            if (data) {
+                setuserData(data)
+            }
+        })
         if (window.innerHeight > window.innerWidth) {
             setMobileView(true)
         }
@@ -158,11 +155,11 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                             </Col>
                         </Row>
                     ) : pageOpen === "Experiences" ? (
-                        <ExperiencesPage uid={uid}/>
+                        <ExperiencesPage/>
                     ) : pageOpen === "Projects" ? (
-                        <ProjectsPage uid={uid}/>
+                        <ProjectsPage/>
                     ) : (
-                        <CertificationsPage uid={uid}/>
+                        <CertificationsPage/>
                     )}
                 </div>
             </Container>

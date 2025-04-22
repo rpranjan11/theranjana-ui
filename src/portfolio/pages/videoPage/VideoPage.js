@@ -4,15 +4,15 @@ import { Row, Col } from "react-bootstrap";
 import "./VideoPage.css"
 import { useFirebase } from "../../firebase/userContext";
 
-export default function VideosPage({ uid }) {
+export default function VideosPage() {
     const [videosData, setvideosData] = useState([])
     let firebase = useFirebase()
 
     useEffect(() => {
-        firebase.getVideos(uid, (data) => {
+        firebase.getVideos(data => {
             let arr = []
-            for (let uid in data) {
-                arr.push(data[uid])
+            for (let id in data) {
+                arr.push(data[id])
             }
             setvideosData([...arr])
         })
@@ -32,7 +32,6 @@ export default function VideosPage({ uid }) {
 }
 
 VideosPage.propTypes = {
-    uid: PropTypes.string.isRequired,
     videos: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,

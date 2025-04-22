@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import "./ExperiencesPage.css"
 import { useFirebase } from "../../firebase/userContext";
-export default function ExperiencesPage(props) {
-    const { uid } = props
+export default function ExperiencesPage() {
 
     const [experiencesData, setexperiencesData] = useState([])
     let firebase = useFirebase()
 
     useEffect(() => {
-        firebase.getExperiences(uid, (data) => {
+        firebase.getExperiences(data => {
             let arr = []
-            for (let uid in data) {
-                arr.push(data[uid])
+            for (let id in data) {
+                arr.push(data[id])
             }
             setexperiencesData([...arr])
         })
