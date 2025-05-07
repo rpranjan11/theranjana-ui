@@ -265,10 +265,10 @@ a:hover {
 .social-app-icons .linkedIn:hover .tooltip::before,
 .social-app-icons .github:hover .tooltip,
 .social-app-icons .github:hover .tooltip::before,
+.social-app-icons .notion:hover .tooltip,
+.social-app-icons .notion:hover .tooltip::before,
 .social-app-icons .twitter:hover .tooltip,
 .social-app-icons .twitter:hover .tooltip::before,
-.social-app-icons .orcid:hover .tooltip,
-.social-app-icons .orcid:hover .tooltip::before,
 .social-app-icons .google-scholar:hover .tooltip,
 .social-app-icons .google-scholar:hover .tooltip::before {
   background: var(--social-hover-color);

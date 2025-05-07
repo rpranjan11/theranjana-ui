@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from "react-bootstrap";
+import { SiNotion } from 'react-icons/si';
 import "./HomePage.css";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
@@ -129,6 +130,17 @@ export default function HomePage({ initialUserData = {}, isLoading = false }) {
                                             </span>}
                                         </div>
 
+                                        <div className="icon notion">
+                                            <div className="tooltip">
+                                                Notion Portfolio
+                                            </div>
+                                            {userData.notion_portfolio && <span>
+                                                <a href={userData.notion_portfolio} target="_blank" rel="noopener">
+                                                    <SiNotion style={{fontSize: '1.5rem'}} />
+                                                </a>
+                                            </span>}
+                                        </div>
+
                                         <div className="icon twitter">
                                             <div className="tooltip">
                                                 Twitter
@@ -185,6 +197,7 @@ HomePage.propTypes = {
         linkedIn: PropTypes.string,
         github: PropTypes.string,
         twitter: PropTypes.string,
+        notion_portfolio: PropTypes.string,
         profile_picture: PropTypes.string,
     }),
     isLoading: PropTypes.bool
