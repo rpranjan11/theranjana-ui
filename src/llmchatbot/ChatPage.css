@@ -521,6 +521,21 @@ body {
     border-color: var(--primary);
 }
 
+#llm-chatbot-app .chat-input-wrapper.disabled::before {
+    content: "Waiting for response...";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    opacity: 0.9;
+    z-index: 5;
+}
+
 /* Enhanced Send Button */
 #llm-chatbot-app .send-button {
     color: white; /* Brighter base color instead of var(--primary-light) */
